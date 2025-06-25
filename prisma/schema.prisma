@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../app/generated/prisma"
@@ -12,4 +6,33 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model list {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String
+  plate_number  String?
+  licence_class String?
+  car_make      String?
+  car_model     String?
+  car_year      String?
+  notes         String?
+  known         Boolean?
+  created_at    DateTime @default(now()) @db.Timestamptz(6)
+
+  @@map("list")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model event {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  plate_number String?
+  clip_url     String?
+  entry_time   DateTime? @db.Timestamptz(6)
+  exit_time    DateTime? @db.Timestamptz(6)
+  known        Boolean?
+  resolved     Boolean?
+
+  @@map("event")
 }
