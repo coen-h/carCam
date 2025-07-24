@@ -1,6 +1,7 @@
 'use server';
 
 import { PrismaClient } from '../generated/prisma';
+import Papa from 'papaparse';
 
 const prisma = new PrismaClient();
 
@@ -27,14 +28,19 @@ export async function addPlate(car) {
 
 export async function removePlate(plate) {
   try {
-    const newCar = await prisma.list.delete({
-      where: { 
+    const deletedCars = await prisma.list.deleteMany({
+      where: {
         plate_number: plate,
       },
-    })
-    return newCar;
+    });
+    
+    if (deletedCars.count === 0) {
+      throw new Error(`No plate found with number: ${plate}`);
+    }
+    
+    return deletedCars;
   } catch (error) {
-    console.error('Error adding car:', error);
+    console.error('Error removing plate:', error);
     throw error;
   } finally {
     await prisma.$disconnect();

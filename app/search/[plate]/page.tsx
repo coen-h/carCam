@@ -63,8 +63,8 @@ export default function Home({ params }) {
   return (
     <>
       <Header />
-      <div className="mx-auto px-4 py-8 max-w-6xl flex flex-col items-center">
-        <div className="flex items-center gap-32 mb-6">
+      <div className="mx-auto px-4 py-8 max-w-3xl flex flex-col items-center">
+        <div className="flex justify-between items-center mb-6 w-full">
           
           <div>
             <h1 className="text-3xl font-bold">Plate Information</h1>
@@ -82,8 +82,8 @@ export default function Home({ params }) {
           </a>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-3">
-          <section className="lg:col-span-2 border rounded-lg shadow-sm p-6 bg-white">
+        <div className="w-full grid gap-6 lg:grid-cols-3">
+          <section className="lg:col-span-3 border rounded-lg shadow-sm p-6 bg-white">
             <header>
               <div className="flex items-center justify-between mb-4">
                 <div>
@@ -177,7 +177,7 @@ export default function Home({ params }) {
             </div>
           </section>
 
-          <section className="lg:col-span-2 border rounded-lg shadow-sm p-6 bg-white">
+          <section className="lg:col-span-3 border rounded-lg shadow-sm p-6 bg-white">
             <header className="mb-4">
               <h2 className="flex items-center gap-2 text-xl font-semibold">
                 Recent Events
