@@ -42,11 +42,11 @@ export default function Search() {
     if (!searchTerm) return data;
     return data.filter(
       (user) =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.licence_class.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.car_make.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.plate_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.car_model.toLowerCase().includes(searchTerm.toLowerCase())
+        (user.name && user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (user.licence_class && user.licence_class.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (user.car_make && user.car_make.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (user.plate_number && user.plate_number.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (user.car_model && user.car_model.toLowerCase().includes(searchTerm.toLowerCase()))
     );
   }, [searchTerm, data]);
 
@@ -317,13 +317,9 @@ export default function Search() {
                 className="w-full flex justify-between"
                 key={item.id}
               >
-                <p className="w-full font-medium">
-                  {item.plate_number || "Not specified"}
-                </p>
+                <p className="w-full font-medium">{item.plate_number || "Not specified"}</p>
                 <p className="w-full">{item.name || "Not specified"}</p>
-                <p className="w-full">
-                  {item.licence_class || "Not specified"}
-                </p>
+                <p className="w-full">{item.licence_class || "Not specified"}</p>
                 <p className="w-full">{item.car_make || "Not specified"}</p>
                 <p className="w-full">{item.car_model || "Not specified"}</p>
                 <p className="w-full">{item.car_year || "Not specified"}</p>

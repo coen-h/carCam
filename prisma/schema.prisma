@@ -11,7 +11,7 @@ datasource db {
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model list {
   id            String   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name          String
+  name          String?
   plate_number  String   @unique
   licence_class String?
   car_make      String?

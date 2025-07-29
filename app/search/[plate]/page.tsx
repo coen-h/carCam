@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export default function Plate({ params }) {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   const [events, setEvents] = useState([]);
   const { plate } = use(params);
   const [showVideoModal, setShowVideoModal] = useState(false);
@@ -99,6 +99,8 @@ export default function Plate({ params }) {
 
   const openEditDialog = () => {
     // Pre-populate the form with current data
+    if (!data) return;
+
     setEditCar({
       name: data.name || "",
       licence_class: data.licence_class || "",
@@ -125,6 +127,20 @@ export default function Plate({ params }) {
     fetchData();
   }, []);
 
+  if (!data) {
+    return (
+      <>
+        <Header />
+        <div className="mx-auto px-4 py-8 max-w-3xl flex flex-col items-center">
+          <div className="text-center">
+            <p>Loading plate information...</p>
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
   return (
     <>
       <Header />
@@ -141,7 +157,7 @@ export default function Plate({ params }) {
           <div className="flex gap-2">
             <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline" onClick={openEditDialog}>
+                <Button onClick={openEditDialog}>
                   Edit
                 </Button>
               </DialogTrigger>
