@@ -13,6 +13,7 @@ export default function Home() {
     async function fetchData() {
       try {
         const info = await fetchEvents();
+        console.log(info);
         setEvents(info);
         setTop5Plates(getTop5PlateNumbers(info));
       } catch (error) {
@@ -84,7 +85,6 @@ export default function Home() {
             <div key={event.id} className="flex bg-neutral-200 p-2 m-1 rounded-lg gap-2 text-sm">
               <p className="font-medium">{event.plate_number}</p>
               <p className="text-neutral-600">{new Date(event.entry_time).toLocaleDateString()}</p>
-              <p className="text-neutral-600">{new Date(event.exit_time).toLocaleDateString()}</p>
               <p className={`font-semibold ${event.known ? 'text-green-600' : 'text-red-600'}`}>{event.known ? 'Known' : 'Unknown'}</p>
             </div>
           ))}

@@ -1,16 +1,38 @@
 "use client";
 
-import { useEffect, useState, use, useMemo } from "react";
+import { useEffect, useState, use, useMemo, useTransition } from "react";
 import Footer from "@/app/components/Footer";
 import Header from "@/app/components/Header";
 import fetchInfo from "@/app/lib/fetchInfo";
+import { updatePlate } from "@/app/lib/updatePlate";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
-export default function Home({ params }) {
+export default function Plate({ params }) {
   const [data, setData] = useState([]);
   const [events, setEvents] = useState([]);
   const { plate } = use(params);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [currentVideoUrl, setCurrentVideoUrl] = useState<string | null>(null);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
+  const [editCar, setEditCar] = useState({
+    name: "",
+    licence_class: "",
+    car_make: "",
+    car_model: "",
+    car_year: "",
+    plate_number: "",
+  });
 
   function formatDateTime(timestamp) {
     const date = new Date(timestamp);
@@ -45,18 +67,61 @@ export default function Home({ params }) {
     setShowVideoModal(false);
   };
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const info = await fetchInfo(plate);
-        setData(info.results);
-        setEvents(info.events);
-        console.log(events);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+  function handleInputChange(e) {
+    const { name, value } = e.target;
+    setEditCar((prev) => ({ ...prev, [name]: value }));
+  }
+
+  async function handleEditCar() {
+    if (
+      !editCar.name ||
+      !editCar.licence_class ||
+      !editCar.car_make ||
+      !editCar.car_model ||
+      !editCar.car_year
+    ) {
+      alert("Please fill in all fields");
+      return;
     }
 
+    startTransition(async () => {
+      try {
+        await updatePlate({ ...editCar });
+        console.log("Updating car with data:", editCar);
+        setEditDialogOpen(false);
+        fetchData();
+      } catch (error) {
+        alert("Failed to update car. Please try again.");
+        console.error(error);
+      }
+    });
+  }
+
+  const openEditDialog = () => {
+    // Pre-populate the form with current data
+    setEditCar({
+      name: data.name || "",
+      licence_class: data.licence_class || "",
+      car_make: data.car_make || "",
+      car_model: data.car_model || "",
+      car_year: data.car_year || "",
+      plate_number: data.plate_number || "",
+    });
+    setEditDialogOpen(true);
+  };
+
+  async function fetchData() {
+    try {
+      const info = await fetchInfo(plate);
+      setData(info.results);
+      setEvents(info.events);
+      console.log(events);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -72,14 +137,87 @@ export default function Home({ params }) {
               Detailed information for plate number {data.plate_number}
             </p>
           </div>
-          <a href="/search" className="inline-flex">
-            <button
-              type="button"
-              className="inline-flex items-center border border-gray-300 rounded px-3 py-1 text-sm hover:bg-gray-100"
-            >
-              Back to Search
-            </button>
-          </a>
+
+          <div className="flex gap-2">
+            <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline" onClick={openEditDialog}>
+                  Edit
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Edit Car Information</DialogTitle>
+                  <DialogDescription>
+                    Update the details below to modify the car entry.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <Input
+                    placeholder="Plate Number"
+                    name="plate_number"
+                    value={editCar.plate_number}
+                    onChange={handleInputChange}
+                    disabled
+                    className="bg-gray-100 cursor-not-allowed"
+                  />
+                  <Input
+                    placeholder="Name"
+                    name="name"
+                    value={editCar.name}
+                    onChange={handleInputChange}
+                  />
+                  <Input
+                    placeholder="Licence Class"
+                    name="licence_class"
+                    value={editCar.licence_class}
+                    onChange={handleInputChange}
+                  />
+                  <Input
+                    placeholder="Car Make"
+                    name="car_make"
+                    value={editCar.car_make}
+                    onChange={handleInputChange}
+                  />
+                  <Input
+                    placeholder="Car Model"
+                    name="car_model"
+                    value={editCar.car_model}
+                    onChange={handleInputChange}
+                  />
+                  <Input
+                    placeholder="Car Year"
+                    name="car_year"
+                    value={editCar.car_year}
+                    onChange={handleInputChange}
+                    type="number"
+                  />
+                </div>
+                <DialogFooter>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setEditDialogOpen(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={handleEditCar}
+                    disabled={isPending}
+                  >
+                    Save Changes
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
+            <a href="/search" className="inline-flex">
+              <Button variant="outline">
+                Back to Search
+              </Button>
+            </a>
+          </div>
         </div>
 
         <div className="w-full grid gap-6 lg:grid-cols-3">
