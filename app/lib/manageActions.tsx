@@ -26,21 +26,23 @@ export async function addPlate(car) {
   }
 }
 
-export async function removePlate(plate) {
+export async function removePlate(plates) {
   try {
     const deletedCars = await prisma.list.deleteMany({
       where: {
-        plate_number: plate,
+        plate_number: {
+          in: plates,
+        },
       },
     });
-    
+   
     if (deletedCars.count === 0) {
-      throw new Error(`No plate found with number: ${plate}`);
+      throw new Error(`No plates found with numbers: ${plates.join(', ')}`);
     }
-    
+   
     return deletedCars;
   } catch (error) {
-    console.error('Error removing plate:', error);
+    console.error('Error removing plates:', error);
     throw error;
   } finally {
     await prisma.$disconnect();

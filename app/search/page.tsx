@@ -139,14 +139,13 @@ export default function Search() {
   async function handleDeleteSelected() {
     startTransition(async () => {
       try {
-        await Promise.all(
-          [...selectedPlates].map((plate) => removePlate(plate))
-        );
+        const platesToDelete = [...selectedPlates];
+        await removePlate(platesToDelete);
         setSelectedPlates(new Set());
         setDeleteDialogOpen(false);
         fetchData();
       } catch (error) {
-        alert("Failed to delete some plates. Please try again.");
+        alert("Failed to delete plates. Please try again.");
         console.error(error);
       }
     });
