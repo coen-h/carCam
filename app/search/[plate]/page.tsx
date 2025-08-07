@@ -21,8 +21,8 @@ export default function Plate({ params }) {
   const [data, setData] = useState(null);
   const [events, setEvents] = useState([]);
   const { plate } = use(params);
-  const [showVideoModal, setShowVideoModal] = useState(false);
-  const [currentVideoUrl, setCurrentVideoUrl] = useState<string | null>(null);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [editCar, setEditCar] = useState({
@@ -58,13 +58,13 @@ export default function Plate({ params }) {
   }
 
   const handleViewClip = (clipUrl: string) => {
-    setCurrentVideoUrl(clipUrl);
-    setShowVideoModal(true);
+    setCurrentImageUrl(clipUrl);
+    setShowImageModal(true);
   };
 
-  const handleCloseVideoModal = () => {
-    setCurrentVideoUrl(null);
-    setShowVideoModal(false);
+  const handleCloseImageModal = () => {
+    setCurrentImageUrl(null);
+    setShowImageModal(false);
   };
 
   function handleInputChange(e) {
@@ -380,26 +380,20 @@ export default function Plate({ params }) {
       </div>
       <Footer />
 
-      {showVideoModal && currentVideoUrl && (
+      {showImageModal && currentImageUrl && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4">
           <div className="relative bg-black rounded-lg shadow-xl overflow-hidden w-full max-w-6xl max-h-[90vh]">
             <button
-              onClick={handleCloseVideoModal}
+              onClick={handleCloseImageModal}
               className="absolute top-1 right-3 text-gray-400 hover:text-gray-600 text-3xl font-bold z-10"
-              aria-label="Close video"
             >
               &times;
             </button>
             <div className="relative pb-[56.25%] h-0 overflow-hidden">    
-              <video
-                controls
-                autoPlay
+              <img
                 className="absolute top-0 left-0 w-full h-full"
-                src={currentVideoUrl}
-                onEnded={handleCloseVideoModal}
-              >
-                Your browser does not support the video tag.
-              </video>
+                src={currentImageUrl}
+              />
             </div>
           </div>
         </div>

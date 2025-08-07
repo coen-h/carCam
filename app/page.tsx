@@ -49,20 +49,6 @@ export default function Home() {
     <>
       <Header />
       <div className='max-w-[1750px] m-4 flex justify-between'>
-        <div className='flex flex-col'>
-          <div className='bg-neutral-500 w-[600px] h-[300px]'>
-            <video
-              controls
-              autoPlay
-              className="w-[600px] h-[300px]"
-              src='https://brzwbydqyoqsjybjuqwg.supabase.co/storage/v1/object/sign/clips/COEEEN-2.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hNTYxYWQxNy0xNTQ2LTQyN2YtYTcxZS01ZjExYjZmNjY0NGYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJjbGlwcy9DT0VFRU4tMi5tcDQiLCJpYXQiOjE3NTMyMzA4NTYsImV4cCI6MTc1MzgzNTY1Nn0.0YSup3yNkDaB3Vfl05LEH95czNU3DHjfFhCmfFCmWPk'
-            ></video>
-          </div>
-          <div className='flex'>
-            <p className='border-b-2 border-neutral-500 w-full'>TIMELINE</p>
-            <button className='p-2 bg-neutral-300'>DOWNLOAD</button>
-          </div>
-        </div>
         <div>
           <p>PEAK ENTRY AMOUNT TIMELINE</p>
           <p className="font-bold mb-2 text-lg">TOP 5 ENTRIES</p>
