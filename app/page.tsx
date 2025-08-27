@@ -101,18 +101,10 @@ export default function Dashboard() {
 
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex sm:items-center sm:gap-2">
-              <Button variant="ghost" size="sm">
-                Search
-              </Button>
               <Button variant="outline" size="sm">
                 Export
               </Button>
             </div>
-
-            <Avatar>
-              <AvatarImage src="/images/admin-avatar.jpg" alt="Admin" />
-              <AvatarFallback>AD</AvatarFallback>
-            </Avatar>
           </div>
         </header>
 
@@ -227,9 +219,6 @@ export default function Dashboard() {
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-3">
-                            <Avatar className="h-7 w-7">
-                              <AvatarFallback>{e.vehicle.split("-")[0]}</AvatarFallback>
-                            </Avatar>
                             <div className="text-sm">
                               <div className="font-medium">{e.vehicle}</div>
                               <div className="text-xs text-slate-500">ID: {e.id}</div>
@@ -241,7 +230,6 @@ export default function Dashboard() {
                       </TableRow>
                     ))}
                   </TableBody>
-                  <TableCaption>Showing the most recent 5 events</TableCaption>
                 </Table>
               </CardContent>
               <CardFooter className="flex justify-end">
