@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import { Metadata } from "next";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -11,11 +10,9 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -25,263 +22,189 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
+import fetchEvents from "@/app/lib/fetchEvents"; // your event fetch
+import fetchList from "@/app/lib/fetchSearch";     // your list fetch
 
-const recentEvents = [
-  {
-    id: "evt-001",
-    time: "08:12",
-    type: "Entry",
-    vehicle: "AB-1234",
-    zone: "North Gate",
-    badge: "success",
-    note: "Student drop-off",
-  },
-  {
-    id: "evt-002",
-    time: "08:20",
-    type: "Exit",
-    vehicle: "CD-5678",
-    zone: "Main Gate",
-    badge: "muted",
-    note: "Staff",
-  },
-  {
-    id: "evt-003",
-    time: "08:27",
-    type: "Alert",
-    vehicle: "—",
-    zone: "Lot B",
-    badge: "destructive",
-    note: "Unauthorized parking",
-  },
-  {
-    id: "evt-004",
-    time: "09:05",
-    type: "Entry",
-    vehicle: "EF-9012",
-    zone: "South Gate",
-    badge: "success",
-    note: "Visitor",
-  },
-  {
-    id: "evt-005",
-    time: "09:18",
-    type: "Info",
-    vehicle: "GH-3456",
-    zone: "Lot A",
-    badge: "secondary",
-    note: "Permit check passed",
-  },
-];
+type Event = {
+  id: string;
+  plate_number: string;
+  entry_time?: string;
+  exit_time?: string;
+};
 
-const topEntries = [
-  { place: 1, vehicle: "AB-1234", count: 42, owner: "Year 10 - A" },
-  { place: 2, vehicle: "JK-7890", count: 36, owner: "Staff - Admin" },
-  { place: 3, vehicle: "MN-1122", count: 33, owner: "Parent - Smith" },
-  { place: 4, vehicle: "OP-3344", count: 28, owner: "Staff - Maintenance" },
-  { place: 5, vehicle: "QR-5566", count: 21, owner: "Visitor - Sports" },
-];
+type List = {
+  plate_number: string;
+  name?: string;
+};
 
 export default function Dashboard() {
+  const [events, setEvents] = useState<Event[]>([]);
+  const [topEntries, setTopEntries] = useState<
+    { plate_number: string; count: number }[]
+  >([]);
+
+  useEffect(() => {
+  const loadData = async () => {
+    try {
+      const evts: Event[] = await fetchEvents();
+      const lst: List[] = await fetchList();
+
+      // only include entry + exit events
+      const filtered = evts.filter((e) => e.entry_time || e.exit_time);
+
+      // sort newest first
+      const sorted = filtered.sort((a, b) => {
+        const timeA = new Date(a.entry_time || a.exit_time || 0).getTime();
+        const timeB = new Date(b.entry_time || b.exit_time || 0).getTime();
+        return timeB - timeA;
+      });
+
+      // only keep 10 most recent
+      setEvents(sorted.slice(0, 10));
+
+      // count frequency of vehicles
+      const counts: Record<string, number> = {};
+      filtered.forEach((e) => {
+        counts[e.plate_number] = (counts[e.plate_number] || 0) + 1;
+      });
+
+      const top = Object.entries(counts)
+        .map(([plate_number, count]) => ({ plate_number, count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 5);
+
+      setTopEntries(top);
+    } catch (err) {
+      console.error("Failed to load data", err);
+    }
+  };
+
+  loadData();
+}, []);
+
   return (
     <>
-    <Header />
-    <main className="min-h-screen bg-slate-50 p-8">
-      <div className="max-w-[1200px] mx-auto space-y-6">
-        {/* Header */}
-        <header className="flex items-start justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-semibold text-slate-900">
-              Carpark Monitoring
-            </h1>
-            <p className="text-sm text-slate-600">
-              School carpark real-time overview — demo UI with sample data.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="hidden sm:flex sm:items-center sm:gap-2">
-              <Button variant="outline" size="sm">
-                Export
-              </Button>
+      <Header />
+      <main className="min-h-screen bg-slate-50 p-8">
+        <div className="max-w-[1200px] mx-auto space-y-6">
+          <header className="flex items-start justify-between gap-4">
+            <div>
+              <h1 className="text-2xl font-semibold text-slate-900">
+                Carpark Monitoring
+              </h1>
+              <p className="text-sm text-slate-600">
+                Real-time carpark overview from server data.
+              </p>
             </div>
-          </div>
-        </header>
-
-        {/* Top stats row */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Current Occupancy</CardTitle>
-              <CardDescription>Active vehicles in carpark</CardDescription>
-            </CardHeader>
-            <CardContent className="flex items-center justify-between">
-              <div>
-                <p className="text-4xl font-bold text-slate-900">128</p>
-                <p className="text-sm text-slate-500">of 180 spaces used</p>
-              </div>
-              <div className="text-right">
-                <Badge variant="secondary">72%</Badge>
-              </div>
-            </CardContent>
-            <CardFooter>
-              <p className="text-xs text-slate-500">Updated 2m ago</p>
-            </CardFooter>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Alerts</CardTitle>
-              <CardDescription>Open incidents requiring attention</CardDescription>
-            </CardHeader>
-            <CardContent className="flex items-center justify-between">
-              <div>
-                <p className="text-4xl font-bold text-amber-600">3</p>
-                <p className="text-sm text-slate-500">Unauthorized parking &amp; access</p>
-              </div>
-              <div className="text-right">
-                <Badge variant="destructive">Priority</Badge>
-              </div>
-            </CardContent>
-            <CardFooter>
-              <p className="text-xs text-slate-500">2 unresolved</p>
-            </CardFooter>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Average Dwell</CardTitle>
-              <CardDescription>Typical stay duration</CardDescription>
-            </CardHeader>
-            <CardContent className="flex items-center justify-between">
-              <div>
-                <p className="text-4xl font-bold text-slate-900">42m</p>
-                <p className="text-sm text-slate-500">Average per vehicle</p>
-              </div>
-              <div className="text-right">
-                <Badge variant="outline">School Day</Badge>
-              </div>
-            </CardContent>
-            <CardFooter>
-              <p className="text-xs text-slate-500">Calculated today</p>
-            </CardFooter>
-          </Card>
-        </section>
-
-        <Separator />
-
-        {/* Main grid: Recent events + Top 5 entries */}
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Recent Events</CardTitle>
-                <CardDescription>Latest movements and alerts in the carpark</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Time</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Vehicle</TableHead>
-                      <TableHead>Zone</TableHead>
-                      <TableHead className="text-right">Note</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {recentEvents.map((e) => (
-                      <TableRow key={e.id}>
-                        <TableCell className="w-[80px] font-medium">{e.time}</TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            {e.type === "Entry" && (
-                              <Badge variant="outline" className="capitalize">
-                                Entry
-                              </Badge>
-                            )}
-                            {e.type === "Exit" && (
-                              <Badge variant="secondary" className="capitalize">
-                                Exit
-                              </Badge>
-                            )}
-                            {e.type === "Alert" && (
-                              <Badge variant="destructive" className="capitalize">
-                                Alert
-                              </Badge>
-                            )}
-                            {e.type === "Info" && (
-                              <Badge className="capitalize">
-                                Info
-                              </Badge>
-                            )}
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-3">
-                            <div className="text-sm">
-                              <div className="font-medium">{e.vehicle}</div>
-                              <div className="text-xs text-slate-500">ID: {e.id}</div>
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-sm text-slate-600">{e.zone}</TableCell>
-                        <TableCell className="text-right text-sm text-slate-700">{e.note}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-              <CardFooter className="flex justify-end">
-                <Button variant="ghost" size="sm">
-                  View all events
+            <div className="flex items-center gap-3">
+              <div className="hidden sm:flex sm:items-center sm:gap-2">
+                <Button variant="outline" size="sm">
+                  Export
                 </Button>
-              </CardFooter>
-            </Card>
-          </div>
-          <aside className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Top 5 Frequent Vehicles</CardTitle>
-                <CardDescription>Most frequent carpark entries this month</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ol className="space-y-3">
-                  {topEntries.map((t) => (
-                    <li
-                      key={t.place}
-                      className="flex items-center justify-between gap-3 rounded-md
-                                 px-3 py-2 hover:bg-slate-50"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-md
-                                        bg-slate-100 text-sm font-semibold">
-                          {t.place}
-                        </div>
-                        <div>
-                          <div className="text-sm font-medium">{t.vehicle}</div>
-                          <div className="text-xs text-slate-500">{t.owner}</div>
-                        </div>
-                      </div>
-                      <div className="text-sm text-slate-700">{t.count} visits</div>
-                    </li>
-                  ))}
-                </ol>
-              </CardContent>
-              <CardFooter>
-                <div className="w-full flex items-center justify-between text-xs text-slate-500">
-                  <span>Data: Sample only</span>
-                  <Button size="sm" variant="outline">
-                    Manage permits
+              </div>
+            </div>
+          </header>
+
+          <Separator />
+
+          <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2 space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Recent Events</CardTitle>
+                  <CardDescription>Latest entry and exit movements</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Time</TableHead>
+                        <TableHead>Type</TableHead>
+                        <TableHead>Vehicle</TableHead>
+                        <TableHead>Status</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {events.map((e) => {
+                        const isEntry = Boolean(e.entry_time);
+                        return (
+                          <TableRow key={e.id}>
+                            <TableCell className="w-[80px] font-medium">
+                              {new Date(
+                                e.entry_time || e.exit_time || ""
+                              ).toLocaleTimeString([], {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}
+                            </TableCell>
+                            <TableCell>
+                              {isEntry ? (
+                                <Badge variant="outline">Entry</Badge>
+                              ) : (
+                                <Badge variant="secondary">Exit</Badge>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              <div className="text-sm font-medium">
+                                {e.plate_number}
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <div className="text-sm font-medium">
+                                <Badge variant="outline">{e.known ? "Known" : "Unknown"}</Badge>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+                <CardFooter className="flex justify-end">
+                  <Button size="sm">
+                    View all events
                   </Button>
-                </div>
-              </CardFooter>
-            </Card>
-          </aside>
-        </section>
-      </div>
-    </main>
-    <Footer />
+                </CardFooter>
+              </Card>
+            </div>
+            <aside className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Top 5 Frequent Vehicles</CardTitle>
+                  <CardDescription>Most frequent carpark entries</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ol className="space-y-3">
+                    {topEntries.map((t, i) => (
+                      <li
+                        key={t.plate_number}
+                        className="flex items-center justify-between gap-3 rounded-md
+                                   px-3 py-2 hover:bg-slate-50"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div
+                            className="flex h-9 w-9 items-center justify-center rounded-md
+                                          bg-slate-100 text-sm font-semibold"
+                          >
+                            {i + 1}
+                          </div>
+                          <div className="text-sm font-medium">
+                            {t.plate_number}
+                          </div>
+                        </div>
+                        <div className="text-sm text-slate-700">
+                          {t.count} visits
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                </CardContent>
+              </Card>
+            </aside>
+          </section>
+        </div>
+      </main>
+      <Footer />
     </>
   );
 }

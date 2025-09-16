@@ -352,7 +352,6 @@ export default function Plate({ params }) {
                       <p className="font-medium">{event.location}</p>
                       <div className="flex items-center gap-4 text-sm text-gray-500">
                         <span>Entry: {formatTime(event.entry_time)}</span>
-                        <span>Exit: {formatTime(event.exit_time)}</span>
                       </div>
                       <p className="text-xs text-gray-500 mt-1">
                         {formatDateTime(event.entry_time).split(",")[0]}
