@@ -6,14 +6,12 @@ import { useEffect, useState } from 'react';
 export default function Home() {
   const [detection, setDetection] = useState(null);
 
-  // Poll the API every 3 seconds to check for new license plates
   useEffect(() => {
     const fetchDetection = async () => {
       try {
         const res = await fetch('http://192.168.0.137:5000/api/latest_detection');
         const data = await res.json();
         
-        // Only update state if a plate has actually been detected
         if (data.plate) {
           setDetection(data);
         }
@@ -27,11 +25,11 @@ export default function Home() {
   }, []);
 
   return (
-    <div>
+    <div className='font-sans'>
       <div className="navbar flex justify-between shadow-inner bg-white/10">
-        <button className="btn btn-dash text-lg">carCam</button>
+        <button className="btn btn-ghost text-lg">carCam</button>
         <div className="dropdown dropdown-end">
-          <div tabIndex={0} className="avatar btn btn-ghost btn-square">
+          <div tabIndex={0} className="btn btn-ghost btn-square">
             <Menu width={32} />
           </div>
           <ul tabIndex={-1} className="dropdown-content menu w-54 bg-base-100 rounded-box">
@@ -40,33 +38,24 @@ export default function Home() {
           </ul>
         </div>
       </div>
-      <div className="hero min-h-screen" style={{
-        backgroundImage:
-        "url(https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp)",
-      }}>
-        <div className="hero-overlay"></div>
-        <div className="hero-content">
-          <p>test</p>
+      <div className="flex justify-center items-center gap-2 container mx-auto p-4">
+        <div className='skeleton w-120 h-67.5'>
+          <img className='rounded w-120 h-67.5' src="http://192.168.0.137:5000/video_feed" />
         </div>
-        
+        <div className='skeleton w-100 h-60 flex items-center justify-center'>
+          {detection ? (
+            <div className="bg-base-100 rounded">
+              <img src={`data:image/jpeg;base64,${detection.image_b64}`} className="w-100 rounded-t"/>
+              <div className="flex justify-between px-1 py-0.5">
+                <h3>Plate: {detection.plate}</h3>
+                <p>Time: {new Date(detection.timestamp * 1000).toLocaleTimeString()}</p>
+              </div>
+            </div>
+          ) : (
+            <p>Waiting for vehicles...</p>
+          )}
+        </div>
       </div>
-      <img 
-          src="http://192.168.0.137:5000/video_feed" 
-          style={{ width: '640px', borderRadius: '8px' }} 
-        />
-        {detection ? (
-          <div>
-            <h3>Plate: {detection.plate}</h3>
-            <p>Time: {new Date(detection.timestamp * 1000).toLocaleTimeString()}</p>
-            <img 
-              src={`data:image/jpeg;base64,${detection.image_b64}`} 
-              alt="Detected Plate Frame" 
-              style={{ width: '400px', border: '2px solid red', borderRadius: '8px' }} 
-            />
-          </div>
-        ) : (
-          <p>Waiting for vehicles...</p>
-        )}
     </div>
   );
 }
