@@ -29,7 +29,7 @@ export default function Dashboard() {
       <Header />
       <div className="flex justify-center items-center gap-2 container mx-auto p-4">
         <div className='skeleton w-120 h-67.5'>
-          <img className='rounded w-120 h-67.5' src="http://192.168.0.137:5000/video_feed" />
+          <img className='rounded w-120 h-67.5' src="http://192.168.0.137:5000/video_feed" onError={(e) => {e.currentTarget.style.display = 'none';}} />
         </div>
         <div className='skeleton w-100 h-60 flex items-center justify-center'>
           {detection ? (

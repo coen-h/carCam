@@ -14,7 +14,7 @@ export default function Header() {
     <div className="navbar min-h-0 flex justify-between z-50">
       <button className="btn text-lg">carCam</button>
       <div className="flex items-center gap-2">
-        <button data-tip="Logout" className='tooltip tooltip-bottom btn btn-square text-lg rounded-box' onClick={() => void signOut()}><LogOut /></button>
+        <button data-tip="Logout" className='tooltip tooltip-bottom font-normal btn btn-square rounded-box' onClick={() => void signOut()}><LogOut /></button>
         <div className="menu menu-xs p-1 menu-horizontal bg-base-200 rounded-box">
           <li>
             <Link href='/' className="tooltip tooltip-bottom" data-tip="Home">
