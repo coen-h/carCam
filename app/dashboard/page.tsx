@@ -25,7 +25,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div>
+    <div className='w-screen h-screen bg-base-100'>
       <Header />
       <div className="flex justify-center items-center gap-2 container mx-auto p-4">
         <div className='skeleton w-120 h-67.5'>
@@ -33,7 +33,7 @@ export default function Dashboard() {
         </div>
         <div className='skeleton w-100 h-60 flex items-center justify-center'>
           {detection ? (
-            <div className="bg-base-100 rounded">
+            <div className="bg-base-300 rounded">
               <img src={`data:image/jpeg;base64,${detection.image_b64}`} className="w-100 rounded-t"/>
               <div className="flex justify-between px-1 py-0.5">
                 <h3>Plate: {detection.plate}</h3>
@@ -41,7 +41,7 @@ export default function Dashboard() {
               </div>
             </div>
           ) : (
-            <p>Waiting for vehicles...</p>
+            <p className='text-base-content'>Waiting for vehicles...</p>
           )}
         </div>
       </div>
