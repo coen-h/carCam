@@ -41,7 +41,7 @@ export default function Dashboard() {
               </div>
             </div>
           ) : (
-            <p className='text-base-content'>Waiting for vehicles...</p>
+            <></>
           )}
         </div>
       </div>
