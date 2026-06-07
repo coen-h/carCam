@@ -15,6 +15,12 @@ export const getAllUnknown = query({
   }
 });
 
+export const getAllUsers = query({
+  handler: async (ctx) => {
+    return await ctx.db.query("users").collect(); 
+  }
+});
+
 export const viewer = query({
   args: {},
   handler: async (ctx) => {

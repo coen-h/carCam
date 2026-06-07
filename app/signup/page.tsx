@@ -10,6 +10,9 @@ export default function Login() {
         <div className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
             <legend className="fieldset-legend text-xl">Sign Up</legend>
 
+            <label className="label">Student Year Level</label>
+            <input type="text" className="input" placeholder="13" />
+
             <label className="label">License Plate</label>
             <input type="text" className="input" placeholder="ABC123" />
 

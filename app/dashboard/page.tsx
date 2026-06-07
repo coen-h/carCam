@@ -31,7 +31,7 @@ export default function Dashboard() {
         <div className='skeleton w-120 h-67.5'>
           <img className='rounded w-120 h-67.5' src="http://192.168.0.137:5000/video_feed" onError={(e) => {e.currentTarget.style.display = 'none';}} />
         </div>
-        <div className='skeleton w-100 h-60 flex items-center justify-center'>
+        <div className='w-100 h-60 flex items-center justify-center'>
           {detection ? (
             <div className="bg-base-300 rounded">
               <img src={`data:image/jpeg;base64,${detection.image_b64}`} className="w-100 rounded-t"/>
@@ -41,7 +41,9 @@ export default function Dashboard() {
               </div>
             </div>
           ) : (
-            <></>
+            <div className="skeleton bg-base-300 w-full h-full rounded">
+
+            </div>
           )}
         </div>
       </div>

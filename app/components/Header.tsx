@@ -33,7 +33,7 @@ export default function Header() {
             </Link>
           </li>
           <li>
-            <Link href='/settings' className="tooltip tooltip-bottom" data-tip="User">
+            <Link href='/users' className="tooltip tooltip-bottom" data-tip="User">
               {user ? (
                 <img className='size-6 rounded' src={user.image} />
               ) : (
