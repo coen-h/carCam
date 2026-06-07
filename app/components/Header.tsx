@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default function Header() {
   const { signOut } = useAuthActions();
-  const user = useQuery(api.function.viewer);
+  const user = useQuery(api.function.getUser);
 
   return (
     <div className="navbar min-h-0 flex justify-between z-50">

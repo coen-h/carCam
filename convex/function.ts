@@ -21,7 +21,7 @@ export const getAllUsers = query({
   }
 });
 
-export const viewer = query({
+export const getUser = query({
   args: {},
   handler: async (ctx) => {
     const userId = await getAuthUserId(ctx);
@@ -31,5 +31,20 @@ export const viewer = query({
     }
 
     return await ctx.db.get(userId);
+  },
+});
+
+export const getAllLogs = query({
+  handler: async (ctx) => {
+    return await ctx.db.query("logs").collect(); 
+  }
+});
+
+export const addLog = mutation({
+  args: {
+    carPlate: v.string()
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.insert("logs", args);
   },
 });

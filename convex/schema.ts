@@ -18,8 +18,7 @@ export default defineSchema({
   }),
 
   logs: defineTable({
-    carPlate: v.string(),
-    isKnown: v.boolean(),
+    carPlate: v.string()
   }),
 
   summary: defineTable({
