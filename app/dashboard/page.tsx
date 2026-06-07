@@ -1,36 +1,11 @@
 'use client';
 
 import Header from "@/app/components/Header";
-import { useEffect, useState } from 'react';
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
 export default function Dashboard() {
-  const [detection, setDetection] = useState(null);
   const logs = useQuery(api.function.getAllLogs);
-
-  const getTime = (timestamp: number) => {
-    const date = new Date(timestamp);
-    return date.toLocaleString();
-  };
-
-  useEffect(() => {
-    const fetchDetection = async () => {
-      try {
-        const res = await fetch('http://192.168.0.137:5000/api/latest_detection');
-        const data = await res.json();
-        
-        if (data.plate) {
-          setDetection(data);
-        }
-      } catch (error) {
-        console.error("Failed to fetch detection:", error);
-      }
-    };
-
-    const interval = setInterval(fetchDetection, 3000);
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div className='w-screen h-screen bg-base-100'>
@@ -41,12 +16,12 @@ export default function Dashboard() {
             <img className='rounded w-120 h-67.5' src="http://192.168.0.137:5000/video_feed" onError={(e) => {e.currentTarget.style.display = 'none';}} />
           </div>
           <div className='w-100 h-60 flex items-center justify-center'>
-            {detection ? (
-              <div className="bg-base-300 rounded">
-                <img src={`data:image/jpeg;base64,${detection.image_b64}`} className="w-100 rounded-t"/>
+            {logs ? logs?.slice(-1).map((log) =>
+              <div key={log.carPlate} className="bg-base-300 rounded">
+                <img src={`http://192.168.0.137:3923/images/${log.fileTitle}`} className="w-100 rounded-t"/>
                 <div className="flex justify-between px-1 py-0.5">
-                  <h3>Plate: {detection.plate}</h3>
-                  <p>Time: {new Date(detection.timestamp * 1000).toLocaleTimeString()}</p>
+                  <h3>Plate: {log.carPlate}</h3>
+                  <p>Time: {new Date(log._creationTime).toLocaleTimeString()}</p>
                 </div>
               </div>
             ) : (
@@ -59,9 +34,9 @@ export default function Dashboard() {
         <div className="w-sm mx-auto list text-base-content">
           <p className='p-2 text-lg opacity-60 tracking-wide'>Latest Logs</p>  
           {logs ? logs?.slice(-5).reverse().map((log) =>
-            <div key={log.carPlate} className="list-row bg-base-300 flex justify-between">
+            <div key={log.carPlate} className="list-row items-center bg-base-300 flex justify-between">
               <p className='text-lg'>{log.carPlate}</p>
-              <p className='text-base-content/60'>{getTime(log._creationTime)}</p>
+              <p className='text-base-content/60'>{new Date(log._creationTime).toLocaleString()}</p>
             </div>
           ) : (
             <div className="skeleton bg-base-300 w-full h-15 rounded"></div>

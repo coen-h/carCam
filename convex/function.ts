@@ -42,9 +42,34 @@ export const getAllLogs = query({
 
 export const addLog = mutation({
   args: {
-    carPlate: v.string()
+    carPlate: v.string(),
+    fileTitle: v.string(),
   },
   handler: async (ctx, args) => {
-    await ctx.db.insert("logs", args);
+    const checkKnown = await ctx.db
+      .query("knownCars")
+      .withIndex("by_carPlate", (q) => q.eq("carPlate", args.carPlate))
+      .first();
+
+    const isKnown = checkKnown !== null;
+
+    if (!isKnown) {
+      const existingUnknown = await ctx.db
+        .query("unknownCars")
+        .withIndex("by_carPlate", (q) => q.eq("carPlate", args.carPlate))
+        .first();
+
+      if (existingUnknown === null) {
+        await ctx.db.insert("unknownCars", { carPlate: args.carPlate });
+      }
+    }
+
+    const logId = await ctx.db.insert("logs", {
+      carPlate: args.carPlate,
+      isKnown: isKnown,
+      fileTitle: args.fileTitle,
+    });
+
+    return { logId, isKnown };
   },
 });

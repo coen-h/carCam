@@ -7,11 +7,6 @@ import Header from "@/app/components/Header";
 export default function Users() {
   const users = useQuery(api.function.getAllUsers);
 
-  const getTime = (timestamp: number) => {
-    const date = new Date(timestamp);
-    return date.toLocaleString();
-  };
-
   return (
     <div className='w-screen h-screen bg-base-100'>
       <Header />
@@ -25,7 +20,7 @@ export default function Users() {
                 <p>{user.name}</p>
                 <p className='text-xs font-light text-base-content/70'>{user.email}</p>
               </div>
-              <p className='absolute -top-3 right-1 bg-base-100 border-base-100 p-1 rounded-box'>{getTime(user._creationTime)}</p>
+              <p className='absolute -top-3 right-1 bg-base-100 border-base-100 p-1 rounded-box'>{new Date(user._creationTime).toLocaleString()}</p>
             </li>
           ))}
         </div>

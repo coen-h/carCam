@@ -7,7 +7,7 @@ export default defineSchema({
   ...authTables,
   unknownCars: defineTable({ 
     carPlate: v.string() 
-  }),
+  }).index("by_carPlate", ["carPlate"]),
 
   knownCars: defineTable({
     carModel: v.string(),
@@ -15,10 +15,12 @@ export default defineSchema({
     driverLicense: v.string(),
     driverName: v.string(),
     totalEntries: v.string(),
-  }),
+  }).index("by_carPlate", ["carPlate"]),
 
   logs: defineTable({
-    carPlate: v.string()
+    carPlate: v.string(),
+    isKnown: v.boolean(),
+    fileTitle: v.string(),
   }),
 
   summary: defineTable({
