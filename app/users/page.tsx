@@ -1,11 +1,14 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import Header from "@/app/components/Header";
 
 export default function Users() {
   const users = useQuery(api.function.getAllUsers);
+  const [input, setInput] = useState('');
+  const newUser = users?.filter((user) => user.name.includes(input));
 
   return (
     <div className='w-screen h-screen bg-base-100'>
@@ -13,7 +16,8 @@ export default function Users() {
       <div className="container mx-auto p-2 w-lg bg-base-200 rounded-box m-4">
         <div className='list text-base-content'>
           <p className='p-2 text-lg opacity-60 tracking-wide'>Students</p>
-          {users?.map((user) => (
+          <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Search..." className='input mb-2 w-full'></input>
+          {newUser?.map((user) => (
             <li className='list-row bg-base-300 relative' key={user.id}>
               <img src={user.image} className="rounded w-10 h-10" />
               <div>
