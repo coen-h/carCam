@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Filter } from "lucide-react";
+import { Filter, X } from "lucide-react";
 import Header from "@/app/components/Header";
 
 export default function Users() {
@@ -11,6 +11,7 @@ export default function Users() {
   const [input, setInput] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
   const [selectedLicense, setSelectedLicense] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const newUser = useMemo(() => {
     if (!users) return [];
     let filteredUsers = users;
@@ -42,8 +43,12 @@ export default function Users() {
           <p className='p-2 text-lg opacity-60 tracking-wide'>Students</p>
           <div className='flex gap-1'>
             <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Search..." className='input mb-2 w-full flex-1'></input>
-            <button className="btn bg-base-100" popoverTarget="popover-1" style={{ anchorName: "--anchor-1" }}><Filter className='size-5' /></button>
-            <ul className="dropdown menu w-52 rounded-box bg-base-100 shadow-sm" popover="auto" id="popover-1" style={{ positionAnchor: "--anchor-1" }}>
+            <button className={`swap swap-rotate btn bg-base-100 ${isDropdownOpen ? 'swap-active' : ''}`} popoverTarget="popover-1" style={{ anchorName: "--anchor-1" }}>
+              <input type="checkbox" />
+              <Filter className='swap-off size-5' />
+              <X className='swap-on size-5' />
+            </button>
+            <ul onToggle={(e) => setIsDropdownOpen(e.newState === 'open')} className="dropdown menu w-52 rounded-box bg-base-100 shadow-sm" popover="auto" id="popover-1" style={{ positionAnchor: "--anchor-1" }}>
               <li>
                 <select onChange={(e) => setSelectedYear(e.target.value)} className='select w-full select-ghost'>
                   <option value=''>All Years</option>
