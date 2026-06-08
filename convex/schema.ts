@@ -12,8 +12,6 @@ export default defineSchema({
   knownCars: defineTable({
     carModel: v.string(),
     carPlate: v.string(),
-    driverLicense: v.string(),
-    driverName: v.string(),
     totalEntries: v.string(),
   }).index("by_carPlate", ["carPlate"]),
 
@@ -29,4 +27,19 @@ export default defineSchema({
     parkingCapacity: v.string(),
     parkingFill: v.string(),
   }),
+
+  users: defineTable({
+    email: v.optional(v.string()),
+    emailVerificationTime: v.optional(v.float64()),
+    image: v.optional(v.string()),
+    isAnonymous: v.optional(v.boolean()),
+    name: v.optional(v.string()),
+    phone: v.optional(v.string()),
+    phoneVerificationTime: v.optional(v.float64()),
+    license: v.optional(v.string()),
+    plateNumber: v.optional(v.string()),
+  })
+    .index("email", ["email"])
+    .index("phone", ["phone"])
+    .index("plateNumber", ["plateNumber"]),
 });
