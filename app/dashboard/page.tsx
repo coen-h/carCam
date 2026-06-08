@@ -1,11 +1,13 @@
 'use client';
 
 import Header from "@/app/components/Header";
+import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
 export default function Dashboard() {
   const logs = useQuery(api.function.getAllLogs);
+  const [selected, setSelected] = useState(false);
 
   return (
     <div className='w-screen h-screen bg-base-100'>
@@ -27,24 +29,33 @@ export default function Dashboard() {
                 </div>
               </div>
             ) : (
-              <div className="skeleton bg-base-300 w-full h-full rounded">
-              
-              </div>
+              <div className="skeleton bg-base-300 w-full h-full rounded"></div>
             )}
           </div>
         </div>
-        <div className="w-sm mx-auto list text-base-content">
+        <div className="w-sm mx-auto list gap-0.5 text-base-content">
           <p className='p-2 text-lg opacity-60 tracking-wide'>Latest Logs</p>  
           {logs ? logs?.slice(-5).reverse().map((log, i) =>
-            <div key={i} className="list-row items-center bg-base-300 flex justify-between">
+            <button onClick={() => { document.getElementById('my_modal_1').showModal(); setSelected(log)}} key={i} className="btn btn-xl list-row items-center bg-base-300 flex justify-between">
               <p className='text-lg'>{log.carPlate}</p>
-              <p className='text-base-content/60'>{new Date(log._creationTime).toLocaleString()}</p>
-            </div>
+              <p className='text-base-content/60 text-sm'>{new Date(log._creationTime).toLocaleString()}</p>
+            </button>
           ) : (
             <div className="skeleton bg-base-300 w-full h-15 rounded"></div>
           )}
         </div>
       </div>
+      <dialog id="my_modal_1" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">{selected.carPlate}</h3>
+          <p className="py-4">{selected._creationTime}</p>
+          <div className="modal-action">
+            <form method="dialog">
+              <button className="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
     </div>
   );
 }
