@@ -15,13 +15,15 @@ export default function Dashboard() {
       <div className="flex flex-col gap-2 container mx-auto p-4">
         <div className='flex justify-center items-center gap-2'>
           <div className='skeleton w-120 h-67.5'>
-            <img className='rounded w-full h-full' src="http://192.168.0.137:5000/video_feed" onError={(e) => {e.currentTarget.style.display = 'none';}} />
+            {/* <img className='rounded w-full h-full' src="http://192.168.0.137:5000/video_feed" /> */}
+            <img className='rounded w-full h-full' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" />
           </div>
           <div className='w-100 h-60 flex items-center justify-center'>
             {logs ? logs?.slice(-1).map((log) =>
               <div key={log.carPlate} className="bg-base-300 rounded">
                 <div className="skeleton w-100 h-53 rounded-t">
-                  <img src={`http://192.168.0.137:3923/images/${log.fileTitle}`} onError={(e) => {e.currentTarget.style.display = 'none';}} className="w-full h-full object-cover"/>
+                  {/* <img src={`http://192.168.0.137:3923/images/${log.fileTitle}`} className="w-full h-full object-cover rounded-t"/> */}
+                  <img className='object-cover rounded-t w-full h-full' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" />
                 </div>
                 <div className="flex justify-between px-1 py-0.5">
                   <h3>Plate: {log.carPlate}</h3>

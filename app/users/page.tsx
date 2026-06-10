@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Filter, X } from "lucide-react";
+import { Filter, X, User} from "lucide-react";
 import Header from "@/app/components/Header";
 
 export default function Users() {
@@ -69,7 +69,8 @@ export default function Users() {
           </div>
           {newUser.map((user) => (
             <li className='list-row bg-base-300 relative' key={user.id}>
-              <img src={user.image} className="rounded w-10 h-10" />
+              {/* <img src={user.image} className="rounded w-10 h-10" /> */}
+              <User className="rounded w-10 h-10" />
               <div>
                 <p>{user.name}</p>
                 <p className='text-xs font-light text-base-content/70'>{user.email}</p>

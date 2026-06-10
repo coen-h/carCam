@@ -13,6 +13,15 @@ export default function Login() {
             <label className="label">Student Year Level</label>
             <input type="text" className="input" placeholder="13" />
 
+            <label className="label">
+              License
+            </label>
+            <select className="input">
+              <option value="">Learners</option>
+              <option value="item1">Restricted</option>
+              <option value="item2">Full</option>
+            </select>
+
             <label className="label">License Plate</label>
             <input type="text" className="input" placeholder="ABC123" />
 
@@ -22,15 +31,8 @@ export default function Login() {
             <label className="label">Year</label>
             <input type="text" className="input" placeholder="2021" />
 
-            <label className="label">License</label>
-            <details className="dropdown">
-            <summary className="input">Learners</summary>
-              <ul className="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
-                <li><a>Item 1</a></li>
-                <li><a>Item 2</a></li>
-              </ul>
-            </details>
-            <button className="btn btn-neutral mt-4">Login</button>
+            
+            <button className="btn btn-neutral mt-2">Login</button>
         </div>
       </div>
     </div>
