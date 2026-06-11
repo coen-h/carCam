@@ -20,16 +20,16 @@ export default function Users() {
     
     if (query) {
       filteredUsers = users.filter((user) =>
-        user.name.toLowerCase().includes(query)
+        user.name?.toLowerCase().includes(query)
       );
     }
 
     if (selectedYear) {
-      filteredUsers = filteredUsers.filter((user) => user.year === selectedYear);
+      filteredUsers = filteredUsers.filter((user) => user.userYearLevel?.toLowerCase() === selectedYear);
     }
 
     if (selectedLicense) {
-      filteredUsers = filteredUsers.filter((user) => user.license === selectedLicense);
+      filteredUsers = filteredUsers.filter((user) => user.userLicense?.toLowerCase() === selectedLicense);
     }
 
     return filteredUsers;
@@ -38,7 +38,7 @@ export default function Users() {
   return (
     <div className='w-screen h-screen bg-base-100'>
       <Header />
-      <div className="container mx-auto p-2 w-lg bg-base-200 rounded-box m-4">
+      <div className="container mx-auto p-2 w-lg bg-base-200 m-4 rounded-box">
         <div className='list text-base-content gap-0.5'>
           <p className='p-2 text-lg opacity-60 tracking-wide'>Students</p>
           <div className='flex gap-1'>
@@ -48,9 +48,9 @@ export default function Users() {
               <Filter className='swap-off size-5' />
               <X className='swap-on size-5' />
             </button>
-            <ul onToggle={(e) => setIsDropdownOpen(e.newState === 'open')} className="dropdown menu w-52 rounded-box bg-base-100 shadow-sm" popover="auto" id="popover-1" style={{ positionAnchor: "--anchor-1" }}>
+            <ul onToggle={(e) => setIsDropdownOpen(e.newState === 'open')} className="dropdown menu w-52 bg-base-100 shadow-sm rounded-box mt-1" popover="auto" id="popover-1" style={{ positionAnchor: "--anchor-1" }}>
               <li>
-                <select onChange={(e) => setSelectedYear(e.target.value)} className='select w-full select-ghost'>
+                <select onChange={(e) => setSelectedYear(e.target.value)} className='select border-0 w-full'>
                   <option value=''>All Years</option>
                   <option value='11'>Year 11</option>
                   <option value='12'>Year 12</option>
@@ -58,7 +58,7 @@ export default function Users() {
                 </select>
               </li>
               <li>
-                <select onChange={(e) => setSelectedLicense(e.target.value)} className='select w-full select-ghost'>
+                <select onChange={(e) => setSelectedLicense(e.target.value)} className='select border-0 w-full'>
                   <option value=''>All Licenses</option>
                   <option value='learners'>Learners</option>
                   <option value='restricted'>Restricted</option>
@@ -67,17 +67,19 @@ export default function Users() {
               </li>
             </ul>
           </div>
-          {newUser.map((user) => (
-            <li className='list-row bg-base-300 relative' key={user.id}>
-              {/* <img src={user.image} className="rounded w-10 h-10" /> */}
-              <User className="rounded w-10 h-10" />
-              <div>
-                <p>{user.name}</p>
-                <p className='text-xs font-light text-base-content/70'>{user.email}</p>
-              </div>
-              <p className='absolute -top-3 right-1 bg-base-100 border-base-100 p-1 rounded-box'>{new Date(user._creationTime).toLocaleString()}</p>
-            </li>
-          ))}
+          <div className='flex flex-col gap-1 h-[500px] overflow-scroll'>
+            {newUser.map((user) => (
+              <li className='list-row bg-base-300 relative' key={user.id}>
+                {/* <img src={user.image} className="rounded w-10 h-10" /> */}
+                <User className="rounded w-10 h-10" />
+                <div>
+                  <p>{user.name}</p>
+                  <p className='text-xs font-light text-base-content/70'>{user.email}</p>
+                </div>
+                <p className='absolute -top-3 right-1 bg-base-100 border-base-100 p-1 rounded-box'>{new Date(user._creationTime).toLocaleString()}</p>
+              </li>
+            ))}
+          </div>
         </div>
       </div>
     </div>

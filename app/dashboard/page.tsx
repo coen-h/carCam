@@ -1,19 +1,17 @@
 'use client';
 
 import Header from "@/app/components/Header";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { redirect } from "next/navigation";
 
 export default function Dashboard() {
   const logs = useQuery(api.function.getAllLogs);
-  const user = useQuery(api.function.getUser);
-  const [selected, setSelected] = useState(false);
-
-  if (!user?.carPlate) {
-    redirect("/signup");
-  }
+  const [selected, setSelected] = useState(null);
+  const matchedUser = useQuery(
+    api.function.getUserForPlate, 
+    selected?.carPlate ? { carPlate: selected.carPlate } : "skip"
+  );
 
   return (
     <div className='w-screen h-screen bg-base-100'>
@@ -31,7 +29,7 @@ export default function Dashboard() {
                   {/* <img src={`http://192.168.0.137:3923/images/${log.fileTitle}`} className="w-full h-full object-cover rounded-t"/> */}
                   <img className='object-cover rounded-t w-full h-full' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" />
                 </div>
-                <div className="flex justify-between px-1 py-0.5">
+                <div className="flex justify-between text-base-content p-1">
                   <h3>Plate: {log.carPlate}</h3>
                   <p>{new Date(log._creationTime).toLocaleTimeString()}</p>
                 </div>
@@ -53,10 +51,22 @@ export default function Dashboard() {
           )}
         </div>
       </div>
-      <dialog id="my_modal_1" className="modal">
+      <dialog id="my_modal_1" className="modal text-base-content">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">{selected.carPlate}</h3>
-          <p className="py-4">{selected._creationTime}</p>
+          <h3 className="font-bold text-lg">{selected?.carPlate}</h3>
+          <p className="py-4">{selected?._creationTime}</p>
+          <div className="p-4 bg-base-200 rounded">
+            <h4 className="font-semibold">Registered User Info:</h4>
+            {matchedUser === undefined ? (
+              <p className="loading loading-dots loading-sm"></p>
+            ) : matchedUser ? (
+              <div>
+                <p>Owner: {matchedUser.name || "Known Vehicle"}</p>
+              </div>
+            ) : (
+              <p className="text-error">Unknown driver / Unregistered plate</p>
+            )}
+          </div>
           <div className="modal-action">
             <form method="dialog">
               <button className="btn">Close</button>

@@ -34,6 +34,20 @@ export const getUser = query({
   },
 });
 
+export const getUserForPlate = query({
+  args: {
+    carPlate: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("carPlate", (q) => q.eq("carPlate", args.carPlate))
+      .first();
+
+    return user;
+  },
+});
+
 export const updateUser = mutation({
   args: {
     userLicense: v.string(),
@@ -55,7 +69,7 @@ export const updateUser = mutation({
       carPlate: args.carPlate,
     });
 
-    const logId = await ctx.db.insert("knownCars", {
+    await ctx.db.insert("knownCars", {
       carPlate: args.carPlate,
       carModel: args.carModel,
       carYear: args.carYear,
@@ -98,10 +112,18 @@ export const addLog = mutation({
 
     const logId = await ctx.db.insert("logs", {
       carPlate: args.carPlate,
-      isKnown: isKnown,
       fileTitle: args.fileTitle,
     });
 
     return { logId, isKnown };
+  },
+});
+
+export const addUnknown = mutation({
+  args: {
+    carPlate: v.string(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.insert("unknownCars", { carPlate: args.carPlate });
   },
 });

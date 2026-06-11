@@ -3,9 +3,9 @@
 import Header from "@/app/components/Header";
 import { useState } from 'react';
 import { api } from "@/convex/_generated/api";
-import { useQuery } from "convex/react";
 import { useMutation } from "convex/react";
 import { useRouter } from "next/navigation";
+import { useQuery } from "convex/react";
 import { redirect } from "next/navigation";
 
 export default function Login() {
@@ -28,7 +28,7 @@ export default function Login() {
   };
 
   const handleSubmit = async () => {
-    const user = await updateUser({
+    await updateUser({
       userLicense: formData.userLicense,
       userYearLevel: formData.userYearLevel,
       carPlate: formData.carPlate,
@@ -39,15 +39,15 @@ export default function Login() {
     router.push("/dashboard");
   };
 
-  if (user?.carPlate) {
-    redirect("/dashboard");
+  if (!user?.carPlate) {
+    redirect('/dashboard');
   }
 
   return (
     <div className='w-screen h-screen bg-base-100'>
       <Header />
       <div className='absolute top-0 h-screen w-screen flex items-center justify-center'>
-        <div className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+        <div className="fieldset bg-base-200 border-base-300 w-xs border p-4">
             <legend className="fieldset-legend text-xl">Sign Up</legend>
 
             <label className="label">Student Year Level</label>
@@ -56,7 +56,7 @@ export default function Login() {
             <label className="label">
               License
             </label>
-            <select name="userLicense" className="input" value={formData.userLicense} onChange={handleChange}>
+            <select name="userLicense" className="input select" value={formData.userLicense} onChange={handleChange}>
               <option value="Learners">Learners</option>
               <option value="Restricted">Restricted</option>
               <option value="Full">Full</option>

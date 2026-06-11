@@ -6,7 +6,8 @@ import { v } from "convex/values";
 export default defineSchema({
   ...authTables,
   unknownCars: defineTable({ 
-    carPlate: v.string() 
+    carPlate: v.string(),
+    totalEntries: v.optional(v.string()),
   }).index("by_carPlate", ["carPlate"]),
 
   knownCars: defineTable({
@@ -18,7 +19,6 @@ export default defineSchema({
 
   logs: defineTable({
     carPlate: v.string(),
-    isKnown: v.boolean(),
     fileTitle: v.string(),
   }),
 
