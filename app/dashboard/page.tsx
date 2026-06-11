@@ -4,10 +4,16 @@ import Header from "@/app/components/Header";
 import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { redirect } from "next/navigation";
 
 export default function Dashboard() {
   const logs = useQuery(api.function.getAllLogs);
+  const user = useQuery(api.function.getUser);
   const [selected, setSelected] = useState(false);
+
+  if (!user?.carPlate) {
+    redirect("/signup");
+  }
 
   return (
     <div className='w-screen h-screen bg-base-100'>
@@ -27,7 +33,7 @@ export default function Dashboard() {
                 </div>
                 <div className="flex justify-between px-1 py-0.5">
                   <h3>Plate: {log.carPlate}</h3>
-                  <p>Time: {new Date(log._creationTime).toLocaleTimeString()}</p>
+                  <p>{new Date(log._creationTime).toLocaleTimeString()}</p>
                 </div>
               </div>
             ) : (

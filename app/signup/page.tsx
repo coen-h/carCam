@@ -1,8 +1,48 @@
 'use client';
 
 import Header from "@/app/components/Header";
+import { useState } from 'react';
+import { api } from "@/convex/_generated/api";
+import { useQuery } from "convex/react";
+import { useMutation } from "convex/react";
+import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export default function Login() {
+  const user = useQuery(api.function.getUser);
+  const router = useRouter();
+  const updateUser = useMutation(api.function.updateUser);
+  const [formData, setFormData] = useState({
+    userYearLevel: '',
+    userLicense: 'Learners',
+    carPlate: '',
+    carModel: '',
+    carYear: '',
+  });
+
+  const handleChange = ( e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> ) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async () => {
+    const user = await updateUser({
+      userLicense: formData.userLicense,
+      userYearLevel: formData.userYearLevel,
+      carPlate: formData.carPlate,
+      carModel: formData.carModel,
+      carYear: formData.carYear,
+    });
+
+    router.push("/dashboard");
+  };
+
+  if (user?.carPlate) {
+    redirect("/dashboard");
+  }
+
   return (
     <div className='w-screen h-screen bg-base-100'>
       <Header />
@@ -11,28 +51,28 @@ export default function Login() {
             <legend className="fieldset-legend text-xl">Sign Up</legend>
 
             <label className="label">Student Year Level</label>
-            <input type="text" className="input" placeholder="13" />
+            <input name='userYearLevel' type="text" className="input" placeholder="13" value={formData.userYearLevel} onChange={handleChange} />
 
             <label className="label">
               License
             </label>
-            <select className="input">
-              <option value="">Learners</option>
-              <option value="item1">Restricted</option>
-              <option value="item2">Full</option>
+            <select name="userLicense" className="input" value={formData.userLicense} onChange={handleChange}>
+              <option value="Learners">Learners</option>
+              <option value="Restricted">Restricted</option>
+              <option value="Full">Full</option>
             </select>
 
             <label className="label">License Plate</label>
-            <input type="text" className="input" placeholder="ABC123" />
+            <input name='carPlate' type="text" className="input" placeholder="ABC123" value={formData.carPlate} onChange={handleChange} />
 
             <label className="label">Make and Model</label>
-            <input type="text" className="input" placeholder="Toyota Prius" />
+            <input name='carModel' type="text" className="input" placeholder="Toyota Prius" value={formData.carModel} onChange={handleChange} />
 
             <label className="label">Year</label>
-            <input type="text" className="input" placeholder="2021" />
+            <input name='carYear' type="text" className="input" placeholder="2021" value={formData.carYear} onChange={handleChange} />
 
             
-            <button className="btn btn-neutral mt-2">Login</button>
+            <button className="btn btn-neutral mt-2" onClick={handleSubmit}>Login</button>
         </div>
       </div>
     </div>

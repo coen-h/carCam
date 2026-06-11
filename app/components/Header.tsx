@@ -20,7 +20,7 @@ export default function Header() {
             <Moon className="swap-off" width={24} />
           </label>
           
-        {/* <button data-tip="Logout" className='tooltip tooltip-bottom font-normal btn btn-square btn-soft rounded-box' onClick={() => void signOut()}><LogOut /></button> */}
+        <button data-tip="Logout" className='tooltip tooltip-bottom font-normal btn btn-square btn-soft rounded-box' onClick={() => void signOut()}><LogOut /></button>
         <div className="menu menu-xs p-1 menu-horizontal btn btn-soft rounded-box">
           <li>
             <Link href='/' className="tooltip tooltip-bottom text-base-content" data-tip="Home">

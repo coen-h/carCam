@@ -34,6 +34,38 @@ export const getUser = query({
   },
 });
 
+export const updateUser = mutation({
+  args: {
+    userLicense: v.string(),
+    userYearLevel: v.string(),
+    carPlate: v.string(),
+    carModel: v.string(),
+    carYear: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+
+    if (userId === null) {
+      throw new Error("Not authenticated");
+    }
+
+    await ctx.db.patch(userId, {
+      userYearLevel: args.userYearLevel,
+      userLicense: args.userLicense,
+      carPlate: args.carPlate,
+    });
+
+    const logId = await ctx.db.insert("knownCars", {
+      carPlate: args.carPlate,
+      carModel: args.carModel,
+      carYear: args.carYear,
+      totalEntries: '0'
+    });
+
+    return await ctx.db.get(userId);
+  }
+})
+
 export const getAllLogs = query({
   handler: async (ctx) => {
     return await ctx.db.query("logs").collect(); 

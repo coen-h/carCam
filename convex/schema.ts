@@ -12,6 +12,7 @@ export default defineSchema({
   knownCars: defineTable({
     carModel: v.string(),
     carPlate: v.string(),
+    carYear: v.string(),
     totalEntries: v.string(),
   }).index("by_carPlate", ["carPlate"]),
 
@@ -36,10 +37,11 @@ export default defineSchema({
     name: v.optional(v.string()),
     phone: v.optional(v.string()),
     phoneVerificationTime: v.optional(v.float64()),
-    license: v.optional(v.string()),
-    plateNumber: v.optional(v.string()),
+    userLicense: v.optional(v.string()),
+    carPlate: v.optional(v.string()),
+    userYearLevel: v.optional(v.string()),
   })
     .index("email", ["email"])
     .index("phone", ["phone"])
-    .index("plateNumber", ["plateNumber"]),
+    .index("carPlate", ["carPlate"]),
 });
