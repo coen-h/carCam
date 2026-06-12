@@ -48,6 +48,21 @@ export const getUserForPlate = query({
   },
 });
 
+export const getVehicleFromPlate = query({
+  args: {
+    carPlate: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const vehicle = await ctx.db
+      .query("knownCars")
+      .withIndex("by_carPlate", (q) => q.eq("carPlate", args.carPlate))
+      .first();
+      
+    return vehicle;
+
+  }
+});
+
 export const updateUser = mutation({
   args: {
     userLicense: v.string(),

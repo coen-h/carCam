@@ -18,9 +18,11 @@ export default function Dashboard() {
       <Header />
       <div className="flex flex-col gap-2 container mx-auto p-4">
         <div className='flex justify-center items-center gap-2'>
-          <div className='skeleton w-120 h-67.5'>
+          <div className='skeleton w-120 h-67.5 relative'>
             {/* <img className='rounded w-full h-full' src="http://192.168.0.137:5000/video_feed" /> */}
             <img className='rounded w-full h-full' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" />
+            <div className="size-2 animate-pulse bg-red-300 top-1 right-1 rounded-full absolute" />
+            <div className="top-0 left-0 absolute bg-base-100/60 backdrop-blur text-base-content rounded-tl rounded-br p-1">Student Parking Entrance</div>
           </div>
           <div className='w-100 h-60 flex items-center justify-center'>
             {logs ? logs?.slice(-1).map((log) =>
@@ -54,14 +56,18 @@ export default function Dashboard() {
       <dialog id="my_modal_1" className="modal text-base-content">
         <div className="modal-box">
           <h3 className="font-bold text-lg">{selected?.carPlate}</h3>
-          <p className="py-4">{selected?._creationTime}</p>
+          <p className="pb-2">{new Date(selected?._creationTime).toLocaleString()}</p>
           <div className="p-4 bg-base-200 rounded">
             <h4 className="font-semibold">Registered User Info:</h4>
             {matchedUser === undefined ? (
               <p className="loading loading-dots loading-sm"></p>
             ) : matchedUser ? (
-              <div>
-                <p>Owner: {matchedUser.name || "Known Vehicle"}</p>
+              <div className="flex items-center gap-2">
+                <img src={matchedUser.image} className="rounded w-10 h-10" />
+                <div>
+                  <p>{matchedUser.name || "Known Vehicle"}</p>
+                  <p>{matchedUser.userLicense || "Unknown"}</p>
+                </div>
               </div>
             ) : (
               <p className="text-error">Unknown driver / Unregistered plate</p>

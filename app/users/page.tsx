@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Filter, X, User} from "lucide-react";
+import OverlayModal from "@/app/components/OverlayModal";
 import Header from "@/app/components/Header";
 
 export default function Users() {
@@ -12,6 +13,14 @@ export default function Users() {
   const [selectedYear, setSelectedYear] = useState('');
   const [selectedLicense, setSelectedLicense] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const [selected, setSelected] = useState(null);
+  
+  const matchedUser = useQuery(
+    api.function.getVehicleFromPlate, 
+    selected?.carPlate ? { carPlate: selected.carPlate } : "skip"
+  );
+
   const newUser = useMemo(() => {
     if (!users) return [];
     let filteredUsers = users;
@@ -67,9 +76,9 @@ export default function Users() {
               </li>
             </ul>
           </div>
-          <div className='flex flex-col gap-1 h-[500px] overflow-scroll'>
+          <div className='flex flex-col gap-1 h-min max-h-120 overflow-scroll'>
             {newUser.map((user) => (
-              <li className='list-row bg-base-300 relative' key={user.id}>
+              <li className='list-row bg-base-300 relative' key={user.id} onClick={() => { document.getElementById('my_modal_1').showModal(); setSelected(user)}}>
                 {/* <img src={user.image} className="rounded w-10 h-10" /> */}
                 <User className="rounded w-10 h-10" />
                 <div>
@@ -82,6 +91,7 @@ export default function Users() {
           </div>
         </div>
       </div>
+      <OverlayModal mainText={selected?.name} primaryText={matchedUser?.carPlate} secondaryText={matchedUser?.carModel} creationTime={selected?._creationTime} matched={matchedUser} image='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWNhci1mcm9udC1pY29uIGx1Y2lkZS1jYXItZnJvbnQiPjxwYXRoIGQ9Im0yMSA4LTIgMi0xLjUtMy43QTIgMiAwIDAgMCAxNS42NDYgNUg4LjRhMiAyIDAgMCAwLTEuOTAzIDEuMjU3TDUgMTAgMyA4Ii8+PHBhdGggZD0iTTcgMTRoLjAxIi8+PHBhdGggZD0iTTE3IDE0aC4wMSIvPjxyZWN0IHdpZHRoPSIxOCIgaGVpZ2h0PSI4IiB4PSIzIiB5PSIxMCIgcng9IjIiLz48cGF0aCBkPSJNNSAxOHYyIi8+PHBhdGggZD0iTTE5IDE4djIiLz48L3N2Zz4='  />
     </div>
   );
 }

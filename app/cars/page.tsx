@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Filter, X, CarFront} from "lucide-react";
+import OverlayModal from "@/app/components/OverlayModal";
 import Header from "@/app/components/Header";
 
 export default function Vehicles() {
@@ -12,6 +13,11 @@ export default function Vehicles() {
   const [input, setInput] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selected, setSelected] = useState(null);
+  const matchedUser = useQuery(
+    api.function.getUserForPlate, 
+    selected?.carPlate ? { carPlate: selected.carPlate } : "skip"
+  );
 
   const newVehicle = useMemo(() => {
     if (!knownVehicles || !unknownVehicles) return [];
@@ -54,9 +60,9 @@ export default function Vehicles() {
               </li>
             </ul>
           </div>
-          <div className='flex flex-col gap-1 h-[500px] overflow-scroll'>
+          <div className='flex flex-col gap-1 h-min max-h-120 overflow-scroll'>
             {newVehicle?.map((vehicle) => (
-              <li className='list-row bg-base-300 relative' key={vehicle._id}>
+              <li onClick={() => { document.getElementById('my_modal_1').showModal(); setSelected(vehicle)}} className='list-row bg-base-300 relative cursor-pointer hover:bg-base-200 transition' key={vehicle._id}>
                 {/* <img src={vehicle.image} className="rounded w-10 h-10" /> */}
                 <CarFront className="rounded w-10 h-10" />
                 <p>{vehicle.carPlate}</p>
@@ -66,6 +72,7 @@ export default function Vehicles() {
           </div>
         </div>
       </div>
+      <OverlayModal mainText={selected?.carPlate} primaryText={matchedUser?.name} secondaryText={matchedUser?.userLicense} creationTime={selected?._creationTime} matched={matchedUser} image={matchedUser?.image}  />
     </div>
   );
 }

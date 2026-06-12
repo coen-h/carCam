@@ -10,8 +10,8 @@ export default function Login() {
       <Header />
       <div className='absolute top-0 h-screen w-screen flex items-center justify-center'>
         <div className="card card-dash bg-base-300 gap-1 p-2">
-          <p className="card-title text-2xl">Login</p>
-          <button className="flex-1 btn card-content w-40 py-1" onClick={() => void signIn("google", { redirectTo: "/signup", })}>
+          <p className="card-title text-2xl text-base-content">Login</p>
+          <button className="flex-1 btn card-content w-40 p-1" onClick={() => void signIn("google", { redirectTo: "/signup", })}>
             Google
           </button>
         </div>
