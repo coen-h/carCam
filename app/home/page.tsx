@@ -60,11 +60,12 @@ export default function Dashboard() {
           </div>
         </div>
         <div className="list gap-1 bg-base-200 rounded-box shadow-sm p-1 h-78 w-66 overflow-y-scroll">
+          <p className='p-2 text-lg opacity-60 tracking-wide'>Latest Logs</p>  
           {logs ? logs?.slice(-5).map((log) =>
-            <div key={log.carPlate} className="list-row bg-base-300 relative items-center">
-              <p className='text-lg text-base-content'>{log.carPlate}</p>
+            <button key={log.carPlate} className="btn btn-xl flex list-row bg-base-300 relative items-center">
+              <p className='text-base text-base-content'>{log.carPlate}</p>
               <p className='text-base-content/60 text-xs'>{new Date(log._creationTime).toLocaleString()}</p>
-            </div>
+            </button>
           ) : (
             <div className="flex flex-col gap-1">
               <div className="skeleton bg-base-300 w-full h-15 rounded-box"></div>
