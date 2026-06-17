@@ -59,7 +59,15 @@ export const getVehicleFromPlate = query({
       .first();
       
     return vehicle;
+  }
+});
 
+export const getLogsForPlate = query({
+  args: {
+    carPlate: v.string(),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.query("logs").withIndex("by_carPlate", (q) => q.eq("carPlate", args.carPlate)).collect();
   }
 });
 

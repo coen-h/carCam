@@ -16,9 +16,9 @@ export default function Dashboard() {
   return (
     <div className='w-screen h-screen bg-base-100'>
       <Header />
-      <div className="flex flex-col gap-2 container mx-auto p-4">
+      <div className="flex flex-col gap-4 container mx-auto p-4">
         <div className='flex justify-center items-center gap-2'>
-          <div className='skeleton w-120 h-67.5 relative'>
+          <div className='skeleton w-120 h-67.5 relative shadow-sm'>
             {/* <img className='rounded w-full h-full' src="http://192.168.0.137:5000/video_feed" /> */}
             <img className='rounded w-full h-full' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" />
             <div className="size-2 animate-pulse bg-red-300 top-1 right-1 rounded-full absolute" />
@@ -41,7 +41,7 @@ export default function Dashboard() {
             )}
           </div>
         </div>
-        <div className="w-sm mx-auto list gap-0.5 text-base-content">
+        <div className="w-sm mx-auto list gap-0.5 text-base-content shadow-sm bg-base-200 rounded-box p-1">
           <p className='p-2 text-lg opacity-60 tracking-wide'>Latest Logs</p>  
           {logs ? logs?.slice(-5).reverse().map((log, i) =>
             <button onClick={() => { document.getElementById('my_modal_1').showModal(); setSelected(log)}} key={i} className="btn btn-xl list-row items-center bg-base-300 flex justify-between">

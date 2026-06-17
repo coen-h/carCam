@@ -1,6 +1,6 @@
 'use client';
 
-import { LayoutDashboard, User, LogOut, CarFront, Sun, Moon } from "lucide-react";
+import { LayoutDashboard, User, LogOut, CarFront, Sun, Moon, Home } from "lucide-react";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -20,29 +20,36 @@ export default function Header() {
           <Sun className="swap-on" width={24} />
           <Moon className="swap-off" width={24} />
         </label>
-          
-        <div className="menu menu-xs p-1 menu-horizontal btn btn-soft font-normal">
-          <li>
-            <Link href='/dashboard' className="tooltip tooltip-bottom text-base-content" data-tip="Dashboard">
-              <LayoutDashboard width={24} />
-            </Link>
-          </li>
-          <li>
-            <Link href='/cars' className="tooltip tooltip-bottom text-base-content" data-tip="Cars">
-              <CarFront width={24} />
-            </Link>
-          </li>
-          <li>
-            <Link href='/users' className="tooltip tooltip-bottom" data-tip="User">
-              {user ? (
+        {user?.role === "teacher" || user?.role === "admin" ? (
+          <div className="menu menu-xs p-1 menu-horizontal btn btn-soft font-normal">
+            <li>
+              <Link href='/dashboard' className="tooltip tooltip-bottom text-base-content" data-tip="Dashboard">
+                <LayoutDashboard width={24} />
+              </Link>
+            </li>
+            <li>
+              <Link href='/cars' className="tooltip tooltip-bottom text-base-content" data-tip="Cars">
+                <CarFront width={24} />
+              </Link>
+            </li>
+            <li>
+              <Link href='/users' className="tooltip tooltip-bottom" data-tip="User">
+                {user ? (
                 // <img className='size-6 rounded' src={user.image} />
-                <User className="rounded size-6" />
-              ) : (
-                <User width={24} />
-              )}
+                  <User className="rounded size-6" />
+                ) : (
+                  <User width={24} />
+                )}
+              </Link>
+            </li>
+          </div>
+        ) : (
+          <li>
+            <Link href='/home' className="btn btn-soft btn-square tooltip tooltip-bottom text-base-content" data-tip="Home">
+              <Home width={24} />
             </Link>
           </li>
-        </div>
+        )}
       </div>
     </div>
   );

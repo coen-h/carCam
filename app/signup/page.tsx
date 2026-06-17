@@ -40,7 +40,11 @@ export default function Login() {
   };
 
   if (!user?.carPlate) {
-    redirect('/dashboard');
+    if (user?.role === "teacher" || user?.role === "admin") {
+      redirect('/dashboard');
+    } else {
+      redirect('/home');
+    }
   }
 
   return (

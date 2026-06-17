@@ -20,7 +20,7 @@ export default defineSchema({
   logs: defineTable({
     carPlate: v.string(),
     fileTitle: v.string(),
-  }),
+  }).index("by_carPlate", ["carPlate"]),
 
   summary: defineTable({
     location: v.string(),
@@ -40,6 +40,7 @@ export default defineSchema({
     userLicense: v.optional(v.string()),
     carPlate: v.optional(v.string()),
     userYearLevel: v.optional(v.string()),
+    role: v.optional(v.string()),
   })
     .index("email", ["email"])
     .index("phone", ["phone"])
