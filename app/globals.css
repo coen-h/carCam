@@ -27,25 +27,13 @@ body {
   color: var(--foreground);
 }
 
-/* PURPLE / BLUE */
-/* .codioful {
-background: linear-gradient(328.78deg, #030086 14.45%, #BD6177 84.36%), linear-gradient(301.28deg, #209B4A 0%, #7000FF 100%), radial-gradient(100% 138.56% at 100% 0%, #D50000 0%, #00FFE0 100%), radial-gradient(100% 148.07% at 0% 0%, #D50000 0%, #00FFFF 100%);
-background-blend-mode: soft-light, overlay, difference, normal;
-} */
-
-
 /* GREEN AND BLUE */
-/* .codioful {
+.codioful-dark {
 background: radial-gradient(50% 123.47% at 50% 50%, #000000 0%, #FFFFFF 100%), radial-gradient(100% 100% at 50% 100%, #E9FFD8 0%, #001356 100%), linear-gradient(238.72deg, #0066FF 0%, #00CD21 100%), radial-gradient(100% 188.01% at 76.14% 0%, #00CAF7 0%, #FF00C7 100%), linear-gradient(0deg, #00C2FF 0%, #FFC700 100%), radial-gradient(59.2% 100% at 50% 0%, #8000FF 0%, #0085FF 100%), radial-gradient(100% 148.07% at 0% 0%, #FC8800 0%, #00FF94 100%);
 background-blend-mode: overlay, multiply, hard-light, color-dodge, color-burn, color-burn, normal;
-} */
+}
 
-/* BLUE LINES */
-
-/* .codioful {
-background: linear-gradient(180deg, #0C003C 0%, #BFFFAF 100%), linear-gradient(165deg, #480045 25%, #E9EAAF 100%), linear-gradient(145deg, #480045 25%, #E9EAAF 100%), linear-gradient(300deg, rgba(233, 223, 255, 0) 0%, #AF89FF 100%), linear-gradient(90deg, #45EBA5 0%, #45EBA5 30%, #21ABA5 30%, #21ABA5 60%, #1D566E 60%, #1D566E 70%, #163A5F 70%, #163A5F 100%);
-background-blend-mode: overlay, overlay, overlay, multiply, normal;
-} */
+/* Visual by Codioful */
 
 /* RED NICE */
 /* .codioful {
@@ -53,37 +41,16 @@ background: linear-gradient(180deg, #000346 0%, #FF0000 100%), linear-gradient(5
 background-blend-mode: overlay, overlay, difference, normal;
 } */
 
-/* RED SQUARES */
-/* .codioful {
-  background: conic-gradient(from 0deg at 50% 50%, rgba(10, 10, 10, 1.000) 0%, rgba(40, 5, 255, 1.000) 12.5%, rgba(29, 0, 209, 1.000) 12.75%, rgba(10, 10, 10, 1.000) 25%, rgba(255, 20, 147, 1.000) 37.5%, rgba(224, 0, 121, 1.000) 37.75%, rgba(10, 10, 10, 1.000) 50%, rgba(0, 206, 209, 1.000) 62.5%, rgba(0, 156, 158, 1.000) 62.75%, rgba(10, 10, 10, 1.000) 75%, rgba(255, 215, 0, 1.000) 87.5%, rgba(204, 172, 0, 1.000) 87.75%, rgba(10, 10, 10, 1.000) 100%), linear-gradient(150deg, rgba(255, 107, 53, 1.000) 0%, rgba(247, 147, 30, 0.667) 55.2%, rgba(247, 147, 30, 0.267) 82.57%, transparent 100%), conic-gradient(from 225deg at 100% 0%, rgba(14, 14, 14, 1.000) 0%, rgba(255, 107, 53, 1.000) 0.25%, rgba(14, 14, 14, 1.000) 16.67%, rgba(247, 147, 30, 1.000) 16.92%, rgba(14, 14, 14, 1.000) 33.33%, rgba(255, 210, 63, 1.000) 33.58%, rgba(14, 14, 14, 1.000) 50%, rgba(6, 255, 165, 1.000) 50.25%, rgba(14, 14, 14, 1.000) 66.67%, rgba(17, 138, 178, 1.000) 66.92%, rgba(14, 14, 14, 1.000) 83.33%, rgba(7, 59, 76, 1.000) 83.58%, rgba(14, 14, 14, 1.000) 100%), linear-gradient(105deg, rgba(52, 73, 94, 1.000) 0%, rgba(253, 121, 168, 1.000) 100%);
-  background-size: auto, auto, 100px 100px, auto;
-  background-blend-mode: darken, color-burn, soft-light, normal;
-} */
-
 /* RED SWOOP */
-.codioful-dark {
+/* .codioful-dark {
 background: linear-gradient(121deg, #FF0000 0%, #ff0000 100%), linear-gradient(140deg, #ff5454 27%, #223DCB 100%), linear-gradient(140deg, #4E9C51 0%, #001AFF 72%), linear-gradient(64deg, #6e00ff 0%, #0038FF 100%), radial-gradient(52% 101.79% at 50% 50%, #707300 0%, #ff0000 100%), radial-gradient(100% 100% at 70% 0%, #7A3B00 0%, #1DAC92 100%);
 background-blend-mode: overlay, overlay, difference, difference, color-burn, exclusion;
-}
+} */
 
 /* ANOTHER NICE SWOOP */
-/* .codioful {
+/* .codioful-dark {
 background: linear-gradient(120deg, #FF0000 0%, #2400FF 100%), linear-gradient(120deg, #FA00FF 0%, #208200 100%), linear-gradient(130deg, #00F0FF 0%, #000000 100%), radial-gradient(110% 140% at 15% 90%, #ffffff 0%, #1700A4 100%), radial-gradient(100% 100% at 50% 0%, #AD00FF 0%, #00FFE0 100%), radial-gradient(100% 100% at 50% 0%, #00FFE0 0%, #7300A9 80%), linear-gradient(30deg, #7ca304 0%, #2200AA 100%);
 background-blend-mode: overlay, color, overlay, difference, color-dodge, difference, normal;
-} */
-
-/* TECH LOOKING */
-/* .codioful {
-  background: radial-gradient(ellipse farthest-corner at 50% 75%, transparent 0%, transparent 49.76%, rgba(0, 206, 209, 0.4) 78.49%, rgba(0, 206, 209, 1) 100%), conic-gradient(from 165deg at 0% 50%, rgba(10, 15, 41, 0.75) 0%, rgba(255, 0, 64, 0.75) 50%, rgba(10, 15, 41, 0.75) 100%), linear-gradient(0deg, rgba(0, 212, 170, 1) 0%, rgba(0, 212, 170, 1) 12.43%, rgba(255, 183, 197, 1) 12.63%, rgba(255, 183, 197, 1) 25.94%, rgba(135, 206, 235, 1) 26.14%, rgba(135, 206, 235, 1) 41.2%, rgba(221, 160, 221, 1) 41.4%, rgba(221, 160, 221, 1) 51.65%, rgba(152, 251, 152, 1) 51.85%, rgba(152, 251, 152, 1) 55.02%, rgba(240, 230, 140, 1) 55.22%, rgba(240, 230, 140, 1) 70.56%, rgba(255, 160, 122, 1) 70.76%, rgba(255, 160, 122, 1) 86.57%, rgba(32, 178, 170, 1) 86.77%, rgba(32, 178, 170, 1) 100%), repeating-linear-gradient(0deg, rgba(255, 20, 147, 0.75) 0%, rgba(255, 20, 147, 0.75) 41.8%, rgba(40, 5, 255, 0.75) 42%, rgba(40, 5, 255, 0.75) 57.8%, rgba(255, 20, 147, 0.75) 58%, rgba(255, 20, 147, 0.75) 100%), repeating-linear-gradient(45deg, rgba(255, 0, 64, 1) 0%, rgba(255, 0, 64, 1) 49.8%, rgba(0, 255, 128, 1) 50%, rgba(0, 255, 128, 1) 100%), linear-gradient(240deg, rgba(150, 189, 206, 1) 0%, rgba(150, 206, 180, 1) 50%, rgba(193, 206, 150, 1) 100%);
-  background-size: 72% 72%, 56% 56%, 69% 69%, 25% 25%, auto, auto;
-  background-blend-mode: hue, multiply, exclusion, saturation, overlay, normal;
-} */
-
-/* ANOTHER TECH LOOKING */
-/* .codioful {
-  background: linear-gradient(255deg, rgba(255, 107, 53, 0.000) 0%, rgba(255, 107, 53, 1.000) 48.53%, rgba(255, 107, 53, 1.000) 53.81%, rgba(255, 107, 53, 0.000) 100%), radial-gradient(ellipse farthest-corner at 50% 25%, transparent 0%, transparent 50.84%, rgba(128, 255, 0, 0.100) 78.9%, rgba(128, 255, 0, 0.250) 100%), conic-gradient(from 165deg at 100% 25%, rgba(1, 4, 19, 0.750) 0%, rgba(255, 107, 53, 0.750) 0.25%, rgba(1, 4, 19, 0.750) 12.5%, rgba(247, 147, 30, 0.750) 12.75%, rgba(1, 4, 19, 0.750) 25%, rgba(255, 210, 63, 0.750) 25.25%, rgba(1, 4, 19, 0.750) 37.5%, rgba(6, 255, 165, 0.750) 37.75%, rgba(1, 4, 19, 0.750) 50%, rgba(17, 138, 178, 0.750) 50.25%, rgba(1, 4, 19, 0.750) 62.5%, rgba(7, 59, 76, 0.750) 62.75%, rgba(1, 4, 19, 0.750) 75%, rgba(239, 71, 111, 0.750) 75.25%, rgba(1, 4, 19, 0.750) 87.5%, rgba(255, 196, 61, 0.750) 87.75%, rgba(1, 4, 19, 0.750) 100%), conic-gradient(from 315deg at 100% 100%, rgba(13, 20, 33, 0.500) 0%, rgba(40, 5, 255, 0.500) 10%, rgba(29, 0, 209, 0.500) 10.25%, rgba(13, 20, 33, 0.500) 20%, rgba(255, 20, 147, 0.500) 30%, rgba(224, 0, 121, 0.500) 30.25%, rgba(13, 20, 33, 0.500) 40%, rgba(0, 206, 209, 0.500) 50%, rgba(0, 156, 158, 0.500) 50.25%, rgba(13, 20, 33, 0.500) 60%, rgba(255, 215, 0, 0.500) 70%, rgba(204, 172, 0, 0.500) 70.25%, rgba(13, 20, 33, 0.500) 80%, rgba(138, 43, 226, 0.500) 90%, rgba(112, 26, 192, 0.500) 90.25%, rgba(13, 20, 33, 0.500) 100%), linear-gradient(180deg, rgba(255, 69, 0, 1.000) 0%, rgba(138, 43, 226, 1.000) 50%, rgba(40, 5, 255, 1.000) 100%);
-  background-size: auto, auto, auto, auto, auto;
-  background-blend-mode: soft-light, hard-light, hard-light, hard-light, normal;
 } */
 
 /* LIGHT MODE GREEN */

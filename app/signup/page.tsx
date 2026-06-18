@@ -1,6 +1,7 @@
 'use client';
 
 import Header from "@/app/components/Header";
+import Background from "@/app/components/Background";
 import { useState } from 'react';
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
@@ -45,6 +46,7 @@ export default function Login() {
 
   return (
     <div className='w-screen h-screen bg-base-100'>
+      <Background />
       <Header />
       <div className='absolute top-0 h-screen w-screen flex items-center justify-center'>
         <div className="fieldset bg-base-200 border-base-300 w-xs border p-4">

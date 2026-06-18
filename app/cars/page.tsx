@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Filter, X, CarFront} from "lucide-react";
+import Background from "@/app/components/Background";
 import OverlayModal from "@/app/components/OverlayModal";
 import Header from "@/app/components/Header";
 
@@ -39,6 +40,7 @@ export default function Vehicles() {
 
   return (
     <div className='w-screen h-screen bg-base-100'>
+      <Background />
       <Header />
       <div className="container mx-auto p-2 w-lg bg-base-200 m-4 rounded-box">
         <div className='list text-base-content gap-0.5'>

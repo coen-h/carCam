@@ -7,7 +7,7 @@ import { api } from "@/convex/_generated/api";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-export default function Header() {
+export default function Header({setIsDarkCom}) {
   const { signOut } = useAuthActions();
   const user = useQuery(api.function.getUser);
   const [isdark, setIsdark] = useState(
@@ -16,11 +16,12 @@ export default function Header() {
 
   useEffect(() => {
     localStorage.setItem('isdark', JSON.stringify(isdark));
+    setIsDarkCom?.(isdark);
   }, [isdark]);
 
   return (
     <div className="navbar min-h-0 flex justify-between z-50">
-      <button className="btn btn-soft text-lg">carCam</button>
+      <Link href='/'><img src='carCam.svg' className={`size-10 ${isdark? '' : 'invert'} opacity-75 hover:opacity-100 transition`} /></Link>
       <div className="flex items-center gap-2">
         {user && (
           <button data-tip="Logout" className='tooltip tooltip-bottom font-normal btn btn-square btn-soft' onClick={() => void signOut()}><LogOut /></button>

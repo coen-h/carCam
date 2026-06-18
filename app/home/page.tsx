@@ -1,6 +1,7 @@
 'use client';
 
 import Header from "@/app/components/Header";
+import Background from "@/app/components/Background";
 import { useState, useEffect } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -20,20 +21,7 @@ export default function Dashboard() {
 
   return (
     <div className='w-screen h-screen bg-base-100'>
-
-
-    <div
-      className="absolute inset-0 z-0"
-      style={{
-        backgroundImage: `
-          radial-gradient(circle at 50% 100%, rgba(70, 85, 110, 0.) 0%, transparent 60%),
-          radial-gradient(circle at 50% 100%, rgba(99, 102, 241, 0.4) 0%, transparent 70%),
-          radial-gradient(circle at 50% 100%, rgba(181, 184, 208, 0.3) 0%, transparent 80%)
-        `,
-      }}
-    />
-
-
+      <Background />
       <Header />
       <div className="flex gap-2 container w-2xl mx-auto p-4">
         <div className="card bg-base-200 w-96 shadow-sm mx-auto h-78">

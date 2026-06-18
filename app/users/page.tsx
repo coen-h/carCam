@@ -6,6 +6,7 @@ import { api } from "@/convex/_generated/api";
 import { Filter, X, User} from "lucide-react";
 import OverlayModal from "@/app/components/OverlayModal";
 import Header from "@/app/components/Header";
+import Background from "@/app/components/Background";
 
 export default function Users() {
   const users = useQuery(api.function.getAllUsers);
@@ -46,6 +47,7 @@ export default function Users() {
 
   return (
     <div className='w-screen h-screen bg-base-100'>
+      <Background />
       <Header />
       <div className="container mx-auto p-2 w-lg bg-base-200 m-4 rounded-box">
         <div className='list text-base-content gap-0.5'>

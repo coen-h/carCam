@@ -1,6 +1,7 @@
 'use client';
 
 import Header from "@/app/components/Header";
+import Background from "@/app/components/Background";
 import { useState, useEffect } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -15,6 +16,7 @@ export default function Dashboard() {
 
   return (
     <div className='w-screen h-screen bg-base-100'>
+      <Background />
       <Header />
       <div className="flex flex-col gap-4 container mx-auto p-4">
         <div className='flex justify-center items-center gap-2'>

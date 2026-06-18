@@ -1,12 +1,14 @@
 'use client';
 
 import { useAuthActions } from "@convex-dev/auth/react";
+import Background from "@/app/components/Background";
 import Header from "@/app/components/Header";
 
 export default function Login() {
   const { signIn } = useAuthActions();
   return (
     <div className="w-screen h-screen bg-base-100">
+      <Background />
       <Header />
       <div className='absolute top-0 h-screen w-screen flex items-center justify-center'>
         <div className="card card-dash bg-base-300 gap-1 p-2">
