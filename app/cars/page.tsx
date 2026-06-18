@@ -62,7 +62,7 @@ export default function Vehicles() {
           </div>
           <div className='flex flex-col gap-1 h-min max-h-120 overflow-scroll'>
             {newVehicle?.map((vehicle) => (
-              <li onClick={() => { document.getElementById('my_modal_1').showModal(); setSelected(vehicle)}} className='list-row bg-base-300 relative cursor-pointer hover:bg-base-200 transition' key={vehicle._id}>
+              <li onClick={() => { document.getElementById('my_modal_1').showModal(); setSelected(vehicle)}} className='list-row bg-base-300 relative cursor-pointer hover:bg-base-200 transition items-center' key={vehicle._id}>
                 {/* <img src={vehicle.image} className="rounded w-10 h-10" /> */}
                 <CarFront className="rounded w-10 h-10" />
                 <p>{vehicle.carPlate}</p>

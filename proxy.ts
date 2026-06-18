@@ -13,7 +13,6 @@ const isProtectedRoute = createRouteMatcher([
   "/signup(.*)",
   "/cars(.*)",
   "/home(.*)",
-  "/",
 ]);
 
 const isAdminOrTeacherRoute = createRouteMatcher([

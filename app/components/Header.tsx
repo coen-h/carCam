@@ -4,11 +4,19 @@ import { LayoutDashboard, User, LogOut, CarFront, Sun, Moon, Home } from "lucide
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 export default function Header() {
   const { signOut } = useAuthActions();
   const user = useQuery(api.function.getUser);
+  const [isdark, setIsdark] = useState(
+    JSON.parse(localStorage.getItem('isdark'))
+  );
+
+  useEffect(() => {
+    localStorage.setItem('isdark', JSON.stringify(isdark));
+  }, [isdark]);
 
   return (
     <div className="navbar min-h-0 flex justify-between z-50">
@@ -18,7 +26,7 @@ export default function Header() {
           <button data-tip="Logout" className='tooltip tooltip-bottom font-normal btn btn-square btn-soft' onClick={() => void signOut()}><LogOut /></button>
         )}
         <label className="swap swap-rotate btn btn-soft btn-square">
-          <input type="checkbox" className="theme-controller" value="nord" />
+          <input type="checkbox" className="theme-controller" value="nord" checked={isdark} onChange={() => setIsdark(!isdark)} />
           <Sun className="swap-on" width={24} />
           <Moon className="swap-off" width={24} />
         </label>
