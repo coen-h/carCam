@@ -2,12 +2,11 @@
 
 import Header from "@/app/components/Header";
 import Background from "@/app/components/Background";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
 import { useRouter } from "next/navigation";
 import { useQuery } from "convex/react";
-import { redirect } from "next/navigation";
 
 export default function Login() {
   const user = useQuery(api.function.getUser);
@@ -37,10 +36,17 @@ export default function Login() {
       carPlate: formData.carPlate,
       carModel: formData.carModel,
       carYear: formData.carYear,
+      role: formData.role,
     });
 
     router.push("/dashboard");
   };
+
+  useEffect(() => {
+    if (user?.carPlate) {
+      router.push('/dashboard');
+    }
+  }, [user, router]);
 
   if (user === undefined) {
     return (
@@ -48,11 +54,6 @@ export default function Login() {
         <span className="loading loading-spinner loading-lg"></span>
       </div>
     );
-  }
-
-  // 2. Redirect ONLY if they already have a car plate (Assuming this is an onboarding page)
-  if (user?.carPlate) {
-    redirect('/dashboard');
   }
 
   return (

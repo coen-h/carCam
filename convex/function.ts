@@ -78,6 +78,7 @@ export const updateUser = mutation({
     carPlate: v.string(),
     carModel: v.string(),
     carYear: v.string(),
+    role: v.string(),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
@@ -90,6 +91,7 @@ export const updateUser = mutation({
       userYearLevel: args.userYearLevel,
       userLicense: args.userLicense,
       carPlate: args.carPlate,
+      role: args.role,
     });
 
     await ctx.db.insert("knownCars", {
