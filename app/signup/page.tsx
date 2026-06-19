@@ -42,7 +42,16 @@ export default function Login() {
     router.push("/dashboard");
   };
 
-  if (!user?.carPlate) {
+  if (user === undefined) {
+    return (
+      <div className="w-screen h-screen flex items-center justify-center bg-base-100">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
+  }
+
+  // 2. Redirect ONLY if they already have a car plate (Assuming this is an onboarding page)
+  if (user?.carPlate) {
     redirect('/dashboard');
   }
 
