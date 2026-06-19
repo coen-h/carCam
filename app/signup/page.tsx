@@ -13,9 +13,11 @@ export default function Login() {
   const user = useQuery(api.function.getUser);
   const router = useRouter();
   const updateUser = useMutation(api.function.updateUser);
+  const [isdark, setIsdarkCom] = useState<boolean | null>(null);
   const [formData, setFormData] = useState({
     userYearLevel: '',
     userLicense: 'Learners',
+    role: 'student',
     carPlate: '',
     carModel: '',
     carYear: '',
@@ -47,7 +49,7 @@ export default function Login() {
   return (
     <div className='w-screen h-screen bg-base-100'>
       <Background />
-      <Header />
+      <Header setIsDarkCom={setIsdarkCom} />
       <div className='absolute top-0 h-screen w-screen flex items-center justify-center'>
         <div className="fieldset bg-base-200 border-base-300 w-xs border p-4">
             <legend className="fieldset-legend text-xl">Sign Up</legend>

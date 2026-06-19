@@ -7,12 +7,22 @@ import { api } from "@/convex/_generated/api";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-export default function Header({setIsDarkCom}) {
+export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<React.SetStateAction<boolean | null>>}) {
   const { signOut } = useAuthActions();
   const user = useQuery(api.function.getUser);
-  const [isdark, setIsdark] = useState(
-    JSON.parse(localStorage.getItem('isdark'))
-  );
+  const [isdark, setIsdark] = useState<boolean>(false);
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem('isdark');
+    if (storedTheme) {
+      setIsdark(JSON.parse(storedTheme));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('isdark', JSON.stringify(isdark));
+    setIsDarkCom?.(isdark);
+  }, [isdark, setIsDarkCom]);
 
   useEffect(() => {
     localStorage.setItem('isdark', JSON.stringify(isdark));
@@ -21,7 +31,7 @@ export default function Header({setIsDarkCom}) {
 
   return (
     <div className="navbar min-h-0 flex justify-between z-50">
-      <Link href='/'><img src='carCam.svg' className={`size-10 ${isdark? '' : 'invert'} opacity-75 hover:opacity-100 transition`} /></Link>
+      <Link href='/'><img src='carCam.svg' className={`size-10 ${isdark? '' : 'invert'} opacity-75 hover:opacity-50 transition`} /></Link>
       <div className="flex items-center gap-2">
         {user && (
           <button data-tip="Logout" className='tooltip tooltip-bottom font-normal btn btn-square btn-soft' onClick={() => void signOut()}><LogOut /></button>
@@ -46,7 +56,6 @@ export default function Header({setIsDarkCom}) {
             <li>
               <Link href='/users' className="tooltip tooltip-bottom" data-tip="User">
                 {user ? (
-                // <img className='size-6 rounded' src={user.image} />
                   <User className="rounded size-6" />
                 ) : (
                   <User width={24} />

@@ -2,12 +2,13 @@
 
 import Header from "@/app/components/Header";
 import Background from "@/app/components/Background";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
 export default function Dashboard() {
   const user = useQuery(api.function.getUser);
+  const [isdark, setIsdarkCom] = useState<boolean | null>(null);
   
   const matchedUser = useQuery(
     api.function.getVehicleFromPlate,
@@ -22,7 +23,7 @@ export default function Dashboard() {
   return (
     <div className='w-screen h-screen bg-base-100'>
       <Background />
-      <Header />
+      <Header setIsDarkCom={setIsdarkCom} />
       <div className="flex gap-2 container w-2xl mx-auto p-4">
         <div className="card bg-base-200 w-96 shadow-sm mx-auto h-78">
           <figure className="w-full h-full">
@@ -62,9 +63,9 @@ export default function Dashboard() {
           </div>
         </div>
         <div className="list gap-1 bg-base-200 rounded-box shadow-sm p-1 h-78 w-66 overflow-y-scroll">
-          <p className='p-2 text-lg opacity-60 tracking-wide'>Latest Logs</p>  
+          <p className='p-2 text-lg opacity-60 tracking-wide text-base-content'>Latest Logs</p>  
           {logs ? logs?.slice(-5).map((log) =>
-            <button key={log.carPlate} className="btn btn-xl flex list-row bg-base-300 relative items-center">
+            <button key={log._id} className="btn btn-xl flex list-row bg-base-300 relative items-center">
               <p className='text-base text-base-content'>{log.carPlate}</p>
               <p className='text-base-content/60 text-xs'>{new Date(log._creationTime).toLocaleString()}</p>
             </button>

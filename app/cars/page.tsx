@@ -8,13 +8,22 @@ import Background from "@/app/components/Background";
 import OverlayModal from "@/app/components/OverlayModal";
 import Header from "@/app/components/Header";
 
+interface SelectedProps {
+  carPlate: string;
+  _creationTime: number;
+  totalEntries?: string;
+  carModel?: string;
+  carYear?: string;
+}
+
 export default function Vehicles() {
   const knownVehicles = useQuery(api.function.getAllKnown);
   const unknownVehicles = useQuery(api.function.getAllUnknown);
   const [input, setInput] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState(null as SelectedProps | null);
+  const [isdark, setIsdarkCom] = useState<boolean | null>(null);
   const matchedUser = useQuery(
     api.function.getUserForPlate, 
     selected?.carPlate ? { carPlate: selected.carPlate } : "skip"
@@ -41,7 +50,7 @@ export default function Vehicles() {
   return (
     <div className='w-screen h-screen bg-base-100'>
       <Background />
-      <Header />
+      <Header setIsDarkCom={setIsdarkCom} />
       <div className="container mx-auto p-2 w-lg bg-base-200 m-4 rounded-box">
         <div className='list text-base-content gap-0.5'>
           <p className='p-2 text-lg opacity-60 tracking-wide'>Vehicles</p>
@@ -64,7 +73,7 @@ export default function Vehicles() {
           </div>
           <div className='flex flex-col gap-1 h-min max-h-120 overflow-scroll'>
             {newVehicle?.map((vehicle) => (
-              <li onClick={() => { document.getElementById('my_modal_1').showModal(); setSelected(vehicle)}} className='list-row bg-base-300 relative cursor-pointer hover:bg-base-200 transition items-center' key={vehicle._id}>
+              <li onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setSelected(vehicle)}} className='list-row bg-base-300 relative cursor-pointer hover:bg-base-200 transition items-center' key={vehicle._id}>
                 {/* <img src={vehicle.image} className="rounded w-10 h-10" /> */}
                 <CarFront className="rounded w-10 h-10" />
                 <p>{vehicle.carPlate}</p>

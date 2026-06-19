@@ -2,13 +2,22 @@
 
 import Header from "@/app/components/Header";
 import Background from "@/app/components/Background";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
+interface SelectedProps {
+  carPlate: string;
+  _creationTime: number;
+  totalEntries?: string;
+  carModel?: string;
+  carYear?: string;
+}
+
 export default function Dashboard() {
   const logs = useQuery(api.function.getAllLogs);
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState(null as SelectedProps | null);
+  const [isdark, setIsdarkCom] = useState<boolean | null>(null);
   const matchedUser = useQuery(
     api.function.getUserForPlate, 
     selected?.carPlate ? { carPlate: selected.carPlate } : "skip"
@@ -17,7 +26,7 @@ export default function Dashboard() {
   return (
     <div className='w-screen h-screen bg-base-100'>
       <Background />
-      <Header />
+      <Header setIsDarkCom={setIsdarkCom} />
       <div className="flex flex-col gap-4 container mx-auto p-4">
         <div className='flex justify-center items-center gap-2'>
           <div className='skeleton w-120 h-67.5 relative shadow-sm'>
@@ -45,8 +54,8 @@ export default function Dashboard() {
         </div>
         <div className="w-sm mx-auto list gap-0.5 text-base-content shadow-sm bg-base-200 rounded-box p-1">
           <p className='p-2 text-lg opacity-60 tracking-wide'>Latest Logs</p>  
-          {logs ? logs?.slice(-5).reverse().map((log, i) =>
-            <button onClick={() => { document.getElementById('my_modal_1').showModal(); setSelected(log)}} key={i} className="btn btn-xl list-row items-center bg-base-300 flex justify-between">
+          {logs ? logs?.slice(-5).reverse().map((log) =>
+            <button onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setSelected(log)}} key={log._id} className="btn btn-xl list-row items-center bg-base-300 flex justify-between">
               <p className='text-lg'>{log.carPlate}</p>
               <p className='text-base-content/60 text-sm'>{new Date(log._creationTime).toLocaleString()}</p>
             </button>
@@ -58,7 +67,7 @@ export default function Dashboard() {
       <dialog id="my_modal_1" className="modal text-base-content">
         <div className="modal-box">
           <h3 className="font-bold text-lg">{selected?.carPlate}</h3>
-          <p className="pb-2">{new Date(selected?._creationTime).toLocaleString()}</p>
+          <p className="pb-2">{selected ? new Date(selected?._creationTime).toLocaleString() : ""}</p>
           <div className="p-4 bg-base-200 rounded">
             <h4 className="font-semibold">Registered User Info:</h4>
             {matchedUser === undefined ? (

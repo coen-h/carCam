@@ -8,14 +8,23 @@ import OverlayModal from "@/app/components/OverlayModal";
 import Header from "@/app/components/Header";
 import Background from "@/app/components/Background";
 
+interface SelectedProps {
+  name?: string;
+  carPlate?: string;
+  _creationTime: number;
+  totalEntries?: string;
+  carModel?: string;
+  carYear?: string;
+}
+
 export default function Users() {
   const users = useQuery(api.function.getAllUsers);
   const [input, setInput] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
   const [selectedLicense, setSelectedLicense] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const [selected, setSelected] = useState(null);
+  const [isdark, setIsdarkCom] = useState<boolean | null>(null);
+  const [selected, setSelected] = useState(null as SelectedProps | null);
   
   const matchedUser = useQuery(
     api.function.getVehicleFromPlate, 
@@ -48,7 +57,7 @@ export default function Users() {
   return (
     <div className='w-screen h-screen bg-base-100'>
       <Background />
-      <Header />
+      <Header setIsDarkCom={setIsdarkCom} />
       <div className="container mx-auto p-2 w-lg bg-base-200 m-4 rounded-box">
         <div className='list text-base-content gap-0.5'>
           <p className='p-2 text-lg opacity-60 tracking-wide'>Students</p>
@@ -80,9 +89,8 @@ export default function Users() {
           </div>
           <div className='flex flex-col gap-1 h-min max-h-120 overflow-scroll'>
             {newUser.map((user) => (
-              <li className='list-row bg-base-300 relative' key={user.id} onClick={() => { document.getElementById('my_modal_1').showModal(); setSelected(user)}}>
-                {/* <img src={user.image} className="rounded w-10 h-10" /> */}
-                <User className="rounded w-10 h-10" />
+              <li className='list-row bg-base-300 relative cursor-pointer hover:bg-base-200 transition' key={user._id} onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setSelected(user)}}>
+                <img src={user.image} className="rounded w-10 h-10" />
                 <div>
                   <p>{user.name}</p>
                   <p className='text-xs font-light text-base-content/70'>{user.email}</p>

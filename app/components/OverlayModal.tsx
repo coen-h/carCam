@@ -1,11 +1,20 @@
 'use client';
 
-export default function overlayModal({mainText, primaryText, secondaryText, creationTime, matched, image}) {
+interface Props {
+  mainText?: string;
+  primaryText?: string;
+  secondaryText?: string;
+  creationTime?: number;
+  matched?: any;
+  image?: string;
+}
+
+export default function overlayModal({mainText, primaryText, secondaryText, creationTime, matched, image}: Props) {
   return (
       <dialog id="my_modal_1" className="modal text-base-content">
         <div className="modal-box">
           <h3 className="font-bold text-lg">{mainText}</h3>
-          <p className="pb-2">{new Date(creationTime).toLocaleString()}</p>
+          <p className="pb-2">{creationTime ? new Date(creationTime).toLocaleString() : 0}</p>
           <div className="p-4 bg-base-200 rounded">
             <h4 className="font-semibold">Registered User Info:</h4>
             {matched === undefined ? (
