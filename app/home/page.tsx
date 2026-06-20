@@ -24,8 +24,8 @@ export default function Dashboard() {
     <div className='w-screen h-screen bg-base-100'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
-      <div className="flex gap-2 container w-2xl mx-auto p-4">
-        <div className="card bg-base-200 w-96 shadow-sm mx-auto h-78">
+      <div className="flex items-center gap-2 xl:container mx-auto p-4">
+        <div className="card bg-base-200 aspect-video w-full shadow-sm">
           <figure className="w-full h-full">
             {matchedUser ? (
               <img src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" alt="Parking Lot" />
