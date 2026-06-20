@@ -26,14 +26,14 @@ export default function Dashboard() {
       <Header setIsDarkCom={setIsdarkCom} />
       <div className="flex items-center gap-2 xl:container mx-auto p-4">
         <div className="card bg-base-200 aspect-video w-full shadow-sm">
-          <figure className="w-full h-full flex-1">
+          <figure className="w-full h-full">
             {matchedUser ? (
               <img src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" alt="Parking Lot" />
             ) : (
               <div className="h-full w-full skeleton rounded-b-none" />
             )}
           </figure>
-          <div className="card-body flex-1">
+          <div className="card-body">
             <div className="flex items-center justify-between gap-2">
               {matchedUser ? (
                 <>
@@ -62,7 +62,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        <div className="list gap-1 bg-base-200 rounded-box shadow-sm p-1 w-100 max-2xl:w-80 overflow-y-scroll">
+        <div className="list gap-1 bg-base-200 rounded-box shadow-sm p-1 h-78 w-66 overflow-y-scroll">
           <p className='p-2 text-lg opacity-60 tracking-wide text-base-content'>Latest Logs</p>  
           {logs ? logs?.slice(-5).map((log) =>
             <button key={log._id} className="btn btn-xl flex list-row bg-base-300 relative items-center">
