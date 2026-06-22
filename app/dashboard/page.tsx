@@ -35,7 +35,7 @@ export default function Dashboard() {
             <div className="top-0 left-0 absolute bg-base-100/60 backdrop-blur text-base-content rounded-tl rounded-br p-1">Student Parking Entrance</div>
           </div>
           <div className='flex flex-col gap-2 w-100 max-2xl:w-80 items-stretch'>
-            <div className='w-full flex-1 aspect-video flex items-center justify-center'>
+            <div className='w-full aspect-video flex items-center justify-center'>
               {logs ? logs?.slice(-1).map((log) =>
                 <div key={log.carPlate} className="bg-base-300 rounded">
                   <div className="skeleton w-full h-full rounded-t">
@@ -51,7 +51,7 @@ export default function Dashboard() {
                 <div className="skeleton bg-base-300 w-full h-full rounded"></div>
               )}
             </div>
-            <div className="w-full list gap-0.5 text-base-content shadow-sm bg-base-200 rounded-box p-1 overflow-y-auto">
+            <div className="w-full flex-1 list gap-0.5 text-base-content shadow-sm bg-base-200 rounded-box p-1 overflow-y-auto">
               <p className='p-2 text-lg opacity-60 tracking-wide'>Latest Logs</p>  
               {logs ? logs?.slice(-5).reverse().map((log) =>
                 <button onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setSelected(log)}} key={log._id} className="btn btn-xl list-row items-center bg-base-300 flex justify-between">
