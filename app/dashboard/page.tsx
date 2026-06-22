@@ -35,34 +35,34 @@ export default function Dashboard() {
             <div className="size-2 animate-pulse bg-red-300 top-1 right-1 rounded-full absolute" />
             <div className="top-0 left-0 absolute bg-base-100/60 backdrop-blur text-base-content rounded-tl rounded-br p-1">Student Parking Entrance</div>
           </div>
-          <div className='flex flex-col gap-2 w-100 max-2xl:w-80'>
+          <div className='flex flex-col items-stretch gap-2 w-100 max-2xl:w-80'>
             <div className='w-full aspect-video flex items-center justify-center'>
-            {logs ? logs?.slice(-1).map((log) =>
-              <div key={log.carPlate} className="bg-base-300 rounded">
-                <div className="skeleton w-full h-full rounded-t">
-                  {/* <img src={`http://192.168.0.137:3923/images/${log.fileTitle}`} className="w-full h-full object-cover rounded-t"/> */}
-                  <img className='object-cover rounded-t w-full h-full' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" />
+              {logs ? logs?.slice(-1).map((log) =>
+                <div key={log.carPlate} className="bg-base-300 rounded">
+                  <div className="skeleton w-full h-full rounded-t">
+                    {/* <img src={`http://192.168.0.137:3923/images/${log.fileTitle}`} className="w-full h-full object-cover rounded-t"/> */}
+                    <img className='object-cover rounded-t w-full h-full' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" />
+                  </div>
+                  <div className="flex justify-between text-base-content items-center p-1">
+                  < h3>Plate: {log.carPlate}</h3>
+                    <p className='text-sm'>{new Date(log._creationTime).toLocaleTimeString()}</p>
+                  </div>
                 </div>
-                <div className="flex justify-between text-base-content items-center p-1">
-                  <h3>Plate: {log.carPlate}</h3>
-                  <p className='text-sm'>{new Date(log._creationTime).toLocaleTimeString()}</p>
-                </div>
-              </div>
-            ) : (
-              <div className="skeleton bg-base-300 w-full h-full rounded"></div>
-            )}
-          </div>
-          <div className="w-full list gap-0.5 text-base-content shadow-sm bg-base-200 rounded-box p-1">
-            <p className='p-2 text-lg opacity-60 tracking-wide'>Latest Logs</p>  
-            {logs ? logs?.slice(-5).reverse().map((log) =>
-              <button onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setSelected(log)}} key={log._id} className="btn btn-xl list-row items-center bg-base-300 flex justify-between">
-                <p className='text-lg'>{log.carPlate}</p>
-                <p className='text-base-content/60 text-xs'>{new Date(log._creationTime).toLocaleString()}</p>
-              </button>
-            ) : (
-              <div className="skeleton bg-base-300 w-full h-15 rounded"></div>
-            )}
-          </div>
+              ) : (
+                <div className="skeleton bg-base-300 w-full h-full rounded"></div>
+              )}
+            </div>
+            <div className="w-full h-full list gap-0.5 text-base-content shadow-sm bg-base-200 rounded-box p-1">
+              <p className='p-2 text-lg opacity-60 tracking-wide'>Latest Logs</p>  
+              {logs ? logs?.slice(-5).reverse().map((log) =>
+                <button onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setSelected(log)}} key={log._id} className="btn btn-xl list-row items-center bg-base-300 flex justify-between">
+                  <p className='text-lg'>{log.carPlate}</p>
+                  <p className='text-base-content/60 text-xs'>{new Date(log._creationTime).toLocaleString()}</p>
+                </button>
+              ) : (
+                <div className="skeleton bg-base-300 w-full h-15 rounded"></div>
+              )}
+            </div>
           </div>
         </div>
         
