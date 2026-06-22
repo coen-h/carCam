@@ -24,7 +24,7 @@ export default function Dashboard() {
     <div className='w-screen h-screen bg-base-100'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
-      <div className="flex items-center gap-2 xl:container mx-auto p-4">
+      <div className="flex items-stretch gap-2 xl:container mx-auto p-4">
         <div className="card bg-base-200 aspect-video w-full shadow-sm">
           <figure className="w-full h-full">
             {matchedUser ? (
@@ -62,7 +62,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        <div className="list gap-1 bg-base-200 rounded-box shadow-sm p-1 h-full w-100 overflow-y-scroll">
+        <div className="list gap-1 bg-base-200 rounded-box shadow-sm p-1 w-100 overflow-y-auto">
           <p className='p-2 text-lg opacity-60 tracking-wide text-base-content'>Latest Logs</p>  
           {logs ? logs?.slice(-5).map((log) =>
             <button key={log._id} className="btn btn-xl flex list-row bg-base-300 relative items-center">
