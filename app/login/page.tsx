@@ -13,7 +13,7 @@ export default function Login() {
     <div className="w-screen h-screen bg-base-100">
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
-      <div className='absolute top-0 h-screen w-screen flex items-center justify-center'>
+      <div className='absolute top-0 h-screen w-screen p-2 flex items-center justify-center'>
         <div className="card shadow-2xl border-base-content/10 border max-w-sm w-full bg-base-300 p-6 text-center">
           <p className="text-3xl font-bold text-base-content">Welcome Back</p>
           <p className="text-base-content/60 mt-1 text-sm">Sign in to your account to continue</p>

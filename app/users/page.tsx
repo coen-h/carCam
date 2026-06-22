@@ -58,8 +58,8 @@ export default function Users() {
     <div className='w-screen h-screen bg-base-100'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
-      <div className="container mx-auto p-2 w-lg bg-base-200 m-4 rounded-box">
-        <div className='list text-base-content gap-0.5'>
+      <div className="mx-auto w-xl max-sm:w-full p-2">
+        <div className='list text-base-content gap-0.5 bg-base-200 rounded-box p-2'>
           <p className='p-2 text-lg opacity-60 tracking-wide'>Students</p>
           <div className='flex gap-1'>
             <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Search..." className='input mb-2 w-full flex-1'></input>

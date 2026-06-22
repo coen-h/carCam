@@ -60,8 +60,8 @@ export default function Login() {
     <div className='w-screen h-screen bg-base-100'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
-      <div className='absolute top-0 h-screen w-screen flex items-center justify-center'>
-        <div className="fieldset bg-base-200 border-base-300 w-xs border p-4 rounded-box">
+      <div className='absolute top-0 h-screen w-screen flex items-center justify-center px-2'>
+        <div className="fieldset bg-base-200 border-base-300 w-xs border p-4 rounded-box text-base-content">
             <legend className="fieldset-legend text-xl">Sign Up</legend>
 
             <label className="label">Student Year Level</label>
