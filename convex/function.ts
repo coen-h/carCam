@@ -17,7 +17,10 @@ export const getAllUnknown = query({
 
 export const getAllUsers = query({
   handler: async (ctx) => {
-    return await ctx.db.query("users").collect(); 
+    return await ctx.db
+      .query("users")
+      .filter((q) => q.eq(q.field("role"), "student"))
+      .collect(); 
   }
 });
 

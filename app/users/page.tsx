@@ -55,7 +55,7 @@ export default function Users() {
   }, [users, input, selectedYear, selectedLicense]);
 
   return (
-    <div className='w-screen h-screen bg-base-100'>
+    <div className='w-screen min-h-screen bg-base-100'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
       <div className="mx-auto w-xl max-sm:w-full p-2">
@@ -95,7 +95,7 @@ export default function Users() {
                   <p>{user.name}</p>
                   <p className='text-xs font-light text-base-content/70'>{user.email}</p>
                 </div>
-                <p className='absolute -top-3 right-1 bg-base-100 border-base-100 p-1 rounded-box'>{new Date(user._creationTime).toLocaleString()}</p>
+                <p className='absolute -top-3 right-1 bg-base-100 border-base-100 p-1 rounded-box text-sm'>{new Date(user._creationTime).toLocaleString()}</p>
               </li>
             ))}
           </div>

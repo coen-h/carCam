@@ -21,7 +21,7 @@ export default function Dashboard() {
   );
 
   return (
-    <div className='w-screen h-screen bg-base-100'>
+    <div className='w-screen min-h-screen bg-base-100'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
       <div className="flex max-md:flex-col items-stretch gap-2 xl:container mx-auto p-4">

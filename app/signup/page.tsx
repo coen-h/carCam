@@ -50,14 +50,15 @@ export default function Login() {
 
   if (user === undefined) {
     return (
-      <div className="w-screen h-screen flex items-center justify-center bg-base-100">
+      <div className="w-screen min-h-screen flex items-center justify-center bg-base-100">
+        <Background />
         <span className="loading loading-spinner loading-lg"></span>
       </div>
     );
   }
 
   return (
-    <div className='w-screen h-screen bg-base-100'>
+    <div className='w-screen min-h-screen bg-base-100'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
       <div className='absolute top-0 h-screen w-screen flex items-center justify-center px-2'>

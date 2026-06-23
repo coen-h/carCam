@@ -24,7 +24,7 @@ export default function Dashboard() {
   );
 
   return (
-    <div className='w-screen h-screen bg-base-100'>
+    <div className='w-screen min-h-screen bg-base-100'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
       <div className="flex max-xl:flex-col justify-center gap-2 xl:container mx-auto p-4">
@@ -51,7 +51,7 @@ export default function Dashboard() {
                 <div className="skeleton bg-base-300 w-full h-full rounded"></div>
               )}
             </div>
-            <div className="w-full xs:flex-1 list gap-0.5 text-base-content shadow-sm bg-base-200 rounded-box p-1 overflow-y-auto">
+            <div className="w-full xl:flex-1 list gap-0.5 text-base-content shadow-sm bg-base-200 rounded-box p-1 overflow-y-auto">
               <p className='p-2 text-lg opacity-60 tracking-wide'>Latest Logs</p>  
               {logs ? logs?.slice(-5).reverse().map((log) =>
                 <button onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setSelected(log)}} key={log._id} className="btn btn-xl list-row items-center bg-base-300 flex justify-between">

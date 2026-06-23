@@ -10,7 +10,7 @@ export default function Login() {
   const [isdark, setIsdarkCom] = useState<boolean | null>(null);
 
   return (
-    <div className="w-screen h-screen bg-base-100">
+    <div className="w-screen min-h-screen bg-base-100">
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
       <div className='absolute top-0 h-screen w-screen p-2 flex items-center justify-center'>
