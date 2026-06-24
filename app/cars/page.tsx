@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Filter, X, CarFront} from "lucide-react";
+import { CarFront, Search, Calendar, ChevronRight } from "lucide-react";
 import Background from "@/app/components/Background";
 import OverlayModal from "@/app/components/OverlayModal";
 import Header from "@/app/components/Header";
@@ -20,8 +20,7 @@ export default function Vehicles() {
   const knownVehicles = useQuery(api.function.getAllKnown);
   const unknownVehicles = useQuery(api.function.getAllUnknown);
   const [input, setInput] = useState('');
-  const [selectedType, setSelectedType] = useState('');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedType, setSelectedType] = useState('all');
   const [selected, setSelected] = useState(null as SelectedProps | null);
   const [isdark, setIsdarkCom] = useState<boolean | null>(null);
   const matchedUser = useQuery(
@@ -51,33 +50,46 @@ export default function Vehicles() {
     <div className='w-screen min-h-screen bg-base-100'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
-      <div className="mx-auto w-xl max-sm:w-full p-2">
-        <div className='list text-base-content gap-0.5 bg-base-200 rounded-box p-2'>
-          <p className='p-2 text-lg opacity-60 tracking-wide'>Vehicles</p>
-          <div className='flex gap-1'>
-            <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Search..." className='input mb-2 w-full flex-1'></input>
-            <button className={`swap swap-rotate btn bg-base-100 ${isDropdownOpen ? 'swap-active' : ''}`} popoverTarget="popover-1" style={{ anchorName: "--anchor-1" }}>
-              <input type="checkbox" />
-              <Filter className='swap-off size-5' />
-              <X className='swap-on size-5' />
-            </button>
-            <ul onToggle={(e) => setIsDropdownOpen(e.newState === 'open')} className="dropdown menu w-52 bg-base-100 shadow-sm rounded-box mt-1" popover="auto" id="popover-1" style={{ positionAnchor: "--anchor-1" }}>
-              <li>
-                <select onChange={(e) => setSelectedType(e.target.value)} className='select border-0 w-full'>
-                  <option value=''>All Cars</option>
-                  <option value='known'>Known</option>
-                  <option value='unknown'>Unknown</option>
-                </select>
-              </li>
-            </ul>
+      <div className="container mx-auto w-2xl max-sm:w-full ">
+        <div className='list backdrop-blur-md text-base-content gap-0.5 bg-base-100 shadow-2xl border border-base-200 rounded-box p-4'>
+          <div className='flex items-center justify-between gap-1 mb-4'>
+            <div>
+              <p className='text-2xl font-semibold tracking-tight'>Vehicles</p>
+              <p className='text-sm text-base-content/60'>Manage and track identified vehicles</p>
+            </div>
+            <div className='join p-1 bg-base-200 rounded-lg'>
+              <button className={`join-item btn btn-sm border-none ${selectedType === 'all' ? 'bg-base-100 shadow-sm hover:bg-base-100 text-base-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setSelectedType('all')}>
+                All
+              </button>
+              <button className={`join-item btn btn-sm border-none ${selectedType === 'known' ? 'bg-base-100 shadow-sm hover:bg-base-100 text-base-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setSelectedType('known')}>
+                Known
+              </button>
+              <button className={`join-item btn btn-sm border-none ${selectedType === 'unknown' ? 'bg-base-100 shadow-sm hover:bg-base-100 text-base-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setSelectedType('unknown')}>
+                Unknown
+              </button>
+            </div>
+          </div>
+          <div className='relative'>
+            <div className="absolute top-2 left-2 flex items-center pointer-events-none">
+                <Search className="size-6 z-2 text-base-content/40" />
+              </div>
+            <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Search..." className='input mb-2 w-full pl-10'></input>
           </div>
           <div className='flex flex-col gap-1 h-min max-h-120 overflow-scroll'>
             {newVehicle?.map((vehicle) => (
-              <li onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setSelected(vehicle)}} className='list-row bg-base-300 relative cursor-pointer hover:bg-base-200 transition items-center' key={vehicle._id}>
+              <li onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setSelected(vehicle)}} className='group list-row bg-base-100 relative cursor-pointer transition items-center border border-base-200 hover:border-primary/40' key={vehicle._id}>
                 {/* <img src={vehicle.image} className="rounded w-10 h-10" /> */}
-                <CarFront className="rounded w-10 h-10" />
-                <p>{vehicle.carPlate}</p>
-                <p className='absolute -top-3 right-1 bg-base-100 border-base-100 p-1 rounded-box text-sm'>{new Date(vehicle._creationTime).toLocaleString()}</p>
+                <div className='bg-base-200 p-3 rounded-lg group-hover:bg-primary group-hover:text-primary-content transition'>
+                  <CarFront className="rounded size-6 opacity-60 group-hover:text-" />
+                </div>
+                <div>
+                  <p className='text-lg font-bold'>{vehicle.carPlate}</p>
+                  <div className='flex items-center gap-1 text-base-content/60 mt-1'>
+                    <Calendar className='size-3' />
+                    <p className='text-xs'>{new Date(vehicle._creationTime).toLocaleString()}</p>
+                  </div>
+                </div>
+                <ChevronRight className='size-4 opacity-0 text-primary group-hover:opacity-100 group-hover:-translate-x-1 transition-transform' />
               </li>
             ))}
           </div>

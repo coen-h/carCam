@@ -58,34 +58,26 @@ export default function Users() {
     <div className='w-screen min-h-screen bg-base-100'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
-      <div className="mx-auto w-xl max-sm:w-full p-2">
+      <div className="mx-auto w-2xl max-sm:w-full p-2">
         <div className='list text-base-content gap-0.5 bg-base-200 rounded-box p-2'>
-          <p className='p-2 text-lg opacity-60 tracking-wide'>Students</p>
+          <div>
+            <p className='text-2xl font-semibold tracking-tight'>Students</p>
+            <p className='text-sm text-base-content/60'>Manage and track student profiles and linked vehicles</p>
+          </div>
           <div className='flex gap-1'>
-            <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Search..." className='input mb-2 w-full flex-1'></input>
-            <button className={`swap swap-rotate btn bg-base-100 ${isDropdownOpen ? 'swap-active' : ''}`} popoverTarget="popover-1" style={{ anchorName: "--anchor-1" }}>
-              <input type="checkbox" />
-              <Filter className='swap-off size-5' />
-              <X className='swap-on size-5' />
-            </button>
-            <ul onToggle={(e) => setIsDropdownOpen(e.newState === 'open')} className="dropdown menu w-52 bg-base-100 shadow-sm rounded-box mt-1" popover="auto" id="popover-1" style={{ positionAnchor: "--anchor-1" }}>
-              <li>
-                <select onChange={(e) => setSelectedYear(e.target.value)} className='select border-0 w-full'>
-                  <option value=''>All Years</option>
-                  <option value='11'>Year 11</option>
-                  <option value='12'>Year 12</option>
-                  <option value='13'>Year 13</option>
-                </select>
-              </li>
-              <li>
-                <select onChange={(e) => setSelectedLicense(e.target.value)} className='select border-0 w-full'>
-                  <option value=''>All Licenses</option>
-                  <option value='learners'>Learners</option>
-                  <option value='restricted'>Restricted</option>
-                  <option value='full'>Full</option>
-                </select>
-              </li>
-            </ul>
+            <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Search..." className='input mb-2 w-full flex-1' />
+            <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} className="select bg-base-100 focus:outline-none w-32">
+              <option value=''>All Years</option>
+              <option value='11'>Year 11</option>
+              <option value='12'>Year 12</option>
+              <option value='13'>Year 13</option>
+            </select>
+            <select value={selectedLicense} onChange={(e) => setSelectedLicense(e.target.value)} className="select bg-base-100 focus:outline-none w-32">
+              <option value=''>All Licenses</option>
+              <option value='learners'>Learners</option>
+              <option value='restricted'>Restricted</option>
+              <option value='full'>Full</option>
+            </select>
           </div>
           <div className='flex flex-col gap-1 h-min max-h-120 overflow-scroll'>
             {newUser.map((user) => (
