@@ -23,6 +23,7 @@ export default function Vehicles() {
   const [selectedType, setSelectedType] = useState('all');
   const [selected, setSelected] = useState(null as SelectedProps | null);
   const [isdark, setIsdarkCom] = useState<boolean | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const matchedUser = useQuery(
     api.function.getUserForPlate, 
     selected?.carPlate ? { carPlate: selected.carPlate } : "skip"
@@ -42,9 +43,9 @@ export default function Vehicles() {
       );
     }
 
+    setIsLoading(false);
     return filteredVehicles;
   }, [knownVehicles, unknownVehicles, input, selectedType]);
-
 
   return (
     <div className='w-screen min-h-screen bg-base-100'>
@@ -76,11 +77,21 @@ export default function Vehicles() {
             <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Search..." className='input mb-2 w-full pl-10'></input>
           </div>
           <div className='flex flex-col gap-1 h-min max-h-120 overflow-scroll'>
-            {newVehicle?.map((vehicle) => (
+            {isLoading ? (
+              <div className="flex flex-col items-center justify-center py-12 gap-3">
+                <span className="loading loading-spinner loading-lg text-primary"></span>
+                <p className="text-base-content/60 text-sm">Loading...</p>
+              </div>
+            ) : newVehicle.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-12 gap-3">
+                <p className="text-base-content/60 text-sm">No vehicles found.</p>
+              </div> 
+              
+            ) : newVehicle?.map((vehicle) => (
               <li onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setSelected(vehicle)}} className='group list-row bg-base-100 relative cursor-pointer transition items-center border border-base-200 hover:border-primary/40' key={vehicle._id}>
                 {/* <img src={vehicle.image} className="rounded w-10 h-10" /> */}
                 <div className='bg-base-200 p-3 rounded-lg group-hover:bg-primary group-hover:text-primary-content transition'>
-                  <CarFront className="rounded size-6 opacity-60 group-hover:text-" />
+                  <CarFront className="rounded size-6 opacity-60" />
                 </div>
                 <div>
                   <p className='text-lg font-bold'>{vehicle.carPlate}</p>

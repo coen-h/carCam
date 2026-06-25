@@ -62,32 +62,45 @@ export default function Login() {
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
       <div className='absolute top-0 h-screen w-screen flex items-center justify-center px-2'>
-        <div className="fieldset bg-base-200 border-base-300 w-xs border p-4 rounded-box text-base-content">
-            <legend className="fieldset-legend text-xl">Sign Up</legend>
+        <div className="card bg-base-200 border-base-300 w-full max-w-lg border shadow-2xl p-4 rounded-box text-base-content">
+          <div className="card-body p-0 gap-4">
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-base-content">Complete Your Profile</h2>
+              <p className="text-sm text-base-content/70 mt-1">Please provide your driver and vehicle details</p>
+            </div>
 
-            <label className="label">Student Year Level</label>
-            <input name='userYearLevel' type="text" className="input" placeholder="13" value={formData.userYearLevel} onChange={handleChange} />
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="label font-semibold">Student Year Level</label>
+                <input name='userYearLevel' type="text" className="input focus:outline-primary" placeholder="13" value={formData.userYearLevel} onChange={handleChange} />
+              </div>
+              <div>
+                <label className="label font-semibold">License</label>
+                <select name="userLicense" className="input focus:outline-primary select cursor-pointer" value={formData.userLicense} onChange={handleChange}>
+                  <option value="Learners">Learners</option>
+                  <option value="Restricted">Restricted</option>
+                  <option value="Full">Full</option>
+                </select>
+              </div>
+            </div>
 
-            <label className="label">
-              License
-            </label>
-            <select name="userLicense" className="input select" value={formData.userLicense} onChange={handleChange}>
-              <option value="Learners">Learners</option>
-              <option value="Restricted">Restricted</option>
-              <option value="Full">Full</option>
-            </select>
-
-            <label className="label">License Plate</label>
-            <input name='carPlate' type="text" className="input" placeholder="ABC123" value={formData.carPlate} onChange={handleChange} />
-
-            <label className="label">Make and Model</label>
-            <input name='carModel' type="text" className="input" placeholder="Toyota Prius" value={formData.carModel} onChange={handleChange} />
-
-            <label className="label">Year</label>
-            <input name='carYear' type="text" className="input" placeholder="2021" value={formData.carYear} onChange={handleChange} />
-
+            <div className="flex flex-col">
+              <label className="label font-semibold">License Plate</label>
+              <input name='carPlate' type="text" className="input focus:outline-primary w-full" placeholder="ABC123" value={formData.carPlate} onChange={handleChange} />
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="label font-semibold">Make and Model</label>
+                <input name='carModel' type="text" className="input focus:outline-primary" placeholder="Toyota Prius" value={formData.carModel} onChange={handleChange} />
+              </div>
+              <div>
+                <label className="label font-semibold">Year</label>
+                <input name='carYear' type="text" className="input focus:outline-primary" placeholder="2021" value={formData.carYear} onChange={handleChange} />
+              </div>
+            </div>
             
-            <button className="btn btn-neutral mt-2" onClick={handleSubmit}>Login</button>
+            <button className="btn btn-primary mt-2" onClick={handleSubmit}>Login</button>
+          </div>
         </div>
       </div>
     </div>

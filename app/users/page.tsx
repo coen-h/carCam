@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Filter, X, User} from "lucide-react";
+import { Filter, X, User, Calendar, ChevronRight } from "lucide-react";
 import OverlayModal from "@/app/components/OverlayModal";
 import Header from "@/app/components/Header";
 import Background from "@/app/components/Background";
@@ -22,9 +22,9 @@ export default function Users() {
   const [input, setInput] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
   const [selectedLicense, setSelectedLicense] = useState('');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isdark, setIsdarkCom] = useState<boolean | null>(null);
   const [selected, setSelected] = useState(null as SelectedProps | null);
+  const isLoading = users === undefined;
   
   const matchedUser = useQuery(
     api.function.getVehicleFromPlate, 
@@ -58,13 +58,13 @@ export default function Users() {
     <div className='w-screen min-h-screen bg-base-100'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
-      <div className="mx-auto w-2xl max-sm:w-full p-2">
-        <div className='list text-base-content gap-0.5 bg-base-200 rounded-box p-2'>
+      <div className="mx-auto w-2xl max-sm:w-full">
+        <div className='list backdrop-blur-md text-base-content gap-0.5 bg-base-200 rounded-box p-4'>
           <div>
             <p className='text-2xl font-semibold tracking-tight'>Students</p>
             <p className='text-sm text-base-content/60'>Manage and track student profiles and linked vehicles</p>
           </div>
-          <div className='flex gap-1'>
+          <div className='flex gap-1 mt-4'>
             <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Search..." className='input mb-2 w-full flex-1' />
             <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} className="select bg-base-100 focus:outline-none w-32">
               <option value=''>All Years</option>
@@ -80,14 +80,43 @@ export default function Users() {
             </select>
           </div>
           <div className='flex flex-col gap-1 h-min max-h-120 overflow-scroll'>
-            {newUser.map((user) => (
-              <li className='list-row bg-base-300 relative cursor-pointer hover:bg-base-200 transition' key={user._id} onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setSelected(user)}}>
-                <img src={user.image} className="rounded w-10 h-10" />
+            {isLoading ? (
+              <div className="flex flex-col items-center justify-center py-12 gap-3">
+                <span className="loading loading-spinner loading-lg text-primary"></span>
+                <p className="text-base-content/60 text-sm">Loading...</p>
+              </div>
+            ) : newUser.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-12 gap-3">
+                <p className="text-base-content/60 text-sm">No students found.</p>
+              </div>
+            ) : newUser.map((user) => (
+              <li className='list-row items-center bg-base-100 relative cursor-pointer group transition border border-base-200 hover:border-primary/40' key={user._id} onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setSelected(user)}}>
+                <img src={user.image} className="rounded-lg size-12 opacity-60" />
                 <div>
-                  <p>{user.name}</p>
-                  <p className='text-xs font-light text-base-content/70'>{user.email}</p>
+                  <p className='font-bold'>{user.name}</p>
+                  <p className='text-xs text-base-content/60'>{user.email}</p>
+                  {(user.userYearLevel || user.userLicense) && (
+                    <div className="flex gap-2 mt-1.5">
+                      {user.userYearLevel && (
+                        <span className="badge badge-sm badge-ghost text-[10px] uppercase">
+                          Year {user.userYearLevel}
+                        </span>
+                      )}
+                      {user.userLicense && (
+                        <span className="badge badge-sm badge-ghost text-[10px] uppercase">
+                          {user.userLicense}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
-                <p className='absolute -top-3 right-1 bg-base-100 border-base-100 p-1 rounded-box text-sm'>{new Date(user._creationTime).toLocaleString()}</p>
+                <div className='flex items-center gap-2'>
+                  <div className='flex items-center gap-1 text-base-content/60'>
+                    <Calendar className='size-3' />
+                    <p className='text-xs'>{new Date(user._creationTime).toLocaleString()}</p>
+                  </div>
+                  <ChevronRight className='size-4 opacity-0 text-primary group-hover:opacity-100 group-hover:-translate-x-1 transition-transform' />
+                </div>
               </li>
             ))}
           </div>
