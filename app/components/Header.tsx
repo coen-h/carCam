@@ -75,19 +75,29 @@ export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<Rea
         )}
       </div>
       <div className="dock dock-sm md:hidden text-base-content">
-        <Link href='/dashboard' onClick={() => setActivePath('/dashboard')} className={activePath === '/dashboard' ? 'dock-active text-primary' : ''}>
-          <LayoutDashboard width={24} />
-        </Link>
+        {user?.role === "teacher" || user?.role === "admin" ? (
+        <>
+          <Link href='/dashboard' onClick={() => setActivePath('/dashboard')} className={activePath === '/dashboard' ? 'dock-active text-primary' : ''}>
+            <LayoutDashboard width={24} />
+          </Link>
   
-        <Link href='/cars' onClick={() => setActivePath('/cars')} className={activePath === '/cars' ? 'dock-active text-primary' : ''}>
-          <CarFront width={24} />
-        </Link>
+          <Link href='/cars' onClick={() => setActivePath('/cars')} className={activePath === '/cars' ? 'dock-active text-primary' : ''}>
+            <CarFront width={24} />
+          </Link>
         
-        <Link href='/users' onClick={() => setActivePath('/users')} className={activePath === '/users' ? 'dock-active text-primary' : ''}>
-          <User width={24} />
-        </Link>
+          <Link href='/users' onClick={() => setActivePath('/users')} className={activePath === '/users' ? 'dock-active text-primary' : ''}>
+            <User width={24} />
+          </Link>
+        </>
+        ) : (
+          <>
+            <Link href='/home' onClick={() => setActivePath('/home')} className={activePath === '/home' ? 'dock-active text-primary' : ''}>
+              <Home width={24} />
+            </Link>
+          </>
+        )}
 
-        <label className="swap swap-rotate btn btn-soft btn-square">
+        <label className="swap swap-rotate">
           <input type="checkbox" className="theme-controller" value="emerald" checked={isdark} onChange={() => setIsdark(!isdark)} />
           <Sun className="swap-on" width={24} />
           <Moon className="swap-off" width={24} />

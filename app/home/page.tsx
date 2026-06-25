@@ -21,12 +21,12 @@ export default function Dashboard() {
   );
 
   return (
-    <div className='w-screen min-h-screen bg-base-100'>
+    <div className='w-full h-[100dvh] flex flex-col bg-base-100 overflow-hidden'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
-      <div className="flex max-md:flex-col items-stretch gap-2 xl:container mx-auto p-4">
-        <div className="card bg-base-200 flex-1 w-full shadow-sm">
-          <figure className="aspect-video w-full h-full">
+      <div className="flex flex-col md:flex-row flex-1 min-h-0 xl:container mx-auto p-2 gap-4 w-full">
+        <div className="card bg-base-200 shadow-sm w-full md:flex-1 shrink-0 flex flex-col">
+          <figure className="aspect-video w-full shrink-0 border-b border-base-300">
             {matchedUser ? (
               <img src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" alt="Parking Lot" />
             ) : (
@@ -62,8 +62,9 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        <div className="list max-md:w-full gap-1 bg-base-200 rounded-box shadow-sm p-1 w-80 max-md:max-h-60 overflow-y-auto">
+        <div className="list flex flex-col bg-base-200 rounded-box shadow-sm p-1 w-full md:w-80 flex-1 min-h-0">
           <p className='p-2 text-lg opacity-60 tracking-wide text-base-content'>Latest Logs</p>  
+          <div className="flex flex-col gap-2 flex-1 min-h-0 overflow-y-auto pr-1 pb-2">
           {logs ? logs?.slice(-5).map((log) =>
             <button key={log._id} className="btn btn-xl flex list-row bg-base-300 relative items-center">
               <p className='text-base text-base-content'>{log.carPlate}</p>
@@ -75,6 +76,7 @@ export default function Dashboard() {
               <div className="skeleton bg-base-300 w-full h-15 rounded-box"></div>
             </div>
           )}
+          </div>
         </div>
       </div>
     </div>

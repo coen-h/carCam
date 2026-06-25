@@ -55,31 +55,31 @@ export default function Users() {
   }, [users, input, selectedYear, selectedLicense]);
 
   return (
-    <div className='w-screen min-h-screen bg-base-100'>
+    <div className='w-full h-dvh flex flex-col bg-base-100 overflow-hidden'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
-      <div className="mx-auto w-2xl max-sm:w-full px-2 pt-2">
-        <div className='list backdrop-blur-md text-base-content gap-0.5 bg-base-200 shadow-2xl border border-base-200 rounded-box p-4'>
-          <div>
+      <div className="container mx-auto max-w-2xl max-md:max-w-3xl w-full p-2 flex-1 max-md:flex max-md:flex-col min-h-0">
+        <div className='list max-md:mb-14 flex-1 min-h-0 backdrop-blur-md text-base-content gap-0.5 bg-base-200 shadow-2xl border border-base-200 rounded-box p-4'>
+          <div className="shrink-0">
             <p className='text-2xl font-semibold tracking-tight'>Students</p>
             <p className='text-sm text-base-content/60 line-clamp-1'>Manage and track student profiles and linked vehicles</p>
           </div>
-          <div className='flex gap-1 mt-4'>
-            <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Search..." className='input mb-2 w-full flex-1 focus:outline-primary' />
-            <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} className="select bg-base-100 focus:outline-none w-32 max-sm:w-0">
+          <div className='sm:flex max-sm:grid max-sm:grid-cols-2 max-sm:gap-2 gap-1 mt-4'>
+            <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Search..." className='max-sm:order-3 col-span-2 input mb-2 w-full flex-1 focus:outline-primary' />
+            <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} className="max-sm:order-1 select bg-base-100 focus:outline-none w-32 max-sm:w-full">
               <option value=''>All Years</option>
               <option value='11'>Year 11</option>
               <option value='12'>Year 12</option>
               <option value='13'>Year 13</option>
             </select>
-            <select value={selectedLicense} onChange={(e) => setSelectedLicense(e.target.value)} className="select bg-base-100 focus:outline-none w-32 max-sm:w-0">
+            <select value={selectedLicense} onChange={(e) => setSelectedLicense(e.target.value)} className="max-sm:order-2 select bg-base-100 focus:outline-none w-32 max-sm:w-full">
               <option value=''>All Licenses</option>
               <option value='learners'>Learners</option>
               <option value='restricted'>Restricted</option>
               <option value='full'>Full</option>
             </select>
           </div>
-          <div className='flex flex-col gap-1 h-min max-md:max-h-100 max-h-140 overflow-y-auto'>
+          <div className='flex flex-col gap-1 h-full overflow-y-scroll'>
             {isLoading ? (
               <div className="flex flex-col items-center justify-center py-12 gap-3">
                 <span className="loading loading-spinner loading-lg text-primary"></span>
@@ -90,13 +90,13 @@ export default function Users() {
                 <p className="text-base-content/60 text-sm">No students found.</p>
               </div>
             ) : newUser.map((user) => (
-              <li className='list-row items-center bg-base-100 relative cursor-pointer group transition border border-base-300 hover:border-primary/40' key={user._id} onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setSelected(user)}}>
-                <img src={user.image} className="rounded-lg size-12 opacity-60" />
+              <li className='list-row p-1 items-center bg-base-100 relative cursor-pointer group transition border border-base-300 hover:border-primary/40' key={user._id} onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setSelected(user)}}>
+                <img src={user.image} className="rounded-lg size-12 ml-3 max-sm:ml-1 my-3 max-sm:my-1" />
                 <div>
                   <p className='font-bold line-clamp-1'>{user.name}</p>
-                  <p className='text-xs text-base-content/60 line-clamp-1 mb-6.5'>{user.email}</p>
+                  <p className={`text-xs text-base-content/60 line-clamp-1 ${user.userYearLevel || user.userLicense ? 'mb-6' : ''}`}>{user.email}</p>
                   {(user.userYearLevel || user.userLicense) && (
-                    <div className="absolute flex gap-2 bottom-4">
+                    <div className="absolute flex gap-1 max-sm:bottom-1.5 sm:bottom-2">
                       {user.userYearLevel && (
                         <span className="badge badge-sm badge-ghost text-[10px] uppercase">
                           Year {user.userYearLevel}
@@ -113,7 +113,7 @@ export default function Users() {
                 <div className='flex items-center gap-2'>
                   <div className='flex items-center gap-1 text-base-content/60'>
                     <Calendar className='size-3' />
-                    <p className='text-xs'>{new Date(user._creationTime).toLocaleDateString()}</p>
+                    <p className='text-xs max-sm:pr-4'>{new Date(user._creationTime).toLocaleDateString()}</p>
                   </div>
                   <ChevronRight className='max-sm:hidden size-4 opacity-0 text-primary group-hover:opacity-100 group-hover:-translate-x-1 transition-transform' />
                 </div>

@@ -30,7 +30,7 @@ export default function Dashboard() {
       <div className="flex max-md:flex-col justify-center gap-2 xl:container mx-auto px-2 pt-2">
           <div className='skeleton aspect-video w-full relative shadow-sm'>
             {/* <img className='rounded w-full h-full' src="http://192.168.0.137:5000/video_feed" /> */}
-            <img className='rounded w-full h-full' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" />
+            {/* <img className='rounded w-full h-full object-cover' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" /> */}
             <div className="size-2 animate-pulse bg-red-300 top-1 right-1 rounded-full absolute" />
             <div className="top-0 left-0 absolute bg-base-100/60 backdrop-blur text-base-content rounded-tl rounded-br p-1">Student Parking Entrance</div>
           </div>
@@ -40,7 +40,7 @@ export default function Dashboard() {
                 <div key={log.carPlate} className="bg-base-300 rounded">
                   <div className="skeleton w-full h-full rounded-t">
                     {/* <img src={`http://192.168.0.137:3923/images/${log.fileTitle}`} className="w-full h-full object-cover rounded-t"/> */}
-                    <img className='object-cover rounded-t w-full h-full' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" />
+                    <img className='object-cover aspect-video rounded-t w-full h-full opacity-0' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" />
                   </div>
                   <div className="flex justify-between text-base-content items-center p-1">
                   <h3>Plate: {log.carPlate}</h3>

@@ -26,7 +26,7 @@ export default function Home() {
           </h1>
         </div>
         <p className={`max-w-2xl text-xl max-lg:text-lg max-md:text-base max-md:max-w-xl max-[32rem]:text-sm max-[32rem]:max-w-sm ${isdark ? 'text-base-content' : 'text-base-content/70'} mt-2 mx-2`}>Monitor, manage, and secure parking spaces with a platform designed specifically for schools, students, and faculty.</p>
-        <div className="flex gap-2 mt-4 mb-24 max-lg:mb-30">
+        <div className="flex gap-2 mt-4 mb-24 max-lg:mb-30 max-md:mb-20">
           <Link href='/login' className={`btn btn-soft btn-lg max-md:btn-md max-md:w-32 w-40 bg-base-300 rounded-box ${!isdark ? 'bg-success text-black hover:bg-success/80 shadow-lg shadow-success/30' : 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg shadow-emerald-500/30 border-emerald-600'}`}>Signup</Link>
           <button className="btn btn-ghost w-40 btn-lg max-md:btn-md max-md:w-32 rounded-box border-base-content/40 border hover:border-base-content/0 text-base-content">Preview</button>
         </div>
