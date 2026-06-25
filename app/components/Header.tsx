@@ -6,11 +6,18 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<React.SetStateAction<boolean | null>>}) {
   const { signOut } = useAuthActions();
   const user = useQuery(api.function.getUser);
+  const pathname = usePathname();
+  const [activePath, setActivePath] = useState(pathname);
   const [isdark, setIsdark] = useState<boolean>(false);
+
+  useEffect(() => {
+    setActivePath(pathname);
+  }, [pathname]);
 
   useEffect(() => {
     const storedTheme = localStorage.getItem('isdark');
@@ -30,14 +37,14 @@ export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<Rea
   }, [isdark]);
 
   return (
-    <div className="navbar min-h-0 flex justify-between z-50">
-      <Link href='/'><img src='carCam.svg' className={`size-10 ${isdark? '' : 'invert'} opacity-75 hover:opacity-50 transition`} /></Link>
-      <div className="flex items-center gap-2">
+    <div className="navbar min-h-0 flex justify-between z-50 max-md:p-0">
+      <Link href='/'><img src='carCam.svg' className={`size-10 max-md:hidden ${isdark? '' : 'invert'} opacity-75 hover:opacity-50 transition`} /></Link>
+      <div className="flex items-center gap-2 max-md:hidden">
         {user && (
           <button data-tip="Logout" className='tooltip tooltip-bottom font-normal btn btn-square btn-soft' onClick={() => void signOut()}><LogOut /></button>
         )}
         <label className="swap swap-rotate btn btn-soft btn-square">
-          <input type="checkbox" className="theme-controller" value="nord" checked={isdark} onChange={() => setIsdark(!isdark)} />
+          <input type="checkbox" className="theme-controller" value="emerald" checked={isdark} onChange={() => setIsdark(!isdark)} />
           <Sun className="swap-on" width={24} />
           <Moon className="swap-off" width={24} />
         </label>
@@ -55,11 +62,7 @@ export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<Rea
             </li>
             <li>
               <Link href='/users' className="tooltip tooltip-bottom" data-tip="User">
-                {user ? (
-                  <User className="rounded size-6" />
-                ) : (
-                  <User width={24} />
-                )}
+                <User width={24} />
               </Link>
             </li>
           </div>
@@ -70,6 +73,25 @@ export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<Rea
             </Link>
           </li>
         )}
+      </div>
+      <div className="dock dock-sm md:hidden text-base-content">
+        <Link href='/dashboard' onClick={() => setActivePath('/dashboard')} className={activePath === '/dashboard' ? 'dock-active text-primary' : ''}>
+          <LayoutDashboard width={24} />
+        </Link>
+  
+        <Link href='/cars' onClick={() => setActivePath('/cars')} className={activePath === '/cars' ? 'dock-active text-primary' : ''}>
+          <CarFront width={24} />
+        </Link>
+        
+        <Link href='/users' onClick={() => setActivePath('/users')} className={activePath === '/users' ? 'dock-active text-primary' : ''}>
+          <User width={24} />
+        </Link>
+
+        <label className="swap swap-rotate btn btn-soft btn-square">
+          <input type="checkbox" className="theme-controller" value="emerald" checked={isdark} onChange={() => setIsdark(!isdark)} />
+          <Sun className="swap-on" width={24} />
+          <Moon className="swap-off" width={24} />
+        </label>
       </div>
     </div>
   );

@@ -66,7 +66,7 @@ export default function Login() {
           <div className="card-body p-0 gap-4">
             <div className="text-center">
               <h2 className="text-2xl font-bold text-base-content">Complete Your Profile</h2>
-              <p className="text-sm text-base-content/70 mt-1">Please provide your driver and vehicle details</p>
+              <p className="text-sm text-base-content/70 mt-1">Please provide your driver and vehicle details.</p>
             </div>
 
             <div className="grid grid-cols-2 gap-2">

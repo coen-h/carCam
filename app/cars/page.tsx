@@ -51,21 +51,21 @@ export default function Vehicles() {
     <div className='w-screen min-h-screen bg-base-100'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
-      <div className="container mx-auto w-2xl max-sm:w-full ">
-        <div className='list backdrop-blur-md text-base-content gap-0.5 bg-base-100 shadow-2xl border border-base-200 rounded-box p-4'>
+      <div className="container mx-auto w-2xl max-sm:w-full px-2 pt-2">
+        <div className='list backdrop-blur-md text-base-content gap-0.5 bg-base-200 shadow-2xl border border-base-200 rounded-box p-4'>
           <div className='flex items-center justify-between gap-1 mb-4'>
             <div>
               <p className='text-2xl font-semibold tracking-tight'>Vehicles</p>
-              <p className='text-sm text-base-content/60'>Manage and track identified vehicles</p>
+              <p className='text-sm text-base-content/60 max-sm:hidden'>Manage and track identified vehicles</p>
             </div>
-            <div className='join p-1 bg-base-200 rounded-lg'>
-              <button className={`join-item btn btn-sm border-none ${selectedType === 'all' ? 'bg-base-100 shadow-sm hover:bg-base-100 text-base-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setSelectedType('all')}>
+            <div className='join p-1 bg-base-100 rounded-lg'>
+              <button className={`join-item btn btn-sm border-none ${selectedType === 'all' ? 'bg-base-200 shadow-sm hover:bg-base-100 text-base-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setSelectedType('all')}>
                 All
               </button>
-              <button className={`join-item btn btn-sm border-none ${selectedType === 'known' ? 'bg-base-100 shadow-sm hover:bg-base-100 text-base-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setSelectedType('known')}>
+              <button className={`join-item btn btn-sm border-none ${selectedType === 'known' ? 'bg-base-200 shadow-sm hover:bg-base-100 text-base-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setSelectedType('known')}>
                 Known
               </button>
-              <button className={`join-item btn btn-sm border-none ${selectedType === 'unknown' ? 'bg-base-100 shadow-sm hover:bg-base-100 text-base-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setSelectedType('unknown')}>
+              <button className={`join-item btn btn-sm border-none ${selectedType === 'unknown' ? 'bg-base-200 shadow-sm hover:bg-base-100 text-base-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setSelectedType('unknown')}>
                 Unknown
               </button>
             </div>
@@ -76,7 +76,7 @@ export default function Vehicles() {
               </div>
             <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Search..." className='input mb-2 w-full pl-10'></input>
           </div>
-          <div className='flex flex-col gap-1 h-min max-h-120 overflow-scroll'>
+          <div className='flex flex-col gap-1 h-min max-md:max-h-100 max-h-140 overflow-y-auto'>
             {isLoading ? (
               <div className="flex flex-col items-center justify-center py-12 gap-3">
                 <span className="loading loading-spinner loading-lg text-primary"></span>
@@ -88,7 +88,7 @@ export default function Vehicles() {
               </div> 
               
             ) : newVehicle?.map((vehicle) => (
-              <li onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setSelected(vehicle)}} className='group list-row bg-base-100 relative cursor-pointer transition items-center border border-base-200 hover:border-primary/40' key={vehicle._id}>
+              <li onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setSelected(vehicle)}} className='group list-row bg-base-100 relative cursor-pointer transition items-center border border-base-300 hover:border-primary/40' key={vehicle._id}>
                 {/* <img src={vehicle.image} className="rounded w-10 h-10" /> */}
                 <div className='bg-base-200 p-3 rounded-lg group-hover:bg-primary group-hover:text-primary-content transition'>
                   <CarFront className="rounded size-6 opacity-60" />
