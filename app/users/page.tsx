@@ -79,7 +79,7 @@ export default function Users() {
               <option value='full'>Full</option>
             </select>
           </div>
-          <div className='flex flex-col gap-1 h-full overflow-y-scroll'>
+          <div className='flex flex-col gap-1 md:h-120 h-full overflow-y-scroll'>
             {isLoading ? (
               <div className="flex flex-col items-center justify-center py-12 gap-3">
                 <span className="loading loading-spinner loading-lg text-primary"></span>
