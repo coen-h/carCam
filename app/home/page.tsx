@@ -62,7 +62,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        <div className="list max-md:min-h-0 max-md:flex-1 max-md:mb-14 max-md:w-full gap-1 bg-base-200 rounded-box shadow-sm p-1 w-100">
+        <div className="list max-md:min-h-0 flex-1 max-md:mb-14 max-md:w-full gap-1 bg-base-200 rounded-box shadow-sm p-1">
           <p className='p-2 text-lg opacity-60 tracking-wide text-base-content'>Latest Logs</p>
           <div className="overflow-y-auto">
           {logs ? logs?.slice(-5).map((log) =>
