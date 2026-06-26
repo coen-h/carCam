@@ -52,20 +52,20 @@ export default function Vehicles() {
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
       <div className="container mx-auto max-w-2xl max-md:max-w-3xl w-full p-2 flex-1 max-md:flex max-md:flex-col min-h-0">
-        <div className='list max-md:mb-14 backdrop-blur-md flex-1 min-h-0 text-base-content gap-0.5 bg-base-200 shadow-2xl border border-base-200 rounded-box p-4'>
+        <div className='list max-md:mb-14 backdrop-blur-md flex-1 min-h-0 text-base-content gap-0.5 bg-base-200 shadow-2xl border border-base-200 rounded-box p-4 max-md:p-2'>
           <div className='flex items-center justify-between gap-1 mb-4'>
             <div>
               <p className='text-2xl font-semibold tracking-tight'>Vehicles</p>
               <p className='text-sm text-base-content/60 max-sm:hidden'>Manage and track identified vehicles</p>
             </div>
             <div className='join p-1 bg-base-100 rounded-lg'>
-              <button className={`join-item btn btn-sm border-none ${selectedType === 'all' ? 'bg-base-200 shadow-sm hover:bg-base-100 text-base-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setSelectedType('all')}>
+              <button className={`join-item btn btn-sm border-none ${selectedType === 'all' ? 'bg-primary/80 shadow-sm hover:bg-primary/60 text-primary-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setSelectedType('all')}>
                 All
               </button>
-              <button className={`join-item btn btn-sm border-none ${selectedType === 'known' ? 'bg-base-200 shadow-sm hover:bg-base-100 text-base-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setSelectedType('known')}>
+              <button className={`join-item btn btn-sm border-none ${selectedType === 'known' ? 'bg-primary/80 shadow-sm hover:bg-primary/60 text-primary-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setSelectedType('known')}>
                 Known
               </button>
-              <button className={`join-item btn btn-sm border-none ${selectedType === 'unknown' ? 'bg-base-200 shadow-sm hover:bg-base-100 text-base-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setSelectedType('unknown')}>
+              <button className={`join-item btn btn-sm border-none ${selectedType === 'unknown' ? 'bg-primary/80 shadow-sm hover:bg-primary/60 text-primary-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setSelectedType('unknown')}>
                 Unknown
               </button>
             </div>
@@ -74,9 +74,9 @@ export default function Vehicles() {
             <div className="absolute top-2 left-2 flex items-center pointer-events-none">
               <Search className="size-6 z-2 text-base-content/40" />
             </div>
-            <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Search..." className='input mb-2 w-full pl-10'></input>
+            <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Search..." className='focus:outline-none focus:border-primary input mb-2 w-full pl-10'></input>
           </div>
-          <div className='flex flex-col gap-1 md:h-120 h-full overflow-y-scroll'>
+          <div className='flex flex-col gap-1 md:max-h-120 h-full overflow-y-scroll'>
             {isLoading ? (
               <div className="flex flex-col items-center justify-center py-12 gap-3">
                 <span className="loading loading-spinner loading-lg text-primary"></span>

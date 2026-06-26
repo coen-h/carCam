@@ -89,9 +89,15 @@ export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<Rea
             <User width={24} />
           </Link>
         </>
-        ) : (
+        ) : user?.role === "student" ? (
           <>
             <Link href='/home' onClick={() => setActivePath('/home')} className={activePath === '/home' ? 'dock-active text-primary' : ''}>
+              <Home width={24} />
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link href='/' onClick={() => setActivePath('/')} className={activePath === '/' ? 'dock-active text-primary' : ''}>
               <Home width={24} />
             </Link>
           </>
@@ -102,6 +108,10 @@ export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<Rea
           <Sun className="swap-on" width={24} />
           <Moon className="swap-off" width={24} />
         </label>
+        
+        {user && (
+          <button className='' onClick={() => void signOut()}><LogOut /></button>
+        )}
       </div>
     </div>
   );
