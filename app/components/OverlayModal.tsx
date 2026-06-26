@@ -37,6 +37,9 @@ export default function overlayModal({mainText, primaryText, secondaryText, crea
             </form>
           </div>
         </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
       </dialog>
   );
 }

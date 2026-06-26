@@ -21,10 +21,10 @@ export default function Dashboard() {
   );
 
   return (
-    <div className='w-screen min-h-screen bg-base-100'>
+    <div className='w-full h-dvh flex flex-col bg-base-100 overflow-hidden'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
-      <div className="flex max-md:flex-col items-stretch gap-2 xl:container mx-auto p-2">
+      <div className="flex max-md:flex-col w-full max-md:flex-1 max-md:min-h-0 justify-center gap-2 xl:container mx-auto p-2">
         <div className="card bg-base-200 flex-1 w-full shadow-sm">
           <figure className="aspect-video w-full h-full">
             {matchedUser ? (
@@ -62,8 +62,9 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        <div className="list max-md:w-full gap-1 bg-base-200 rounded-box shadow-sm p-1 w-80 max-md:max-h-60 overflow-y-auto">
-          <p className='p-2 text-lg opacity-60 tracking-wide text-base-content'>Latest Logs</p>  
+        <div className="list max-md:min-h-0 max-md:flex-1 max-md:mb-14 max-md:w-full gap-1 bg-base-200 rounded-box shadow-sm p-1 w-100">
+          <p className='p-2 text-lg opacity-60 tracking-wide text-base-content'>Latest Logs</p>
+          <div className="overflow-y-auto">
           {logs ? logs?.slice(-5).map((log) =>
             <button key={log._id} className="btn btn-xl flex list-row bg-base-300 relative items-center">
               <p className='text-base text-base-content'>{log.carPlate}</p>
@@ -73,8 +74,10 @@ export default function Dashboard() {
             <div className="flex flex-col gap-1">
               <div className="skeleton bg-base-300 w-full h-15 rounded-box"></div>
               <div className="skeleton bg-base-300 w-full h-15 rounded-box"></div>
+              <div className="skeleton bg-base-300 w-full h-15 rounded-box"></div>
             </div>
           )}
+          </div>
         </div>
       </div>
     </div>
