@@ -59,7 +59,7 @@ export default function Users() {
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
       <div className="container mx-auto max-w-2xl max-md:max-w-3xl w-full p-2 flex-1 max-md:flex max-md:flex-col min-h-0">
-        <div className='list max-md:mb-14 flex-1 min-h-0 backdrop-blur-md text-base-content gap-0.5 bg-base-200 shadow-2xl border border-base-200 rounded-box p-4'>
+        <div className='list max-md:mb-14 flex-1 min-h-0 backdrop-blur-md text-base-content gap-0.5 bg-base-200 shadow-2xl border border-base-200 rounded-box p-4 max-md:p-2'>
           <div className="shrink-0">
             <p className='text-2xl font-semibold tracking-tight'>Students</p>
             <p className='text-sm text-base-content/60 line-clamp-1'>Manage and track student profiles and linked vehicles</p>

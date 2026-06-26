@@ -12,7 +12,7 @@ interface Props {
 export default function overlayModal({mainText, primaryText, secondaryText, creationTime, matched, image}: Props) {
   return (
       <dialog id="my_modal_1" className="modal text-base-content">
-        <div className="modal-box">
+        <div className="modal-box max-md:p-4">
           <h3 className="font-bold text-xl text-primary">{mainText}</h3>
           <p className="pb-2 text-sm text-base-content/60">{creationTime ? new Date(creationTime).toLocaleString() : 0}</p>
           <div className="p-4 bg-base-200 rounded">
