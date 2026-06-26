@@ -76,7 +76,7 @@ export default function Vehicles() {
             </div>
             <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Search..." className='focus:outline-none focus:border-primary input mb-2 w-full pl-10'></input>
           </div>
-          <div className='flex flex-col gap-1 md:h-120 h-full overflow-y-scroll'>
+          <div className='flex flex-col gap-1 md:max-h-120 h-full overflow-y-scroll'>
             {isLoading ? (
               <div className="flex flex-col items-center justify-center py-12 gap-3">
                 <span className="loading loading-spinner loading-lg text-primary"></span>

@@ -25,7 +25,7 @@ export default function Dashboard() {
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
       <div className="flex max-md:flex-col w-full max-md:flex-1 max-md:min-h-0 justify-center gap-2 xl:container mx-auto p-2">
-        <div className="card bg-base-200 flex-1 w-full shadow-sm">
+        <div className="card bg-base-200 flex-1 w-full shadow-md">
           <figure className="aspect-video w-full h-full">
             {matchedUser ? (
               <img src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" alt="Parking Lot" />
@@ -62,11 +62,11 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        <div className="list text-base-content  max-md:min-h-0 flex-1 max-md:mb-14 max-md:w-full gap-1 bg-base-200 rounded-box shadow-sm p-1">
+        <div className="list text-base-content  max-md:min-h-0 flex-1 max-md:mb-14 max-md:w-full gap-1 bg-base-200 rounded-box border border-base-200 shadow-md p-1">
           <p className='p-2 text-lg opacity-60 tracking-wide text-base-content'>Latest Logs</p>
           <div className="overflow-y-auto">
           {logs ? logs?.slice(-5).map((log) =>
-            <button key={log._id} className="group btn btn-xl flex list-row bg-base-300 relative items-center hover:border-primary/40">
+            <button key={log._id} className="group btn btn-xl w-full flex list-row bg-base-300 relative items-center hover:border-primary/40">
               <p className='text-base group-hover:text-primary'>{log.carPlate}</p>
               <p className='text-base-content/60 text-xs'>{new Date(log._creationTime).toLocaleString()}</p>
             </button>
