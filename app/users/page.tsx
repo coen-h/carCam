@@ -91,7 +91,7 @@ export default function Users() {
               </div>
             ) : newUser.map((user) => (
               <li className='list-row p-1 items-center bg-base-100 relative cursor-pointer group transition border border-base-300 hover:border-primary/40' key={user._id} onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setSelected(user)}}>
-                <img src={user.image} className="rounded-lg size-12 ml-3 max-sm:ml-1 my-3 max-sm:my-1" />
+                <img src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png" className="rounded-lg size-12 ml-3 max-sm:ml-1 my-3 max-sm:my-1" />
                 <div>
                   <p className='font-bold line-clamp-1'>{user.name}</p>
                   <p className={`text-xs text-base-content/60 line-clamp-1 ${user.userYearLevel || user.userLicense ? 'mb-6' : ''}`}>{user.email}</p>
