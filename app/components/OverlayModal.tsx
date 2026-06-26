@@ -21,7 +21,8 @@ export default function overlayModal({mainText, primaryText, secondaryText, crea
               <p className="loading loading-dots loading-sm"></p>
             ) : matched ? (
               <div className="flex items-center gap-2">
-                <img src={image} className="rounded size-10" />
+                {/* <img src={image} className="rounded size-10" /> */}
+                <img src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png" className="rounded size-10" />
                 <div>
                   <p>{primaryText || "Unknown"}</p>
                   <p>{secondaryText || "Unknown"}</p>
