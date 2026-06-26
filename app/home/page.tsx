@@ -27,11 +27,11 @@ export default function Dashboard() {
       <div className="flex max-md:flex-col items-stretch gap-2 xl:container mx-auto p-2">
         <div className="card bg-base-200 flex-1 w-full shadow-sm">
           <figure className="aspect-video w-full h-full">
-            {matchedUser ? (
+            {/* {matchedUser ? (
               <img src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" alt="Parking Lot" />
-            ) : (
+            ) : ( */}
               <div className="h-full w-full skeleton rounded-b-none" />
-            )}
+            {/* )} */}
           </figure>
           <div className="card-body">
             <div className="flex items-center justify-between gap-2">
