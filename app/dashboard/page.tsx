@@ -63,20 +63,23 @@ export default function Dashboard() {
             </div>
             <div className="w-full flex-1 gap-0.5 max-md:mb-14 text-base-content shadow-md border border-base-200 bg-base-100 backdrop-blur rounded-box overflow-y-scroll">
               <div className='flex items-center justify-between bg-base-200 px-2 py-1 rounded-t-box'>
-                <p className='p-2 text-sm tracking-wide font-semibold text-base-content/70 uppercase'>Recent Entries</p>  
+                <p className='p-2 text-sm tracking-wider font-semibold text-base-content/70 uppercase'>Recent Entries</p>  
                 <p className='text-xs font-medium bg-primary/10 text-primary px-2 py-1 rounded-box'>{logs?.length || 0} Total</p>
               </div>
               <div className="p-1 flex flex-col gap-1">
                 {logs ? logs?.slice(-5).reverse().map((log) =>
-                  <button onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setSelected(log)}} key={log._id} className="w-full group flex items-center justify-between p-3 bg-base-100 hover:bg-base-200 border border-transparent hover:border-primary/30 rounded-xl transition-all duration-200 ease-in-out cursor-pointer text-left">
+                  <button onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setSelected(log)}} key={log._id} className="w-full group flex items-center justify-between p-3 bg-base-100 max-md:bg-base-200 max-md:border-primary/10 hover:bg-base-200 border border-transparent hover:border-primary/30 rounded-xl transition-all duration-200 ease-in-out cursor-pointer text-left">
                     <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-base-300 group-hover:bg-primary transition-colors" />
+                      <div className="w-2 h-2 rounded-full bg-base-300 max-md:bg-primary group-hover:bg-primary transition-colors" />
                       <span className='font-semibold text-base-content group-hover:text-primary transition-colors'>{log.carPlate}</span>
                     </div>
                     <p className='text-base-content/60 text-xs font-medium'>{new Date(log._creationTime).toLocaleTimeString()}</p>
                   </button>
                 ) : (
-                  <div className="skeleton bg-base-300 w-full h-15 rounded"></div>
+                  <>
+                    <div className="skeleton bg-base-300 w-full h-15 rounded"></div>
+                    <div className="skeleton bg-base-300 w-full h-15 rounded"></div>
+                  </>
                 )}
               </div>
             </div>

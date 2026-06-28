@@ -33,14 +33,14 @@ export default function Dashboard() {
               <div className="h-full w-full skeleton rounded-b-none" />
             {/* )} */}
           </figure>
-          <div className="card-body">
+          <div className="card-body p-4">
             <div className="flex items-center justify-between gap-2">
               {matchedUser ? (
                 <>
-                  <h2 className="card-title text-base-content">{matchedUser?.carPlate}</h2>
+                  <h2 className="card-title text-primary font-bold">{matchedUser?.carPlate}</h2>
                   <div className="flex items-center">
-                    <p className="badge text-xs min-w-18">{user?.userLicense}</p>
-                    <p className="badge text-xs min-w-32">{user?._creationTime && (new Date(user?._creationTime).toLocaleString())}</p>
+                    <p className="badge bg-primary/10 rounded-box text-primary font-medium text-xs min-w-18">{user?.userLicense}</p>
+                    <p className="badge bg-primary/10 rounded-box text-primary font-medium text-xs min-w-32">{user?._creationTime && (new Date(user?._creationTime).toLocaleString())}</p>
                   </div>
                 </>
               ) : (
@@ -55,29 +55,35 @@ export default function Dashboard() {
             </div>
             <div className="flex items-center">
               {matchedUser ? (
-                <p className="text-base-content">{matchedUser?.carModel} - {matchedUser?.carYear}</p>
+                <p className="text-base-content/60">{matchedUser?.carModel} - {matchedUser?.carYear}</p>
               ) : (
                 <div className="h-5.25 w-60 skeleton" />
               )}
             </div>
           </div>
         </div>
-        <div className="list text-base-content max-md:min-h-0 max-md:flex-1 max-md:mb-14 max-md:w-full gap-1 bg-base-200 rounded-box border border-base-200 shadow-md p-1 w-120">
-          <p className='p-2 text-lg opacity-60 tracking-wide text-base-content'>Latest Logs</p>
-          <div className="overflow-y-auto">
-          {logs ? logs?.slice(-5).map((log) =>
-            <button key={log._id} className="group btn btn-xl w-full flex list-row bg-base-300 relative items-center hover:border-primary/40">
-              <p className='text-base group-hover:text-primary'>{log.carPlate}</p>
-              <p className='text-base-content/60 text-xs'>{new Date(log._creationTime).toLocaleString()}</p>
-            </button>
-          ) : (
-            <div className="flex flex-col gap-1">
-              <div className="skeleton bg-base-300 w-full h-15 rounded-box"></div>
-              <div className="skeleton bg-base-300 w-full h-15 rounded-box"></div>
+        <div className="w-full flex-1 gap-0.5 max-md:mb-14 text-base-content shadow-md border border-base-200 bg-base-100 backdrop-blur rounded-box overflow-y-scroll">
+              <div className='flex items-center justify-between bg-base-200 px-2 py-1 rounded-t-box'>
+                <p className='p-2 text-sm tracking-wider font-semibold text-base-content/70 uppercase'>Recent Entries</p>  
+                <p className='text-xs font-medium bg-primary/10 text-primary px-2 py-1 rounded-box'>{logs?.length || 0} Total</p>
+              </div>
+              <div className="p-1 flex flex-col gap-1">
+                {logs ? logs?.slice(-5).reverse().map((log) =>
+                  <button key={log._id} className="w-full group flex items-center justify-between p-3 bg-base-100 max-md:bg-base-200 max-md:border-primary/10 hover:bg-base-200 border border-transparent hover:border-primary/30 rounded-xl transition-all duration-200 ease-in-out cursor-pointer text-left">
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 rounded-full bg-base-300 max-md:bg-primary group-hover:bg-primary transition-colors" />
+                      <span className='font-semibold text-base-content group-hover:text-primary transition-colors'>{log.carPlate}</span>
+                    </div>
+                    <p className='text-base-content/60 text-xs font-medium'>{new Date(log._creationTime).toLocaleTimeString()}</p>
+                  </button>
+                ) : (
+                  <>
+                    <div className="skeleton bg-base-300 w-full h-15 rounded"></div>
+                    <div className="skeleton bg-base-300 w-full h-15 rounded"></div>
+                  </>
+                )}
+              </div>
             </div>
-          )}
-          </div>
-        </div>
       </div>
     </div>
   );
