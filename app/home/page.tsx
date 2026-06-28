@@ -40,7 +40,7 @@ export default function Dashboard() {
                   <h2 className="card-title text-primary font-bold">{matchedUser?.carPlate}</h2>
                   <div className="flex items-center">
                     <p className="badge bg-primary/10 rounded-box text-primary font-medium text-xs min-w-18">{user?.userLicense}</p>
-                    <p className="badge bg-primary/10 rounded-box text-primary font-medium text-xs min-w-32">{user?._creationTime && (new Date(user?._creationTime).toLocaleString())}</p>
+                    <p className="badge bg-primary/10 rounded-box text-primary font-medium text-xs min-w-32">{user?._creationTime && (new Date(user?._creationTime).toLocaleTimeString())}</p>
                   </div>
                 </>
               ) : (
