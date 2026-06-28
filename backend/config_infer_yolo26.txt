@@ -1,0 +1,14 @@
+[property]
+gpu-id=0
+net-scale-factor=0.0039215697906911373
+onnx-file=/home/hero/yolo26s.onnx
+model-engine-file=/home/hero/yolo26s.onnx_b1_gpu0_fp16.engine
+labelfile-path=/home/hero/coco_labels.txt
+batch-size=1
+network-mode=2
+num-detected-classes=80
+interval=0
+gie-unique-id=1
+maintain-aspect-ratio=1
+custom-lib-path=/home/hero/deepstream_lpr_app/libs/libnvdsinfer_custom_impl_Yolo.so
+parse-bbox-func-name=NvDsInferParseYolo

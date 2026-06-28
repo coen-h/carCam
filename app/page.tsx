@@ -30,7 +30,7 @@ export default function Home() {
           <Link href='/login' className={`btn btn-soft btn-lg max-md:btn-md max-md:w-32 w-40 bg-base-300 rounded-box ${!isdark ? 'bg-success text-black hover:bg-success/80 shadow-lg shadow-success/30' : 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg shadow-emerald-500/30 border-emerald-600'}`}>Signup</Link>
           <button className="btn btn-ghost w-40 btn-lg max-md:btn-md max-md:w-32 rounded-box border-base-content/40 border hover:border-base-content/0 text-base-content">Preview</button>
         </div>
-        <div className="w-full max-w-6xl flex items-end px-4 max-lg:hidden">
+        <div className="w-full flex items-end px-64 max-2xl:px-32 max-xl:px-24 max-lg:hidden">
           <img src={!isdark ? 'main-dark.png' : 'main-light.png'} className="w-full rounded-lg shadow-2xl ring-1 ring-black/5" />
         </div>
       </div>
