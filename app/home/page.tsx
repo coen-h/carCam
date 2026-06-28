@@ -65,7 +65,7 @@ export default function Dashboard() {
         <div className="w-100 max-xl:w-80 max-md:w-full max-md:flex-1 gap-0.5 max-md:mb-14 text-base-content shadow-md border border-base-200 bg-base-100 backdrop-blur rounded-box overflow-y-scroll">
           <div className='flex items-center justify-between bg-base-200 px-2 py-1 rounded-t-box'>
             <p className='p-2 text-sm tracking-wider font-semibold text-base-content/70 uppercase'>Recent Entries</p>  
-            <p className="badge bg-primary/10 rounded-box text-primary font-medium text-xs min-w-18">{logs?.length || 0} Total</p>
+            <p className="badge bg-primary/10 border-base-300 rounded-box text-primary font-medium text-xs min-w-18">{logs?.length || 0} Total</p>
           </div>
           <div className="p-1 flex flex-col gap-1">
             {logs ? logs?.slice(-5).reverse().map((log) =>

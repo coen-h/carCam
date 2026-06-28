@@ -36,7 +36,7 @@ export default function Dashboard() {
               <div className="size-2 animate-pulse bg-primary rounded-full" />
               <p className="text-xs font-semibold tracking-wider text-base-content">LIVE</p>
             </div>
-            <div className="bottom-2 left-2 absolute bg-base-100 text-base-content rounded-box px-2 py-1 font-medium">Student Parking Entrance</div>
+            <div className="bottom-2 left-2 absolute bg-base-100 text-base-content text-sm rounded-box px-2 py-1 font-medium">Student Parking Entrance</div>
           </div>
           <div className='flex flex-col gap-2 w-160 max-xl:w-100 max-md:w-full max-md:flex-1 min-h-0 items-stretch'>
             <div className='w-full bg-base-300 backdrop-blur rounded-box max-md:hidden aspect-video flex items-center justify-center shadow-md border border-base-200'>
@@ -64,7 +64,7 @@ export default function Dashboard() {
             <div className="w-full flex-1 gap-0.5 max-md:mb-14 text-base-content shadow-md border border-base-200 bg-base-100 backdrop-blur rounded-box overflow-y-scroll">
               <div className='flex items-center justify-between bg-base-200 px-2 py-1 rounded-t-box'>
                 <p className='p-2 text-sm tracking-wider font-semibold text-base-content/70 uppercase'>Recent Entries</p>  
-                <p className="badge bg-primary/10 rounded-box text-primary font-medium text-xs min-w-18">{logs?.length || 0} Total</p>
+                <p className="badge bg-primary/10 border-base-300 rounded-box text-primary font-medium text-xs min-w-18">{logs?.length || 0} Total</p>
               </div>
               <div className="p-1 flex flex-col gap-1">
                 {logs ? logs?.slice(-5).reverse().map((log) =>
