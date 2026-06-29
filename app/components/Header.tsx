@@ -31,14 +31,9 @@ export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<Rea
     setIsDarkCom?.(isdark);
   }, [isdark, setIsDarkCom]);
 
-  useEffect(() => {
-    localStorage.setItem('isdark', JSON.stringify(isdark));
-    setIsDarkCom?.(isdark);
-  }, [isdark]);
-
   return (
     <div className="navbar min-h-0 flex justify-between z-50 max-md:p-0">
-      <Link href='/'><img src='carCam.svg' className={`size-10 max-md:hidden ${isdark? '' : 'invert'} opacity-75 hover:opacity-50 transition`} /></Link>
+      <Link href='/'><img src='carCam.svg' alt="carCam" className={`size-10 max-md:hidden ${isdark? '' : 'invert'} opacity-75 hover:opacity-50 transition`} /></Link>
       <div className="flex items-center gap-2 max-md:hidden">
         {user && (
           <button data-tip="Logout" className='tooltip tooltip-bottom font-normal btn btn-square btn-soft' onClick={() => void signOut()}><LogOut /></button>

@@ -19,10 +19,10 @@ export default function Home() {
           Smart Parking Surveillance for Education
         </div>
         <div className="max-w-4xl">
-          <h1 className="text-7xl max-lg:text-6xl max-md:text-5xl max-[32rem]:text-4xl max-[24rem]:text-3xl font-extrabold tracking-tight">
-            <span className={`bg-clip-text text-transparent bg-gradient-to-r ${!isdark ? 'from-white to-gray-400' : 'from-gray-900 to-gray-600'}`}>The solution for your</span>
+          <h1 className="text-6xl max-lg:text-5xl max-[40rem]:text-4xl max-[30rem]:text-3xl max-[26rem]:text-[27px] font-extrabold tracking-tight">
+            <span className={`bg-clip-text text-transparent bg-gradient-to-r ${!isdark ? 'from-white to-gray-400' : 'from-gray-900 to-gray-600'}`}>carCam - solution for</span>
             <br />
-            <span className={`bg-clip-text text-transparent bg-gradient-to-r ${!isdark ? 'from-emerald-100 to-emerald-400' : 'from-emerald-800 to-teal-500'}`}>parking surveillance.</span>
+            <span className={`bg-clip-text text-transparent bg-gradient-to-r ${!isdark ? 'from-emerald-100 to-emerald-400' : 'from-emerald-800 to-teal-500'}`}>your parking surveillance.</span>
           </h1>
         </div>
         <p className={`max-w-2xl text-xl max-lg:text-lg max-md:text-base max-md:max-w-xl max-[32rem]:text-sm max-[32rem]:max-w-sm ${isdark ? 'text-base-content' : 'text-base-content/70'} mt-2 mx-2`}>Monitor, manage, and secure parking spaces with a platform designed specifically for schools, students, and faculty.</p>
