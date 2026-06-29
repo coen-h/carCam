@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Search, Calendar, ChevronRight } from "lucide-react";
+import { Search, Calendar, ChevronRight, User } from "lucide-react";
 import OverlayModal from "@/app/components/OverlayModal";
 import Header from "@/app/components/Header";
 import Background from "@/app/components/Background";
@@ -60,9 +60,14 @@ export default function Users() {
       <Header setIsDarkCom={setIsdarkCom} />
       <div className="container mx-auto max-w-2xl max-md:max-w-3xl w-full p-2 flex-1 max-md:flex max-md:flex-col min-h-0">
         <div className='list max-md:mb-14 flex-1 min-h-0 backdrop-blur-md text-base-content gap-0.5 bg-base-200 shadow-2xl border border-base-200 rounded-box p-4 max-md:p-2'>
-          <div className="shrink-0">
-            <p className='text-2xl font-semibold tracking-tight'>Students</p>
-            <p className='text-sm text-base-content/60 line-clamp-1'>Manage and track student profiles and linked vehicles</p>
+          <div className='flex items-center gap-3 shrink-0'>
+            <div className={`${isdark? 'bg-primary/20' : 'bg-primary/10'} p-2 rounded-lg text-primary max-sm:hidden`}>
+              <User className="size-8" />
+            </div>
+            <div>
+              <p className='text-2xl font-semibold tracking-tight'>Students</p>
+              <p className='text-sm text-base-content/60 line-clamp-1'>Manage and track student profiles and linked vehicles</p>
+            </div>
           </div>
           <div className='sm:flex max-sm:grid max-sm:grid-cols-2 max-sm:gap-2 gap-1 mt-4'>
             <div className='relative max-sm:order-3 col-span-2 input mb-2 w-full flex-1 items-center flex'>

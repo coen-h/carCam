@@ -54,9 +54,14 @@ export default function Vehicles() {
       <div className="container mx-auto max-w-2xl max-md:max-w-3xl w-full p-2 flex-1 max-md:flex max-md:flex-col min-h-0">
         <div className='list max-md:mb-14 backdrop-blur-md flex-1 min-h-0 text-base-content gap-0.5 bg-base-200 shadow-2xl border border-base-200 rounded-box p-4 max-md:p-2'>
           <div className='flex items-center justify-between gap-1 mb-4'>
-            <div>
-              <p className='text-2xl font-semibold tracking-tight'>Vehicles</p>
-              <p className='text-sm text-base-content/60 max-sm:hidden'>Manage and track identified vehicles</p>
+            <div className='flex flex-1 items-center gap-3 shrink-0'>
+              <div className={`${isdark? 'bg-primary/20' : 'bg-primary/10'} p-2 rounded-lg text-primary max-sm:hidden`}>
+                <CarFront className="size-8" />
+              </div>
+              <div>
+                <p className='text-2xl font-semibold tracking-tight'>Vehicles</p>
+                <p className='text-sm text-base-content/60 line-clamp-1'>Manage and track identified vehicles</p>
+              </div>
             </div>
             <div className='join p-1 bg-base-100 rounded-lg'>
               <button className={`join-item btn btn-sm border-none ${selectedType === 'all' ? 'bg-primary/80 shadow-sm hover:bg-primary/60 text-primary-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setSelectedType('all')}>

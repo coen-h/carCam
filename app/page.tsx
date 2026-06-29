@@ -20,15 +20,18 @@ export default function Home() {
         </div>
         <div className="max-w-4xl">
           <h1 className="text-6xl max-lg:text-5xl max-[40rem]:text-4xl max-[30rem]:text-3xl max-[26rem]:text-[27px] font-extrabold tracking-tight">
-            <span className={`bg-clip-text text-transparent bg-gradient-to-r ${!isdark ? 'from-white to-gray-400' : 'from-gray-900 to-gray-600'}`}>carCam - solution for</span>
+            <span className={`bg-clip-text text-transparent bg-gradient-to-r ${!isdark ? 'from-white to-gray-400' : 'from-gray-900 to-gray-600'}`}>carCam - The solution for</span>
             <br />
-            <span className={`bg-clip-text text-transparent bg-gradient-to-r ${!isdark ? 'from-emerald-100 to-emerald-400' : 'from-emerald-800 to-teal-500'}`}>your parking surveillance.</span>
+            <span className={`bg-clip-text text-transparent bg-gradient-to-r ${!isdark ? 'from-emerald-100 to-emerald-400' : 'from-emerald-800 to-teal-500'}`}>parking surveillance.</span>
           </h1>
         </div>
         <p className={`max-w-2xl text-xl max-lg:text-lg max-md:text-base max-md:max-w-xl max-[32rem]:text-sm max-[32rem]:max-w-sm ${isdark ? 'text-base-content' : 'text-base-content/70'} mt-2 mx-2`}>Monitor, manage, and secure parking spaces with a platform designed specifically for schools, students, and faculty.</p>
-        <div className="flex gap-2 mt-4 mb-24 max-lg:mb-30 max-md:mb-20">
-          <Link href='/login' className={`btn btn-soft btn-lg max-md:btn-md max-md:w-32 w-40 bg-base-300 rounded-box ${!isdark ? 'bg-success text-black hover:bg-success/80 shadow-lg shadow-success/30' : 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg shadow-emerald-500/30 border-emerald-600'}`}>Signup</Link>
-          <button className="btn btn-ghost w-40 btn-lg max-md:btn-md max-md:w-32 rounded-box border-base-content/40 border hover:border-base-content/0 text-base-content">Preview</button>
+        <div className="flex flex-col items-center gap-3 mt-4 mb-24 max-lg:mb-30 max-md:mb-20">
+          <div className="flex gap-2">
+            <Link href='/login' className={`btn btn-soft btn-lg max-md:btn-md max-md:w-32 w-40 bg-base-300 rounded-box ${!isdark ? 'bg-success text-black hover:bg-success/80 shadow-lg shadow-success/30' : 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg shadow-emerald-500/30 border-emerald-600'}`}>Signup</Link>
+            <button className="btn btn-ghost w-40 btn-lg max-md:btn-md max-md:w-32 rounded-box border-base-content/40 border hover:border-base-content/0 text-base-content">Preview</button>
+          </div>
+          <p className={`text-xs ${isdark ? 'text-base-content/60' : 'text-base-content/50'}`}>By signing up, you agree to our <Link href="/privacy" className="underline hover:text-base-content transition-colors">Privacy Policy</Link>.</p>
         </div>
         <div className="w-full flex items-end px-64 max-2xl:px-32 max-xl:px-24 max-lg:hidden">
           <img src={!isdark ? 'main-dark.png' : 'main-light.png'} className="w-full rounded-lg shadow-2xl ring-1 ring-black/5" />
