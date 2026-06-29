@@ -45,4 +45,10 @@ export default defineSchema({
     .index("email", ["email"])
     .index("phone", ["phone"])
     .index("carPlate", ["carPlate"]),
+
+  alerts: defineTable({
+    carPlate: v.string(),
+    type: v.string(),
+    severity: v.string(),
+  })
 });
