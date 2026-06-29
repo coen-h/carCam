@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Filter, X, User, Calendar, ChevronRight } from "lucide-react";
+import { Search, Calendar, ChevronRight } from "lucide-react";
 import OverlayModal from "@/app/components/OverlayModal";
 import Header from "@/app/components/Header";
 import Background from "@/app/components/Background";
@@ -65,7 +65,12 @@ export default function Users() {
             <p className='text-sm text-base-content/60 line-clamp-1'>Manage and track student profiles and linked vehicles</p>
           </div>
           <div className='sm:flex max-sm:grid max-sm:grid-cols-2 max-sm:gap-2 gap-1 mt-4'>
-            <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Search..." className='max-sm:order-3 col-span-2 input mb-2 w-full flex-1 focus:outline-none focus:border-primary' />
+            <div className='relative max-sm:order-3 col-span-2 input mb-2 w-full flex-1 items-center flex'>
+              <div className="absolute top-1.5 left-1.5 flex items-center pointer-events-none">
+                <Search className="size-6 z-2 text-base-content/40" />
+              </div>
+            <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Search..." className='focus:outline-none focus:border-primary input w-full pl-6'></input>
+            </div>
             <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} className="max-sm:order-1 select bg-base-100 focus:outline-none focus:border-primary w-32 max-sm:w-full">
               <option value=''>All Years</option>
               <option value='11'>Year 11</option>
@@ -91,7 +96,12 @@ export default function Users() {
               </div>
             ) : newUser.map((user) => (
               <li className='list-row p-1 items-center bg-base-100 relative cursor-pointer group transition border border-base-300 hover:border-primary/40' key={user._id} onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setSelected(user)}}>
-                <img src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png" className="rounded-lg size-12 ml-3 max-sm:ml-1 my-3 max-sm:my-1" />
+                {/* <img src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png" className="rounded-lg size-12 ml-3 max-sm:ml-1.5 my-3 max-sm:my-1" /> */}
+                <div className="avatar avatar-placeholder">
+                  <div className="bg-neutral text-neutral-content size-12 rounded-box ml-3 max-sm:ml-1.5 my-3 max-sm:my-1">
+                    <span className="text-xl">{user?.name?.split(" ")[0]?.charAt(0)}</span>
+                  </div>
+                </div>
                 <div>
                   <p className='font-bold line-clamp-1'>{user.name}</p>
                   <p className={`text-xs text-base-content/60 line-clamp-1 ${user.userYearLevel || user.userLicense ? 'mb-6' : ''}`}>{user.email}</p>

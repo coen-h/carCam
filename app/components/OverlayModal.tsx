@@ -22,7 +22,12 @@ export default function overlayModal({mainText, primaryText, secondaryText, crea
             ) : matched ? (
               <div className="flex items-center gap-2">
                 {/* <img src={image} className="rounded size-10" /> */}
-                <img src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png" className="rounded size-10" />
+                {/* <img src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png" className="rounded size-10" /> */}
+                <div className="avatar avatar-placeholder">
+                  <div className="bg-neutral text-neutral-content size-12 rounded-box">
+                    <span className="text-xl">{primaryText?.split(" ")[0]?.charAt(0)}</span>
+                  </div>
+                </div>
                 <div>
                   <p>{primaryText || "Unknown"}</p>
                   <p>{secondaryText || "Unknown"}</p>
