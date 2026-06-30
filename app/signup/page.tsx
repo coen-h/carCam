@@ -72,11 +72,11 @@ export default function Login() {
             <div className="grid grid-cols-2 gap-2">
               <div>
                 <label className="label font-semibold">Student Year Level</label>
-                <input name='userYearLevel' type="text" className="input focus:outline-primary" placeholder="13" value={formData.userYearLevel} onChange={handleChange} />
+                <input name='userYearLevel' maxLength={2} required type="text" className="input focus:outline-primary" placeholder="13" value={formData.userYearLevel} onChange={handleChange} />
               </div>
               <div>
                 <label className="label font-semibold">License</label>
-                <select name="userLicense" className="input focus:outline-primary select cursor-pointer" value={formData.userLicense} onChange={handleChange}>
+                <select name="userLicense" required className="input focus:outline-primary select cursor-pointer" value={formData.userLicense} onChange={handleChange}>
                   <option value="Learners">Learners</option>
                   <option value="Restricted">Restricted</option>
                   <option value="Full">Full</option>
@@ -86,16 +86,16 @@ export default function Login() {
 
             <div className="flex flex-col">
               <label className="label font-semibold">License Plate</label>
-              <input name='carPlate' type="text" className="input focus:outline-primary w-full" placeholder="ABC123" value={formData.carPlate} onChange={handleChange} />
+              <input name='carPlate' type="text" maxLength={6} required className="input uppercase focus:outline-primary w-full" placeholder="ABC123" value={formData.carPlate} onChange={handleChange} />
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div>
                 <label className="label font-semibold">Make and Model</label>
-                <input name='carModel' type="text" className="input focus:outline-primary" placeholder="Toyota Prius" value={formData.carModel} onChange={handleChange} />
+                <input name='carModel' type="text" required className="input focus:outline-primary" placeholder="Toyota Prius" value={formData.carModel} onChange={handleChange} />
               </div>
               <div>
                 <label className="label font-semibold">Year</label>
-                <input name='carYear' type="text" className="input focus:outline-primary" placeholder="2021" value={formData.carYear} onChange={handleChange} />
+                <input name='carYear' type="text" maxLength={4} required className="input focus:outline-primary" placeholder="2021" value={formData.carYear} onChange={handleChange} />
               </div>
             </div>
             
