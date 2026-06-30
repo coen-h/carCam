@@ -2,7 +2,6 @@
 
 import Header from "@/app/components/Header";
 import Link from 'next/link'
-import Alert from "@/app/components/Alert"
 import { useState } from "react";
 
 export default function Home() {
@@ -11,7 +10,6 @@ export default function Home() {
   return (
     <div className={`w-screen h-screen ${!isdark ? 'codioful-dark' : 'codioful-light'} overflow-hidden`}>
       <Header setIsDarkCom={setIsdarkCom} />
-      <Alert />
       <div className="w-screen h-screen overflow-hidden max-lg:justify-center flex flex-col items-center gap-2 text-center">
         <div className={`flex mt-16 max-lg:mt-0 max-lg:mb-0 mb-4 items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium border transition-colors duration-300 ${!isdark ? 'border-success/30 bg-success/10 text-success' : 'border-emerald-800/30 bg-emerald-800/10 text-emerald-600'}`}>
           <span className="relative flex h-2 w-2">
