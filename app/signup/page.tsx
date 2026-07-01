@@ -72,7 +72,11 @@ export default function Login() {
             <div className="grid grid-cols-2 gap-2">
               <div>
                 <label className="label font-semibold">Student Year Level</label>
-                <input name='userYearLevel' maxLength={2} required type="text" className="input focus:outline-primary" placeholder="13" value={formData.userYearLevel} onChange={handleChange} />
+                <select name="userYearLevel" required className="input focus:outline-primary select cursor-pointer" value={formData.userYearLevel} onChange={handleChange}>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                  <option value="13">13</option>
+                </select>
               </div>
               <div>
                 <label className="label font-semibold">License</label>
