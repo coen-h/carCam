@@ -86,7 +86,7 @@ export default function Dashboard() {
           </div>
         
       </div>
-      <OverlayModal mainText={matchedUser?.carPlate} primaryText={matchedUser?.name} secondaryText={matchedUser?.userLicense} creationTime={selected?._creationTime} matched={matchedUser} image={matchedUser?.image} />
+      <OverlayModal mainText={selected?.carPlate} primaryText={matchedUser?.name} secondaryText={matchedUser?.userLicense} creationTime={selected?._creationTime} matched={matchedUser} image={matchedUser?.image} />
     </div>
   );
 }
