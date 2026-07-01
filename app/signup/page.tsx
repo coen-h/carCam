@@ -14,7 +14,7 @@ export default function Login() {
   const updateUser = useMutation(api.function.updateUser);
   const [isdark, setIsdarkCom] = useState<boolean | null>(null);
   const [formData, setFormData] = useState({
-    userYearLevel: '',
+    userYearLevel: '13',
     userLicense: 'Learners',
     role: 'student',
     carPlate: '',
