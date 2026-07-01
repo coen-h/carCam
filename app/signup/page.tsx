@@ -33,7 +33,7 @@ export default function Login() {
     await updateUser({
       userLicense: formData.userLicense,
       userYearLevel: formData.userYearLevel,
-      carPlate: formData.carPlate,
+      carPlate: formData.carPlate.toUpperCase(),
       carModel: formData.carModel,
       carYear: formData.carYear,
       role: formData.role,
