@@ -3,16 +3,24 @@ import { getAuthUserId } from "@convex-dev/auth/server";
 import { mutation } from "./_generated/server";
 import { v } from "convex/values";
 
-export const getAllKnown = query({
+export const getAllVehicles = query({
   handler: async (ctx) => {
-    return await ctx.db.query("knownCars").collect();
-  },
-});
+    const [known, unknown] = await Promise.all([
+      ctx.db.query("knownCars").collect(),
+      ctx.db.query("unknownCars").collect(),
+    ]);
 
-export const getAllUnknown = query({
-  handler: async (ctx) => {
-    return await ctx.db.query("unknownCars").collect(); 
-  }
+    return [
+      ...known.map((vehicle) => ({
+        ...vehicle,
+        type: "known" as const,
+      })),
+      ...unknown.map((vehicle) => ({
+        ...vehicle,
+        type: "unknown" as const,
+      })),
+    ];
+  },
 });
 
 export const getAllUsers = query({
@@ -20,6 +28,7 @@ export const getAllUsers = query({
     return await ctx.db
       .query("users")
       .filter((q) => q.eq(q.field("role"), "student"))
+      .order("desc")
       .collect(); 
   }
 });

@@ -17,8 +17,7 @@ interface SelectedProps {
 }
 
 export default function Vehicles() {
-  const knownVehicles = useQuery(api.function.getAllKnown);
-  const unknownVehicles = useQuery(api.function.getAllUnknown);
+  const vehicles = useQuery(api.function.getAllVehicles);
   const [input, setInput] = useState('');
   const [selectedType, setSelectedType] = useState('all');
   const [selected, setSelected] = useState(null as SelectedProps | null);
@@ -29,23 +28,29 @@ export default function Vehicles() {
   );
 
   const newVehicle = useMemo(() => {
-    if (!knownVehicles || !unknownVehicles) return [];
-    const whichVehicles = selectedType === 'known' ? knownVehicles : selectedType === 'unknown' ? unknownVehicles : [...knownVehicles, ...unknownVehicles];
+    if (!vehicles) return [];
+    let filteredVehicles = vehicles;
 
-    let filteredVehicles = whichVehicles;
+    if (selectedType !== "all") {
+      filteredVehicles = filteredVehicles.filter(
+        (vehicle) => vehicle.type === selectedType
+      );
+    }
 
     const query = input.trim().toLowerCase();
-    
+
     if (query) {
-      filteredVehicles = whichVehicles.filter((vehicle) =>
+      filteredVehicles = filteredVehicles.filter((vehicle) =>
         vehicle.carPlate.toLowerCase().includes(query)
       );
     }
 
-    return filteredVehicles;
-  }, [knownVehicles, unknownVehicles, input, selectedType]);
+    return [...filteredVehicles].sort(
+      (a, b) => b._creationTime - a._creationTime
+    );
+  }, [vehicles, input, selectedType]);
 
-  const isLoading = knownVehicles === undefined || unknownVehicles === undefined;
+  const isLoading = vehicles === undefined;
 
   return (
     <div className='w-full h-dvh flex flex-col bg-base-100 overflow-hidden'>
