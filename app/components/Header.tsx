@@ -36,9 +36,9 @@ export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<Rea
     <div className="navbar min-h-0 flex justify-between z-50 max-md:p-0">
       <Link href='/'><img src='carCam.svg' alt="carCam" className={`size-10 max-md:hidden ${isdark? '' : 'invert'} opacity-75 hover:opacity-50 transition`} /></Link>
       <div className="flex items-center gap-2 max-md:hidden">
-        {/* {user && ( */}
+        {user && (
           <button data-tip="Logout" className='tooltip tooltip-bottom font-normal btn btn-square btn-soft' onClick={() => (document.getElementById('my_modal_1') as HTMLDialogElement).showModal() }><LogOut /></button>
-        {/* )} */}
+        )}
         <label className="swap swap-rotate btn btn-soft btn-square">
           <input type="checkbox" className="theme-controller" value="emerald" checked={isdark} onChange={() => setIsdark(!isdark)} />
           <Sun className="swap-on" width={24} />
