@@ -39,12 +39,12 @@ export default function SearchPage() {
 
   const matchedUser = useQuery(
     api.function.getUserForPlate, 
-    userSelected?.carPlate ? { carPlate: userSelected.carPlate } : "skip"
+    vehicleSelected?.carPlate ? { carPlate: vehicleSelected.carPlate } : "skip"
   );
 
   const matchedVehicle = useQuery(
     api.function.getVehicleFromPlate, 
-    vehicleSelected?.carPlate ? { carPlate: vehicleSelected.carPlate } : "skip"
+    userSelected?.carPlate ? { carPlate: userSelected.carPlate } : "skip"
   );
 
   const newVehicle = useMemo(() => {
@@ -240,9 +240,9 @@ export default function SearchPage() {
         </div>
       </div>
       {type ? (
-        <OverlayModal mainText={vehicleSelected?.carPlate} primaryText={matchedVehicle?.name} secondaryText={matchedVehicle?.userLicense} creationTime={vehicleSelected?._creationTime} matched={matchedVehicle} image={matchedUser?.image}  />
+        <OverlayModal mainText={vehicleSelected?.carPlate} primaryText={matchedUser?.name} secondaryText={matchedUser?.userLicense} creationTime={vehicleSelected?._creationTime} matched={matchedUser} image={matchedUser?.image}  />
       ) : (
-        <OverlayModal mainText={userSelected?.name} primaryText={matchedUser?.carPlate} secondaryText={matchedUser?.carModel} creationTime={userSelected?._creationTime} matched={matchedUser} image='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWNhci1mcm9udC1pY29uIGx1Y2lkZS1jYXItZnJvbnQiPjxwYXRoIGQ9Im0yMSA4LTIgMi0xLjUtMy43QTIgMiAwIDAgMCAxNS42NDYgNUg4LjRhMiAyIDAgMCAwLTEuOTAzIDEuMjU3TDUgMTAgMyA4Ii8+PHBhdGggZD0iTTcgMTRoLjAxIi8+PHBhdGggZD0iTTE3IDE0aC4wMSIvPjxyZWN0IHdpZHRoPSIxOCIgaGVpZ2h0PSI4IiB4PSIzIiB5PSIxMCIgcng9IjIiLz48cGF0aCBkPSJNNSAxOHYyIi8+PHBhdGggZD0iTTE5IDE4djIiLz48L3N2Zz4='  />
+        <OverlayModal mainText={userSelected?.name} primaryText={matchedVehicle?.carPlate} secondaryText={matchedVehicle?.carModel} creationTime={userSelected?._creationTime} matched={matchedVehicle} image='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWNhci1mcm9udC1pY29uIGx1Y2lkZS1jYXItZnJvbnQiPjxwYXRoIGQ9Im0yMSA4LTIgMi0xLjUtMy43QTIgMiAwIDAgMCAxNS42NDYgNUg4LjRhMiAyIDAgMCAwLTEuOTAzIDEuMjU3TDUgMTAgMyA4Ii8+PHBhdGggZD0iTTcgMTRoLjAxIi8+PHBhdGggZD0iTTE3IDE0aC4wMSIvPjxyZWN0IHdpZHRoPSIxOCIgaGVpZ2h0PSI4IiB4PSIzIiBbyPSIxMCIgcng9IjIiLz48cGF0aCBkPSJNNSAxOHYyIi8+PHBhdGggZD0iTTE5IDE4djIiLz48L3N2Zz4='  />
       )}
     </div>
   );
