@@ -65,7 +65,7 @@ export default function Vehicles() {
               </div>
               <div>
                 <p className='text-2xl font-semibold tracking-tight'>Vehicles</p>
-                <p className='text-sm text-base-content/60 line-clamp-1'>Manage and track identified vehicles</p>
+                <p className='text-sm text-base-content/60 line-clamp-1'>Manage and track identified vehicles.</p>
               </div>
             </div>
             <div className='join p-1 bg-base-100 rounded-lg'>

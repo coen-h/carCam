@@ -66,7 +66,7 @@ export default function Users() {
             </div>
             <div>
               <p className='text-2xl font-semibold tracking-tight'>Students</p>
-              <p className='text-sm text-base-content/60 line-clamp-1'>Manage and track student profiles and linked vehicles</p>
+              <p className='text-sm text-base-content/60 line-clamp-1'>Manage and track student profiles and linked vehicles.</p>
             </div>
           </div>
           <div className='sm:flex max-sm:grid max-sm:grid-cols-2 max-sm:gap-2 gap-1 mt-4'>
