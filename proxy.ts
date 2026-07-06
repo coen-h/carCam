@@ -7,19 +7,17 @@ import { fetchQuery } from "convex/nextjs";
 import { api } from "@/convex/_generated/api";
 
 const isProtectedRoute = createRouteMatcher([
-  // "/dashboard(.*)",
-  // "/users(.*)",
-  // "/signup(.*)",
-  // "/cars(.*)",
-  // "/home(.*)",
-  // "/logs(.*)",
+  "/dashboard(.*)",
+  "/signup(.*)",
+  "/search(.*)",
+  "/home(.*)",
+  "/logs(.*)",
 ]);
 
 const isAdminOrTeacherRoute = createRouteMatcher([
-  // "/dashboard(.*)",
-  // "/users(.*)",
-  // "/cars(.*)",
-  // "/logs(.*)",
+  "/dashboard(.*)",
+  "/search(.*)",
+  "/logs(.*)",
 ]);
 
 export default convexAuthNextjsMiddleware(async (request, { convexAuth }) => {

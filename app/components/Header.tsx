@@ -1,6 +1,6 @@
 'use client';
 
-import { LayoutDashboard, User, LogOut, CarFront, Sun, Moon, Home } from "lucide-react";
+import { LayoutDashboard, Search, LogOut, Sun, Moon, Home } from "lucide-react";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -52,13 +52,8 @@ export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<Rea
               </Link>
             </li>
             <li>
-              <Link href='/cars' className="tooltip tooltip-bottom text-base-content" data-tip="Cars">
-                <CarFront width={24} />
-              </Link>
-            </li>
-            <li>
-              <Link href='/users' className="tooltip tooltip-bottom" data-tip="User">
-                <User width={24} />
+              <Link href='/search' className="tooltip tooltip-bottom text-base-content" data-tip="Search">
+                <Search width={24} />
               </Link>
             </li>
           </div>
@@ -77,12 +72,8 @@ export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<Rea
             <LayoutDashboard width={24} />
           </Link>
   
-          <Link href='/cars' onClick={() => setActivePath('/cars')} className={activePath === '/cars' ? 'dock-active text-primary' : ''}>
-            <CarFront width={24} />
-          </Link>
-        
-          <Link href='/users' onClick={() => setActivePath('/users')} className={activePath === '/users' ? 'dock-active text-primary' : ''}>
-            <User width={24} />
+          <Link href='/search' onClick={() => setActivePath('/search')} className={activePath === '/search' ? 'dock-active text-primary' : ''}>
+            <Search width={24} />
           </Link>
         </>
         ) : user?.role === "student" ? (
