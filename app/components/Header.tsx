@@ -37,7 +37,7 @@ export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<Rea
       <Link href='/'><img src='carCam.svg' alt="carCam" className={`size-10 max-md:hidden ${isdark? '' : 'invert'} opacity-75 hover:opacity-50 transition`} /></Link>
       <div className="flex items-center gap-2 max-md:hidden">
         {user && (
-          <button data-tip="Logout" className='tooltip tooltip-bottom font-normal btn btn-square btn-soft' onClick={() => (document.getElementById('my_modal_1') as HTMLDialogElement).showModal() }><LogOut /></button>
+          <button data-tip="Logout" className='tooltip tooltip-bottom font-normal btn btn-square btn-soft' onClick={() => (document.getElementById('header_modal') as HTMLDialogElement).showModal() }><LogOut /></button>
         )}
         <label className="swap swap-rotate btn btn-soft btn-square">
           <input type="checkbox" className="theme-controller" value="emerald" checked={isdark} onChange={() => setIsdark(!isdark)} />
@@ -106,12 +106,12 @@ export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<Rea
         </label>
         
         {user && (
-          <button onClick={() => (document.getElementById('my_modal_1') as HTMLDialogElement).showModal() }><LogOut /></button>
+          <button onClick={() => (document.getElementById('header_modal') as HTMLDialogElement).showModal() }><LogOut /></button>
         )}
       </div>
       
     </div>
-    <dialog id="my_modal_1" className="modal text-base-content">
+    <dialog id="header_modal" className="modal text-base-content">
       <div className="modal-box max-md:p-4">
         <h3 className="font-bold text-xl text-primary">Log out</h3>
         <p className="text-sm text-base-content/60 mt-1">Are you sure you want to sign out?</p>
