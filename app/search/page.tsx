@@ -112,10 +112,10 @@ export default function SearchPage() {
             </div>
             <div className='join p-1 bg-base-100 rounded-lg h-min ml-auto'>
               <button className={`join-item btn btn-sm border-none ${type ? 'bg-primary/80 shadow-sm hover:bg-primary/60 text-primary-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setType(true)}>
-                All
+                Vehicles
               </button>
               <button className={`join-item btn btn-sm border-none ${!type ? 'bg-primary/80 shadow-sm hover:bg-primary/60 text-primary-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setType(false)}>
-                Known
+                Students
               </button>
             </div>
           </div>
@@ -182,7 +182,7 @@ export default function SearchPage() {
                     <p className='text-xs'>{new Date(vehicle._creationTime).toLocaleString()}</p>
                   </div>
                 </div>
-                <ChevronRight className='size-4 opacity-0 text-primary group-hover:opacity-100 group-hover:-translate-x-1 transition-transform' />
+                <ChevronRight className='size-4 opacity-0 text-primary group-hover:opacity-100 group-hover:-translate-x-1 transition-all' />
               </li>
             ))}
           </div>
@@ -230,7 +230,7 @@ export default function SearchPage() {
                     <Calendar className='size-3 text-primary' />
                     <p className='text-xs max-sm:pr-4'>{new Date(user._creationTime).toLocaleDateString()}</p>
                   </div>
-                  <ChevronRight className='max-sm:hidden size-4 opacity-0 text-primary group-hover:opacity-100 group-hover:-translate-x-1 transition-transform' />
+                  <ChevronRight className='max-sm:hidden size-4 opacity-0 text-primary group-hover:opacity-100 group-hover:-translate-x-1 transition-all' />
                 </div>
               </li>
             ))}
