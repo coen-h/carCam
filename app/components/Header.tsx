@@ -12,6 +12,7 @@ export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<Rea
   const { signOut } = useAuthActions();
   const user = useQuery(api.function.getUser);
   const pathname = usePathname();
+  const [activePath, setActivePath] = useState(pathname);
   const [isdark, setIsdark] = useState<boolean>(() => {
     if (typeof window === "undefined") {
       return false;
@@ -68,27 +69,27 @@ export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<Rea
       <div className="dock dock-sm md:hidden text-base-content">
         {user?.role === "teacher" || user?.role === "admin" ? (
         <>
-          <Link href='/dashboard' className={pathname === '/dashboard' ? 'dock-active text-primary' : ''}>
+          <Link href='/dashboard' onClick={() => setActivePath('/dashboard')} className={activePath === '/dashboard' ? 'dock-active text-primary' : ''}>
             <LayoutDashboard width={24} />
           </Link>
   
-          <Link href='/search' className={pathname === '/search' ? 'dock-active text-primary' : ''}>
+          <Link href='/search' onClick={() => setActivePath('/search')} className={activePath === '/search' ? 'dock-active text-primary' : ''}>
             <Search width={24} />
           </Link>
 
-          <Link href='/logs' className={pathname === '/logs' ? 'dock-active text-primary' : ''}>
+          <Link href='/logs' onClick={() => setActivePath('/logs')} className={activePath === '/logs' ? 'dock-active text-primary' : ''}>
             <ScrollText width={24} />
           </Link>
         </>
         ) : user?.role === "student" ? (
           <>
-            <Link href='/home' className={pathname === '/home' ? 'dock-active text-primary' : ''}>
+            <Link href='/home' onClick={() => setActivePath('/home')} className={activePath === '/home' ? 'dock-active text-primary' : ''}>
               <Home width={24} />
             </Link>
           </>
         ) : (
           <>
-            <Link href='/' className={pathname === '/' ? 'dock-active text-primary' : ''}>
+            <Link href='/' onClick={() => setActivePath('/')} className={activePath === '/' ? 'dock-active text-primary' : ''}>
               <Home width={24} />
             </Link>
           </>
