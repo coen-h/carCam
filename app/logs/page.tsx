@@ -364,7 +364,7 @@ export default function Logs() {
                           </span>
                         </div>
                       </div>
-                      <div className="flex gap-2 text-right text-xs text-base-content/50 max-sm:col-span-2 max-sm:text-left">
+                      <div className="flex gap-2 text-right text-xs text-base-content/50 max-sm:col-span-2 max-sm:text-left max-sm:hidden">
                         <p>{log.user?.email ?? log.user?.userLicense ?? ''}</p>
                         <ChevronRight className='max-sm:hidden size-4 opacity-0 text-primary group-hover:opacity-100 group-hover:-translate-x-1 transition-all' />
                       </div>
