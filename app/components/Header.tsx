@@ -1,6 +1,6 @@
 'use client';
 
-import { LayoutDashboard, Search, LogOut, Sun, Moon, Home, ScrollText } from "lucide-react";
+import { LayoutDashboard, UserSearch, LogOut, Sun, Moon, Home, ScrollText } from "lucide-react";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -49,7 +49,7 @@ export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<Rea
             </li>
             <li>
               <Link href='/search' className="tooltip tooltip-bottom text-base-content" data-tip="Search">
-                <Search width={24} />
+                <UserSearch width={24} />
               </Link>
             </li>
             <li>
@@ -74,7 +74,7 @@ export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<Rea
           </Link>
   
           <Link href='/search' onClick={() => setActivePath('/search')} className={activePath === '/search' ? 'dock-active text-primary' : ''}>
-            <Search width={24} />
+            <UserSearch width={24} />
           </Link>
 
           <Link href='/logs' onClick={() => setActivePath('/logs')} className={activePath === '/logs' ? 'dock-active text-primary' : ''}>

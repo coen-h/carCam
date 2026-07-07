@@ -104,7 +104,11 @@ export default function SearchPage() {
         <div className='list max-md:mb-14 backdrop-blur-md flex-1 min-h-0 text-base-content gap-0.5 bg-base-200 shadow-2xl border border-base-200 rounded-box p-4 max-md:p-2'>
           <div className='flex items-center gap-3'>
             <div className={`${isdark? 'bg-primary/20' : 'bg-primary/10'} p-2 rounded-lg text-primary max-sm:hidden`}>
-              <User className="size-8" />
+              {type ? (
+                <CarFront className="size-8" />
+              ) : (
+                <User className="size-8" />
+              )}
             </div>
             <div>
               <p className='text-2xl font-semibold tracking-tight'>{type ? 'Vehicles' : 'Students'}</p>
