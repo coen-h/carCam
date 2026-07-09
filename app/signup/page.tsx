@@ -7,6 +7,7 @@ import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
 import { useRouter } from "next/navigation";
 import { useQuery } from "convex/react";
+import carList from "@/public/carData.json";
 
 export default function Login() {
   const user = useQuery(api.function.getUser);
@@ -18,23 +19,38 @@ export default function Login() {
     userLicense: 'Learners',
     role: 'student',
     carPlate: '',
+    carMake: '',
     carModel: '',
     carYear: '',
+    customMake: '',
+    customModel: '',
   });
 
-  const handleChange = ( e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    
+    setFormData((prev) => {
+      const updated = { ...prev, [name]: value };
+      
+      if (name === 'carMake') {
+        updated.carModel = '';
+        updated.customModel = '';
+      }
+      return updated;
     });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const finalMake = formData.carMake === 'Other' ? formData.customMake : formData.carMake;
+    const finalModel = formData.carModel === 'Other' ? formData.customModel : formData.carModel;
+    const combinedCarModel = `${finalMake} ${finalModel}`.trim();
+
     await updateUser({
       userLicense: formData.userLicense,
       userYearLevel: formData.userYearLevel,
       carPlate: formData.carPlate.toUpperCase(),
-      carModel: formData.carModel,
+      carModel: combinedCarModel,
       carYear: formData.carYear,
       role: formData.role,
     });
@@ -57,13 +73,18 @@ export default function Login() {
     );
   }
 
+  const brandsData = (carList?.brands || {}) as Record<string, string[]>;
+  const availableModels = formData.carMake && formData.carMake !== 'Other' 
+    ? brandsData[formData.carMake] || [] 
+    : [];
+
   return (
     <div className='w-screen min-h-screen bg-base-100'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
       <div className='absolute top-0 h-screen w-screen flex items-center justify-center px-2'>
         <div className="card bg-base-200 border-base-300 w-full max-w-lg border shadow-2xl p-4 rounded-box text-base-content">
-          <div className="card-body p-0 gap-4">
+          <form onSubmit={handleSubmit} className="card-body p-0 gap-4">
             <div className="text-center">
               <h2 className="text-2xl font-bold text-base-content">Complete Your Profile</h2>
               <p className="text-sm text-base-content/70 mt-1">Please provide your driver and vehicle details.</p>
@@ -87,24 +108,71 @@ export default function Login() {
                 </select>
               </div>
             </div>
-
-            <div className="flex flex-col">
-              <label className="label font-semibold">License Plate</label>
-              <input name='carPlate' type="text" maxLength={6} required className="input uppercase focus:outline-primary w-full" placeholder="ABC123" value={formData.carPlate} onChange={handleChange} />
-            </div>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="label font-semibold">Make and Model</label>
-                <input name='carModel' type="text" required className="input focus:outline-primary" placeholder="Toyota Prius" value={formData.carModel} onChange={handleChange} />
+                <label className="label font-semibold">Car Make</label>
+                <select name="carMake" required className="input focus:outline-primary select cursor-pointer w-full" value={formData.carMake} onChange={handleChange}>
+                  <option value="">Select Make</option>
+                  {Object.keys(brandsData).map((brandName) => (
+                    <option key={brandName} value={brandName}>
+                      {brandName}
+                    </option>
+                  ))}
+                  <option value="Other">Other (Not listed)</option>
+                </select>
               </div>
+
+              <div>
+                <label className="label font-semibold">Car Model</label>
+                <select name="carModel" required disabled={!formData.carMake} className="input focus:outline-primary select cursor-pointer w-full disabled:opacity-50" value={formData.carModel} onChange={handleChange}>
+                  <option value="">Select Model</option>
+                  {availableModels.map((modelName) => (
+                    <option key={modelName} value={modelName}>
+                      {modelName}
+                    </option>
+                  ))}
+                  {formData.carMake && <option value="Other">Other (Not listed)</option>}
+                </select>
+              </div>
+            </div>
+
+            {formData.carMake === 'Other' && (
+              <div className="flex flex-col">
+                <label className="label font-semibold">Specify Car Make</label>
+                <input name='customMake' type="text" required className="input focus:outline-primary w-full" placeholder="e.g. Rivian" value={formData.customMake} onChange={handleChange} />
+              </div>
+            )}
+
+            {(formData.carModel === 'Other' || formData.carMake === 'Other') && (
+              <div className="flex flex-col">
+                <label className="label font-semibold">Specify Car Model</label>
+                <input name='customModel' type="text" required className="input focus:outline-primary w-full" placeholder="e.g. R1T" value={formData.customModel} onChange={handleChange} />
+              </div>
+            )}
+            
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex flex-col">
+                <label className="label font-semibold">License Plate</label>
+                <input name='carPlate' type="text" maxLength={6} required className="input uppercase focus:outline-primary w-full" placeholder="ABC123" value={formData.carPlate} onChange={handleChange} />
+              </div>
+              {/* <div>
+                <label className="label font-semibold">Make and Model</label>
+                <select name="carModel" required className="input focus:outline-primary select cursor-pointer" value={formData.carModel} onChange={handleChange}>
+                  {Object.keys(carList.brands).map((brandName) => (
+                    <option key={brandName} value={brandName}>
+                      {brandName}
+                    </option>
+                  ))}
+                </select>
+              </div> */}
               <div>
                 <label className="label font-semibold">Year</label>
                 <input name='carYear' type="text" maxLength={4} required className="input focus:outline-primary" placeholder="2021" value={formData.carYear} onChange={handleChange} />
               </div>
             </div>
             
-            <button className="btn btn-primary mt-2" onClick={handleSubmit}>Login</button>
-          </div>
+            <button className="btn btn-primary mt-2" type="submit">Login</button>
+          </form>
         </div>
       </div>
     </div>
