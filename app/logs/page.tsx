@@ -6,7 +6,7 @@ import { api } from '@/convex/_generated/api';
 import Background from '@/app/components/Background';
 import Header from '@/app/components/Header';
 import OverlayModal from '@/app/components/OverlayModal';
-import { CalendarDays, ChevronLeft, ChevronRight, Clock, ScrollText, Search, User, X } from 'lucide-react';
+import { CalendarDays, ChevronLeft, ChevronRight, Clock, ScrollText, Search, User, X, CarFront } from 'lucide-react';
 
 type CalendarDateElement = HTMLElement & { value: string };
 
@@ -216,7 +216,7 @@ export default function Logs() {
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
       <main className="container mx-auto flex w-full max-w-7xl flex-1 min-h-0 flex-col gap-2 p-2 max-md:pb-16 text-base-content">
-        <section className="rounded-box border border-base-200 bg-base-200/90 p-4 shadow-2xl backdrop-blur-md">
+        <section className="rounded-box border border-base-200 bg-base-200/90 p-4 max-md:p-2 shadow-2xl backdrop-blur-md">
           <div className="flex items-start gap-3">
             <div className="rounded-lg bg-primary/10 p-2 text-primary max-sm:hidden">
               <ScrollText className="size-8" />
@@ -229,7 +229,7 @@ export default function Logs() {
             </div>
             <button
               type="button"
-              className="btn btn-sm btn-ghost ml-auto"
+              className="btn btn-sm btn-soft btn-primary ml-auto"
               onClick={() => {
                 setInput('');
                 setFrame('all');
@@ -312,8 +312,8 @@ export default function Logs() {
           </ul>
           </aside>
 
-          <div className="rounded-box flex min-h-0 flex-col border border-base-200 bg-base-100/90 shadow-md backdrop-blur-md">
-            <div className="flex rounded-t-box items-center justify-between border-b border-base-200 bg-base-200/70 px-4 py-2">
+          <div className="rounded-box flex min-h-0 flex-col border border-base-200 bg-base-200 shadow-md backdrop-blur-md">
+            <div className="flex rounded-t-box items-center justify-between border-b border-base-100 bg-base-100/90 px-4 py-2">
               <p className="text-sm font-semibold uppercase tracking-wider text-base-content/70">All Events</p>
               <span className="badge bg-primary/10 text-primary">{filteredLogs.length}</span>
             </div>
@@ -341,10 +341,10 @@ export default function Logs() {
                         setSelected(log);
                         (document.getElementById('my_modal_1') as HTMLDialogElement).showModal();
                       }}
-                      className="cursor-pointer group grid w-full grid-cols-[auto_1fr_auto] items-center gap-3 rounded-box border border-base-200 bg-base-100 p-3 text-left transition hover:border-primary/40 hover:bg-base-200 max-sm:grid-cols-[auto_1fr]"
+                      className="cursor-pointer group grid w-full grid-cols-[auto_1fr_auto] items-center gap-3 rounded-box border border-base-200 bg-base-100 p-2 text-left transition hover:border-primary/40 max-sm:grid-cols-[auto_1fr]"
                     >
                       <div className="rounded-lg bg-base-200 p-3 text-base-content/60 transition group-hover:bg-primary group-hover:text-primary-content">
-                        <ScrollText className="size-5" />
+                        <CarFront className="size-6" />
                       </div>
                       <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-2">

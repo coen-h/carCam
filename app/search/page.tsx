@@ -128,7 +128,7 @@ export default function SearchPage() {
               <div className="absolute top-1.5 left-1.5 flex items-center pointer-events-none">
                 <Search className="size-6 z-2 text-base-content/40" />
               </div>
-            <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Search..." className='focus:outline-none focus:border-primary input w-full pl-6'></input>
+            <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Search..." className='focus:outline-none input w-full pl-6'></input>
             </div>
             {type ? (
               <div className='join p-1 bg-base-100 rounded-lg h-min col-span-2 max-sm:pr-0.5 outline outline-base-content/20'>
