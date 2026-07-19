@@ -31,7 +31,7 @@ export default function Dashboard() {
             {/* {matchedUser ? (
               <img src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" alt="Parking Lot" />
             ) : ( */}
-              <Image unoptimized alt='Recent View' className='object-cover aspect-video rounded-t-box w-full h-full opacity-0' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" />
+              <Image width={1920} height={1080} unoptimized alt='Recent View' className='object-cover aspect-video rounded-t-box w-full h-full opacity-0' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" />
             {/* )} */}
           </figure>
           <div className="card-body bg-base-100 p-4 rounded-b-box">

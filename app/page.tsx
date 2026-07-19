@@ -35,7 +35,7 @@ export default function Home() {
           <p className={`text-xs ${isdark ? 'text-base-content/60' : 'text-base-content/50'}`}>By signing up, you agree to our <Link href="/privacy" className="underline hover:text-base-content transition-colors">Privacy Policy</Link>.</p>
         </div>
         <div className="w-full flex items-end px-64 max-2xl:px-32 max-xl:px-24 max-lg:hidden">
-          <Image unoptimized alt='Website Screenshot' src={!isdark ? 'main-dark.png' : 'main-light.png'} className="w-full rounded-lg shadow-2xl ring-1 ring-black/5" />
+          <Image width={1920} height={1080} unoptimized alt='Website Screenshot' src={!isdark ? 'main-dark.png' : 'main-light.png'} className="w-full rounded-lg shadow-2xl ring-1 ring-black/5" />
         </div>
       </main>
     </div>

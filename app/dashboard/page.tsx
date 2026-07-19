@@ -45,7 +45,7 @@ export default function Dashboard() {
                 <div key={log.carPlate} className="bg-base-100 rounded-box">
                   <div className="skeleton w-full h-full rounded-t-box rounded-b-none">
                     {/* <img src={`http://192.168.0.137:3923/images/${log.fileTitle}`} className="w-full h-full object-cover rounded-t"/> */}
-                    <Image unoptimized alt='Live View' className='object-cover aspect-video rounded-t-box w-full h-full opacity-0' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" />
+                    <Image width={1920} height={1080} unoptimized alt='Live View' className='object-cover aspect-video rounded-t-box w-full h-full opacity-0' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" />
                   </div>
                   <div className="flex justify-between text-base-content items-center p-2">
                     <div>
