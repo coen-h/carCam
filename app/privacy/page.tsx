@@ -6,14 +6,14 @@ import Background from "@/app/components/Background";
 import { Shield, Eye, Database, Clock, Lock, UserCheck, Mail } from "lucide-react";
 
 export default function PrivacyPolicy() {
-  const [isdark, setIsdarkCom] = useState<boolean | null>(null);
+  const [, setIsdarkCom] = useState<boolean | null>(null);
 
   return (
     <div className='w-full h-dvh flex flex-col bg-base-100 overflow-hidden'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
       
-      <div className="container overflow-y-scroll mx-auto max-w-3xl max-md:max-w-3xl w-full p-2 flex-1 max-md:flex max-md:flex-col min-h-0">
+      <main className="container overflow-y-scroll mx-auto max-w-3xl max-md:max-w-3xl w-full p-2 flex-1 max-md:flex max-md:flex-col min-h-0">
         <div className='flex-1 max-md:mb-14 backdrop-blur-md min-h-0 text-base-content bg-base-200 shadow-2xl border border-base-200 rounded-box p-4 max-md:p-4 overflow-y-auto flex flex-col gap-4'>
           
           <div>
@@ -112,7 +112,7 @@ export default function PrivacyPolicy() {
           </div>
 
         </div>
-      </div>
+      </main>
     </div>
   );
 }

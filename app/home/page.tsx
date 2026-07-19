@@ -2,13 +2,14 @@
 
 import Header from "@/app/components/Header";
 import Background from "@/app/components/Background";
+import Image from "next/image";
 import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
 export default function Dashboard() {
   const user = useQuery(api.function.getUser);
-  const [isdark, setIsdarkCom] = useState<boolean | null>(null);
+  const [, setIsdarkCom] = useState<boolean | null>(null);
   
   const matchedUser = useQuery(
     api.function.getVehicleFromPlate,
@@ -24,13 +25,13 @@ export default function Dashboard() {
     <div className='w-full h-dvh flex flex-col bg-base-100 overflow-hidden'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
-      <div className="flex max-md:flex-col w-full max-md:flex-1 justify-center gap-2 max-w-[1800px] md:h-full min-h-0 mx-auto p-2">
+      <main className="flex max-md:flex-col w-full max-md:flex-1 justify-center gap-2 max-w-450 md:h-full min-h-0 mx-auto p-2">
         <div className="card backdrop-blur bg-base-200 flex-1 w-full h-full shadow-md">
           <figure className="skeleton w-full h-full rounded-t-box rounded-b-none">
             {/* {matchedUser ? (
               <img src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" alt="Parking Lot" />
             ) : ( */}
-              <img className='object-cover aspect-video rounded-t-box w-full h-full opacity-0' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" />
+              <Image unoptimized alt='Recent View' className='object-cover aspect-video rounded-t-box w-full h-full opacity-0' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" />
             {/* )} */}
           </figure>
           <div className="card-body bg-base-100 p-4 rounded-b-box">
@@ -84,7 +85,7 @@ export default function Dashboard() {
             )}
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

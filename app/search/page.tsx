@@ -100,7 +100,7 @@ export default function SearchPage() {
     <div className='w-full h-dvh flex flex-col bg-base-100 overflow-hidden'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
-      <div className="container mx-auto max-w-2xl max-md:max-w-3xl w-full p-2 flex-1 max-md:flex max-md:flex-col min-h-0">
+      <main className="container mx-auto max-w-2xl max-md:max-w-3xl w-full p-2 flex-1 max-md:flex max-md:flex-col min-h-0">
         <div className='list max-md:mb-14 backdrop-blur-md flex-1 min-h-0 text-base-content gap-0.5 bg-base-200 shadow-2xl border border-base-200 rounded-box p-4 max-md:p-2'>
           <div className='flex items-center gap-3'>
             <div className={`${isdark? 'bg-primary/20' : 'bg-primary/10'} p-2 rounded-lg text-primary max-sm:hidden`}>
@@ -182,7 +182,7 @@ export default function SearchPage() {
                 <div>
                   <p className='text-lg font-bold'>{vehicle.carPlate}</p>
                   <div className='flex items-center gap-1 text-base-content/60 mt-1'>
-                    <Calendar className='size-3' />
+                    <Calendar className='size-3 text-primary' />
                     <p className='text-xs'>{new Date(vehicle._creationTime).toLocaleString()}</p>
                   </div>
                 </div>
@@ -242,7 +242,7 @@ export default function SearchPage() {
           </>
           )}
         </div>
-      </div>
+      </main>
       {type ? (
         <OverlayModal mainText={vehicleSelected?.carPlate} primaryText={matchedUser?.name} secondaryText={matchedUser?.userLicense} creationTime={vehicleSelected?._creationTime} matched={matchedUser} image={matchedUser?.image}  />
       ) : (

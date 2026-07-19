@@ -1,6 +1,7 @@
 'use client';
 
 import { LayoutDashboard, UserSearch, LogOut, Sun, Moon, Home, ScrollText } from "lucide-react";
+import Image from "next/image";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -29,8 +30,8 @@ export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<Rea
 
   return (
     <>
-    <div className="navbar min-h-0 flex justify-between z-50 max-md:p-0">
-      <Link href='/'><img src='carCam.svg' alt="carCam" className={`size-10 max-md:hidden ${isdark? '' : 'invert'} opacity-75 hover:opacity-50 transition`} /></Link>
+    <nav className="navbar min-h-0 flex justify-between z-50 max-md:p-0">
+      <Link aria-label="Home" href='/'><Image src='carCam.svg' unoptimized alt="carCam" className={`size-10 max-md:hidden ${isdark? '' : 'invert'} opacity-75 hover:opacity-50 transition`} /></Link>
       <div className="flex items-center gap-2 max-md:hidden">
         {user && (
           <button data-tip="Logout" className='tooltip tooltip-bottom font-normal btn btn-square btn-soft' onClick={() => (document.getElementById('header_modal') as HTMLDialogElement).showModal() }><LogOut /></button>
@@ -89,14 +90,14 @@ export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<Rea
           </>
         ) : (
           <>
-            <Link href='/' onClick={() => setActivePath('/')} className={activePath === '/' ? 'dock-active text-primary' : ''}>
+            <Link aria-label="Home" href='/' onClick={() => setActivePath('/')} className={activePath === '/' ? 'dock-active text-primary' : ''}>
               <Home width={24} />
             </Link>
           </>
         )}
 
         <label className="swap swap-rotate">
-          <input type="checkbox" className="theme-controller" value="emerald" checked={isdark} onChange={() => setIsdark(!isdark)} />
+          <input aria-label="Theme Toggle" type="checkbox" className="theme-controller" value="emerald" checked={isdark} onChange={() => setIsdark(!isdark)} />
           <Sun className="swap-on" width={24} />
           <Moon className="swap-off" width={24} />
         </label>
@@ -106,7 +107,7 @@ export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<Rea
         )}
       </div>
       
-    </div>
+    </nav>
     <dialog id="header_modal" className="modal text-base-content">
       <div className="modal-box max-md:p-4">
         <h3 className="font-bold text-xl text-primary">Log out</h3>

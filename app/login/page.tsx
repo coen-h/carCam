@@ -7,13 +7,13 @@ import Header from "@/app/components/Header";
 
 export default function Login() {
   const { signIn } = useAuthActions();
-  const [isdark, setIsdarkCom] = useState<boolean | null>(null);
+  const [, setIsdarkCom] = useState<boolean | null>(null);
 
   return (
     <div className="w-screen min-h-screen bg-base-100">
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
-      <div className='absolute top-0 h-screen w-screen p-2 flex items-center justify-center'>
+      <main className='absolute top-0 h-screen w-screen p-2 flex items-center justify-center'>
         <div className="card shadow-2xl border-base-content/10 border max-w-sm w-full bg-base-300 p-6 text-center">
           <p className="text-3xl font-bold text-base-content">Welcome Back</p>
           <p className="text-base-content/60 mt-1 text-sm">Sign in to your account to continue</p>
@@ -27,7 +27,7 @@ export default function Login() {
             Continue with Google
           </button>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import Background from "@/app/components/Background";
 import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import Image from "next/image";
 import OverlayModal from "@/app/components/OverlayModal";
 
 interface SelectedProps {
@@ -18,7 +19,7 @@ interface SelectedProps {
 export default function Dashboard() {
   const logs = useQuery(api.function.getAllLogs);
   const [selected, setSelected] = useState(null as SelectedProps | null);
-  const [isdark, setIsdarkCom] = useState<boolean | null>(null);
+  const [, setIsdarkCom] = useState<boolean | null>(null);
   const matchedUser = useQuery(
     api.function.getUserForPlate, 
     selected?.carPlate ? { carPlate: selected.carPlate } : "skip"
@@ -28,7 +29,7 @@ export default function Dashboard() {
     <div className='w-full h-dvh flex flex-col bg-base-100 overflow-hidden'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
-      <div className="flex max-md:flex-col w-full max-md:flex-1 justify-center gap-2 max-w-[1800px] md:h-full min-h-0 mx-auto p-2">
+      <main className="flex max-md:flex-col w-full max-md:flex-1 justify-center gap-2 max-w-450 md:h-full min-h-0 mx-auto p-2">
           <div className='skeleton max-md:aspect-video w-full relative shadow-md'>
             {/* <img className='rounded w-full h-full' src="http://192.168.0.137:5000/video_feed" /> */}
             {/* <img className='rounded w-full h-full object-cover' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" /> */}
@@ -44,7 +45,7 @@ export default function Dashboard() {
                 <div key={log.carPlate} className="bg-base-100 rounded-box">
                   <div className="skeleton w-full h-full rounded-t-box rounded-b-none">
                     {/* <img src={`http://192.168.0.137:3923/images/${log.fileTitle}`} className="w-full h-full object-cover rounded-t"/> */}
-                    <img className='object-cover aspect-video rounded-t-box w-full h-full opacity-0' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" />
+                    <Image unoptimized alt='Live View' className='object-cover aspect-video rounded-t-box w-full h-full opacity-0' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" />
                   </div>
                   <div className="flex justify-between text-base-content items-center p-2">
                     <div>
@@ -85,7 +86,7 @@ export default function Dashboard() {
             </div>
           </div>
         
-      </div>
+      </main>
       <OverlayModal mainText={selected?.carPlate} primaryText={matchedUser?.name} secondaryText={matchedUser?.userLicense} creationTime={selected?._creationTime} matched={matchedUser} image={matchedUser?.image} />
     </div>
   );

@@ -2,6 +2,7 @@
 
 import Header from "@/app/components/Header";
 import Link from 'next/link'
+import Image from "next/image";
 import { useState } from "react";
 
 export default function Home() {
@@ -10,7 +11,7 @@ export default function Home() {
   return (
     <div className={`w-screen h-screen ${!isdark ? 'codioful-dark' : 'codioful-light'} overflow-hidden`}>
       <Header setIsDarkCom={setIsdarkCom} />
-      <div className="w-screen h-screen overflow-hidden max-lg:justify-center flex flex-col items-center gap-2 text-center">
+      <main className="w-screen h-screen overflow-hidden max-lg:justify-center flex flex-col items-center gap-2 text-center">
         <div className={`flex mt-16 max-lg:mt-0 max-lg:mb-0 mb-4 items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium border transition-colors duration-300 ${!isdark ? 'border-success/30 bg-success/10 text-success' : 'border-emerald-800/30 bg-emerald-800/10 text-emerald-600'}`}>
           <span className="relative flex h-2 w-2">
             <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${!isdark ? 'bg-success' : 'bg-emerald-500'}`}></span>
@@ -20,9 +21,9 @@ export default function Home() {
         </div>
         <div className="max-w-4xl">
           <h1 className="text-6xl max-lg:text-5xl max-[40rem]:text-4xl max-[30rem]:text-3xl max-[26rem]:text-[27px] font-extrabold tracking-tight">
-            <span className={`bg-clip-text text-transparent bg-gradient-to-r ${!isdark ? 'from-white to-gray-400' : 'from-gray-900 to-gray-600'}`}>carCam - The solution for</span>
+            <span className={`bg-clip-text text-transparent bg-linear-to-r ${!isdark ? 'from-white to-gray-400' : 'from-gray-900 to-gray-600'}`}>carCam - The solution for</span>
             <br />
-            <span className={`bg-clip-text text-transparent bg-gradient-to-r ${!isdark ? 'from-emerald-100 to-emerald-400' : 'from-emerald-800 to-teal-500'}`}>parking surveillance.</span>
+            <span className={`bg-clip-text text-transparent bg-linear-to-r ${!isdark ? 'from-emerald-100 to-emerald-400' : 'from-emerald-800 to-teal-500'}`}>parking surveillance.</span>
           </h1>
         </div>
         <p className={`max-w-2xl text-xl max-lg:text-lg max-md:text-base max-md:max-w-xl max-[32rem]:text-sm max-[32rem]:max-w-sm ${isdark ? 'text-base-content' : 'text-base-content/70'} mt-2 mx-2`}>Monitor, manage, and secure parking spaces with a platform designed specifically for schools, students, and faculty.</p>
@@ -34,9 +35,9 @@ export default function Home() {
           <p className={`text-xs ${isdark ? 'text-base-content/60' : 'text-base-content/50'}`}>By signing up, you agree to our <Link href="/privacy" className="underline hover:text-base-content transition-colors">Privacy Policy</Link>.</p>
         </div>
         <div className="w-full flex items-end px-64 max-2xl:px-32 max-xl:px-24 max-lg:hidden">
-          <img src={!isdark ? 'main-dark.png' : 'main-light.png'} className="w-full rounded-lg shadow-2xl ring-1 ring-black/5" />
+          <Image unoptimized alt='Website Screenshot' src={!isdark ? 'main-dark.png' : 'main-light.png'} className="w-full rounded-lg shadow-2xl ring-1 ring-black/5" />
         </div>
-      </div>
+      </main>
     </div>
   );
 }

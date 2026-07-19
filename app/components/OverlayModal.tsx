@@ -9,7 +9,7 @@ interface Props {
   image?: string;
 }
 
-export default function OverlayModal({mainText, primaryText, secondaryText, creationTime, matched, image}: Props) {
+export default function OverlayModal({mainText, primaryText, secondaryText, creationTime, matched}: Props) {
   return (
       <dialog id="my_modal_1" className="modal text-base-content">
         <div className="modal-box max-md:p-4">

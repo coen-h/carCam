@@ -13,7 +13,7 @@ export default function Login() {
   const user = useQuery(api.function.getUser);
   const router = useRouter();
   const updateUser = useMutation(api.function.updateUser);
-  const [isdark, setIsdarkCom] = useState<boolean | null>(null);
+  const [, setIsdarkCom] = useState<boolean | null>(null);
   const [formData, setFormData] = useState({
     userYearLevel: '13',
     userLicense: 'Learners',
@@ -82,7 +82,7 @@ export default function Login() {
     <div className='w-screen min-h-screen bg-base-100'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
-      <div className='absolute top-0 h-screen w-screen flex items-center justify-center px-2'>
+      <main className='absolute top-0 h-screen w-screen flex items-center justify-center px-2'>
         <div className="card bg-base-200 border-base-300 w-full max-w-lg border shadow-2xl p-4 rounded-box text-base-content">
           <form onSubmit={handleSubmit} className="card-body p-0 gap-4">
             <div className="text-center">
@@ -174,7 +174,7 @@ export default function Login() {
             <button className="btn btn-primary mt-2" type="submit">Login</button>
           </form>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

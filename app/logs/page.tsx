@@ -113,7 +113,7 @@ export default function Logs() {
   const [endDate, setEndDate] = useState('');
   const [comFrame, setComFrame] = useState('all');
   const [selected, setSelected] = useState<LogRecord | null>(null);
-  const [isdark, setIsdarkCom] = useState<boolean | null>(null);
+  const [, setIsdarkCom] = useState<boolean | null>(null);
 
   useEffect(() => {
     void import('cally');
@@ -273,8 +273,8 @@ export default function Logs() {
           </div>
         </section>
 
-        <section className="grid flex-1 min-h-0 grid-cols-[14rem_1fr] gap-2 max-lg:grid-cols-1">
-          <aside className="rounded-box border border-base-200 bg-base-100/90 p-4 shadow-md backdrop-blur-md max-lg:hidden">
+        <section className="grid flex-1 min-h-0 grid-cols-[13.5rem_1fr] gap-2 max-lg:grid-cols-1">
+          <aside className="rounded-box border border-base-200 bg-base-200 p-4 shadow-md backdrop-blur-md max-lg:hidden">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold uppercase tracking-wider text-base-content/70">Timeline</h2>
               <Clock className="size-4 text-primary" />
@@ -292,7 +292,7 @@ export default function Logs() {
                   <div className="size-3 rounded-full bg-primary" />
                 </div>
       
-                <div className="timeline-end timeline-box bg-base-200 text-sm">
+                <div className="timeline-end timeline-box bg-base-100/90 text-sm">
                   <p className="font-semibold">{day}</p>
                   <p className="text-xs text-base-content/60">
                     {new Date(dayLogs[dayLogs.length - 1]._creationTime).toLocaleTimeString([], {
