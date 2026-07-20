@@ -33,6 +33,15 @@ export const getAllUsers = query({
   }
 });
 
+export const getAllAlerts = query({
+  handler: async (ctx) => {
+    return await ctx.db
+      .query("alerts")
+      .order("desc")
+      .collect();
+  }
+})
+
 export const getUser = query({
   args: {},
   handler: async (ctx) => {
