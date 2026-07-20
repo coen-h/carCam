@@ -124,7 +124,7 @@ export default function Login() {
 
               <div>
                 <label className="label font-semibold">Car Model</label>
-                <select name="carModel" required disabled={!formData.carMake} className="input focus:outline-primary select cursor-pointer w-full disabled:opacity-50" value={formData.carModel} onChange={handleChange}>
+                <select name="carModel" required disabled={!formData.carMake} className="input focus:outline-primary select cursor-pointer w-full disabled:border-base-content/10 disabled:cursor-not-allowed" value={formData.carModel} onChange={handleChange}>
                   <option value="">Select Model</option>
                   {availableModels.map((modelName) => (
                     <option key={modelName} value={modelName}>
