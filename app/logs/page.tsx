@@ -396,7 +396,7 @@ export default function Logs() {
                         <div className="flex flex-wrap items-center gap-2">
                           <p className="text-lg font-bold text-base-content">{item.carPlate}</p>
                           {item.isAlert ? (
-                            <span className={`badge badge-sm uppercase ${item.severity === '3' ? 'badge-error' : 'badge-warning'}`}>
+                            <span className={`badge badge-sm ${item.severity === '3' ? 'badge-error' : 'badge-warning'}`}>
                               Alert: {item.type}
                             </span>
                           ) : (
