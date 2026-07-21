@@ -27,12 +27,9 @@ export default function Home() {
           </h1>
         </div>
         <p className={`max-w-2xl text-xl max-lg:text-lg max-md:text-base max-md:max-w-xl max-[32rem]:text-sm max-[32rem]:max-w-sm ${isdark ? 'text-base-content' : 'text-base-content/70'} mt-2 mx-2`}>Monitor, manage, and secure parking spaces with a platform designed specifically for schools, students, and faculty.</p>
-        <div className="flex flex-col items-center gap-3 mt-4 mb-24 max-lg:mb-30 max-md:mb-20">
-          <div className="flex gap-2">
-            <Link href='/login' className={`btn btn-soft btn-lg max-md:btn-md max-md:w-32 w-40 bg-base-300 rounded-box ${!isdark ? 'bg-success text-black hover:bg-success/80 shadow-lg shadow-success/30' : 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg shadow-emerald-500/30 border-emerald-600'}`}>Signup</Link>
-            <button className="btn btn-ghost w-40 btn-lg max-md:btn-md max-md:w-32 rounded-box border-base-content/40 border hover:border-base-content/0 text-base-content">Preview</button>
-          </div>
-          <p className={`text-xs ${isdark ? 'text-base-content/60' : 'text-base-content/50'}`}>By signing up, you agree to our <Link href="/privacy" className="underline hover:text-base-content transition-colors">Privacy Policy</Link>.</p>
+        <div className="flex items-center gap-3 mt-4 mb-24 max-lg:mb-30 max-md:mb-20">
+          <Link href='/login' className={`btn btn-soft btn-lg max-md:btn-md max-md:w-32 w-40 bg-base-300 rounded-box ${!isdark ? 'bg-success text-black hover:bg-success/80 shadow-lg shadow-success/30' : 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg shadow-emerald-500/30 border-emerald-600'}`}>Signup</Link>
+          <button className="btn btn-ghost w-40 btn-lg max-md:btn-md max-md:w-32 rounded-box border-base-content/40 border hover:border-base-content/0 text-base-content">Preview</button>
         </div>
         <div className="w-full flex items-end px-64 max-2xl:px-32 max-xl:px-24 max-lg:hidden">
           <Image width={1920} height={1080} unoptimized alt='Website Screenshot' src={!isdark ? 'main-dark.png' : 'main-light.png'} className="w-full rounded-lg shadow-2xl ring-1 ring-black/5" />

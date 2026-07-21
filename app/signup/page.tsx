@@ -85,11 +85,6 @@ export default function Login() {
       <main className='absolute top-0 h-screen w-screen flex items-center justify-center px-2'>
         <div className="card bg-base-200 border-base-300 w-full max-w-lg border shadow-2xl p-4 rounded-box text-base-content">
           <form onSubmit={handleSubmit} className="card-body p-0 gap-4">
-            <div className="text-center">
-              <h2 className="text-2xl font-bold text-base-content">Complete Your Profile</h2>
-              <p className="text-sm text-base-content/70 mt-1">Please provide your driver and vehicle details.</p>
-            </div>
-
             <div className="grid grid-cols-2 gap-2">
               <div>
                 <label className="label font-semibold">Student Year Level</label>

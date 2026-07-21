@@ -281,25 +281,25 @@ export default function Logs() {
               <button type="button" className={`join-item btn btn-sm border-0 max-lg:w-1/3 ${feedFilter === 'all' ? 'bg-primary/80 text-primary-content' : 'bg-transparent text-base-content/60'}`} onClick={() => setFeedFilter('all')}>
                 All Items
               </button>
-              <button type="button" className={`join-item btn btn-sm border-0 max-lg:w-1/3 ${feedFilter === 'logs' ? 'bg-primary/80 text-primary-content' : 'bg-transparent text-base-content/60'}`} onClick={() => setFeedFilter('logs')}>
-                Logs Only
+              <button type="button" className={`join-item btn btn-sm border-0 max-lg:w-1/3 ${feedFilter === 'logs' ? 'bg-warning text-warning-content' : 'bg-transparent text-base-content/60'}`} onClick={() => setFeedFilter('logs')}>
+                Logs
               </button>
-              <button type="button" className={`join-item btn btn-sm border-0 max-lg:w-1/3 ${feedFilter === 'alerts' ? 'bg-error text-error-content font-bold shadow-sm' : 'bg-transparent text-base-content/60'}`} onClick={() => setFeedFilter('alerts')}>
+              <button type="button" className={`join-item btn btn-sm border-0 max-lg:w-1/3 ${feedFilter === 'alerts' ? 'bg-error text-error-content' : 'bg-transparent text-base-content/60'}`} onClick={() => setFeedFilter('alerts')}>
                 Alerts
               </button>
             </div>
 
             <div className="join bg-base-100 p-1 max-lg:hidden max-lg:pr-0.5 rounded-lg h-min outline outline-base-content/20">
-              <button type="button" className={`join-item btn btn-sm border-0 max-lg:w-1/4 ${comFrame === 'all' ? 'bg-primary/80 shadow-sm hover:bg-primary/60 text-primary-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setFrame('all')}>
+              <button type="button" className={`join-item btn btn-sm border-0 max-lg:w-1/4 ${comFrame === 'all' ? 'bg-base-content/20 shadow-sm hover:bg-base-content/40 text-base-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setFrame('all')}>
                 All
               </button>
-              <button type="button" className={`join-item btn btn-sm border-0 max-lg:w-1/4 ${comFrame === 'today' ? 'bg-primary/80 shadow-sm hover:bg-primary/60 text-primary-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setFrame('today')}>
+              <button type="button" className={`join-item btn btn-sm border-0 max-lg:w-1/4 ${comFrame === 'today' ? 'bg-base-content/20 shadow-sm hover:bg-base-content/40 text-base-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setFrame('today')}>
                 Today
               </button>
-              <button type="button" className={`join-item btn btn-sm border-0 max-lg:w-1/4 ${comFrame === '7' ? 'bg-primary/80 shadow-sm hover:bg-primary/60 text-primary-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setFrame(7)}>
+              <button type="button" className={`join-item btn btn-sm border-0 max-lg:w-1/4 ${comFrame === '7' ? 'bg-base-content/20 shadow-sm hover:bg-base-content/40 text-base-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setFrame(7)}>
                 7 days
               </button>
-              <button type="button" className={`join-item btn btn-sm border-0 max-lg:w-1/4 ${comFrame === '30' ? 'bg-primary/80 shadow-sm hover:bg-primary/60 text-primary-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setFrame(30)}>
+              <button type="button" className={`join-item btn btn-sm border-0 max-lg:w-1/4 ${comFrame === '30' ? 'bg-base-content/20 shadow-sm hover:bg-base-content/40 text-base-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setFrame(30)}>
                 30 days
               </button>
             </div>
@@ -382,13 +382,15 @@ export default function Logs() {
                       className={`cursor-pointer group grid w-full grid-cols-[auto_1fr_auto] items-center gap-3 rounded-box border bg-base-100 p-2 text-left transition max-sm:grid-cols-[auto_1fr]
                         ${item.isAlert 
                           ? 'border-error/10 bg-error/5 hover:border-error/40' 
-                          : 'border-base-200 bg-base-100 hover:border-primary/40'}
+                          : item.user ? 'border-success/10 bg-base-100 hover:border-success/40'
+                          : 'border-warning/10 bg-base-100 hover:border-warning/40'}
                         `}
                     >
                       <div className={`rounded-lg p-3 transition 
                         ${item.isAlert 
                           ? 'bg-error/20 text-error group-hover:bg-error group-hover:text-error-content' 
-                          : 'bg-base-200 text-base-content/60 group-hover:bg-primary group-hover:text-primary-content'}`}
+                          : item.user ? 'bg-success/20 text-success group-hover:bg-success group-hover:text-success-content'
+                          : 'bg-warning/20 text-warning group-hover:bg-warning group-hover:text-warning-content'}`}
                       >
                         {item.isAlert ? <AlertTriangle className="size-6" /> : <CarFront className="size-6" />}
                       </div>
@@ -396,11 +398,11 @@ export default function Logs() {
                         <div className="flex flex-wrap items-center gap-2">
                           <p className="text-lg font-bold text-base-content">{item.carPlate}</p>
                           {item.isAlert ? (
-                            <span className={`badge badge-sm ${item.severity === '3' ? 'badge-error' : 'badge-warning'}`}>
+                            <span className={`badge badge-sm bg-error/20 text-error uppercase font-semibold tracking-wide`}>
                               Alert: {item.type}
                             </span>
                           ) : (
-                            <span className={item.user ? 'badge badge-sm badge-success' : 'badge badge-sm badge-error'}>
+                            <span className={item.user ? 'badge badge-sm bg-success/20 text-success uppercase font-semibold tracking-wide' : 'badge badge-sm bg-warning/20 text-warning uppercase font-semibold tracking-wide'}>
                               {item.user ? 'Registered' : 'Unknown'}
                             </span>
                           )}

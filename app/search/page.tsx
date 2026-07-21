@@ -174,15 +174,20 @@ export default function SearchPage() {
               </div> 
               
             ) : newVehicle?.map((vehicle) => (
-              <li onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setVehicleSelected(vehicle)}} className='p-2 group list-row bg-base-100 relative cursor-pointer transition items-center border border-base-300 hover:border-primary/40' key={vehicle._id}>
+              <li onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setVehicleSelected(vehicle)}} className={`p-2 group list-row bg-base-100 relative cursor-pointer transition items-center border ${vehicle.type === 'known' ? 'border-success/10 hover:border-success/40' : 'border-warning/10 hover:border-warning/40'}`} key={vehicle._id}>
                 {/* <img src={vehicle.image} className="rounded w-10 h-10" /> */}
-                <div className='bg-base-200 p-3 rounded-lg group-hover:bg-primary group-hover:text-primary-content transition'>
-                  <CarFront className="rounded size-6 opacity-60" />
+                <div className={`p-3 rounded-lg transition ${vehicle.type === 'known' ? 'bg-success/10 text-success group-hover:bg-success' : 'bg-warning/10 text-warning group-hover:bg-warning'}`}>
+                  <CarFront className={`rounded size-6 transition ${vehicle.type === 'known' ? 'text-success group-hover:text-success-content' : 'text-warning group-hover:text-warning-content'}`} />
                 </div>
                 <div>
-                  <p className='text-lg font-bold'>{vehicle.carPlate}</p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className='text-lg font-bold'>{vehicle.carPlate}</p>
+                    <span className={vehicle.type === 'known' ? 'badge badge-sm bg-success/20 text-success uppercase font-semibold tracking-wide' : 'badge badge-sm bg-warning/20 text-warning uppercase font-semibold tracking-wide'}>
+                      {vehicle.type === 'known' ? 'Registered' : 'Unknown'}
+                    </span>
+                  </div>
                   <div className='flex items-center gap-1 text-base-content/60 mt-1'>
-                    <Calendar className='size-3 text-primary' />
+                    <Calendar className='size-3' />
                     <p className='text-xs'>{new Date(vehicle._creationTime).toLocaleString()}</p>
                   </div>
                 </div>
@@ -207,7 +212,7 @@ export default function SearchPage() {
               <li className='list-row p-1 items-center bg-base-100 relative cursor-pointer group transition border border-base-300 hover:border-primary/40' key={user._id} onClick={() => { (document.getElementById('my_modal_1') as HTMLDialogElement).showModal(); setUserSelected(user)}}>
                 {/* <img src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png" className="rounded-lg size-12 ml-3 max-sm:ml-1.5 my-3 max-sm:my-1" /> */}
                 <div className="avatar avatar-placeholder">
-                  <div className="bg-neutral text-neutral-content size-12 rounded-box ml-3 max-sm:ml-1.5 my-3 max-sm:my-1">
+                  <div className="bg-primary/10 text-primary size-12 rounded-box ml-3 max-sm:ml-1.5 my-3 max-sm:my-1">
                     <span className="text-xl">{user?.name?.split(" ")[0]?.charAt(0)}</span>
                   </div>
                 </div>
@@ -217,7 +222,7 @@ export default function SearchPage() {
                   {(user.userYearLevel || user.userLicense) && (
                     <div className="absolute flex gap-1 max-sm:bottom-1.5 sm:bottom-2">
                       {user.userYearLevel && (
-                        <span className="badge badge-sm bg-primary/80 text-primary-content badge-ghost text-[10px] uppercase">
+                        <span className="badge badge-sm bg-neutral-content/80 text-primary-content badge-ghost text-[10px] uppercase">
                           Year {user.userYearLevel}
                         </span>
                       )}
