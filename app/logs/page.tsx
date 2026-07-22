@@ -3,8 +3,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
-import Background from '@/app/components/Background';
-import Header from '@/app/components/Header';
 import OverlayModal from '@/app/components/OverlayModal';
 import { CalendarDays, ChevronLeft, ChevronRight, Clock, ScrollText, Search, User, X, CarFront, AlertTriangle } from 'lucide-react';
 
@@ -118,7 +116,6 @@ export default function Logs() {
   const [comFrame, setComFrame] = useState('all');
   const [feedFilter, setFeedFilter] = useState<'all' | 'logs' | 'alerts'>('all');
   const [selected, setSelected] = useState<CombinedRecord | null>(null);
-  const [, setIsdarkCom] = useState<boolean | null>(null);
 
   useEffect(() => {
     void import('cally');
@@ -237,9 +234,7 @@ export default function Logs() {
   };
 
   return (
-    <div className="w-full h-dvh flex flex-col bg-base-100 overflow-hidden">
-      <Background />
-      <Header setIsDarkCom={setIsdarkCom} />
+    <>
       <main className="container mx-auto flex w-full max-w-7xl flex-1 min-h-0 flex-col gap-2 p-2 max-md:pb-16 text-base-content">
         <section className="rounded-box border border-base-200 bg-base-200/90 p-4 max-md:p-2 shadow-2xl backdrop-blur-md">
           <div className="flex items-start gap-3">
@@ -441,6 +436,6 @@ export default function Logs() {
         matched={selectedUser}
         image={selectedUser?.image}
       />
-    </div>
+    </>
   );
 }

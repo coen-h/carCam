@@ -1,7 +1,5 @@
 'use client';
 
-import Header from "@/app/components/Header";
-import Background from "@/app/components/Background";
 import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -20,16 +18,13 @@ interface SelectedProps {
 export default function Dashboard() {
   const logs = useQuery(api.function.getAllLogs);
   const [selected, setSelected] = useState(null as SelectedProps | null);
-  const [, setIsdarkCom] = useState<boolean | null>(null);
   const matchedUser = useQuery(
     api.function.getUserForPlate, 
     selected?.carPlate ? { carPlate: selected.carPlate } : "skip"
   );
 
   return (
-    <div className='w-full h-dvh flex flex-col bg-base-100 overflow-hidden'>
-      <Background />
-      <Header setIsDarkCom={setIsdarkCom} />
+    <>
       <main className="min-h-0 h-full w-full p-2 flex flex-col gap-2">
         <div className="flex gap-2 w-full justify-between max-md:hidden text-base-content">
           <div className="w-full px-3.5 bg-neutral/5 backdrop-blur flex border items-center gap-4 border-base-content/10 p-2 rounded-box">
@@ -119,6 +114,6 @@ export default function Dashboard() {
         </div>
       </main>
       <OverlayModal mainText={selected?.carPlate} primaryText={matchedUser?.name} secondaryText={matchedUser?.userLicense} creationTime={selected?._creationTime} matched={matchedUser} image={matchedUser?.image} />
-    </div>
+    </>
   );
 }

@@ -1,7 +1,5 @@
 'use client';
 
-import Header from "@/app/components/Header";
-import Background from "@/app/components/Background";
 import { GraduationCap, CarFront, Check, ShieldCheck } from "lucide-react";
 import { useState, useEffect } from 'react';
 import { api } from "@/convex/_generated/api";
@@ -14,7 +12,6 @@ export default function Login() {
   const user = useQuery(api.function.getUser);
   const router = useRouter();
   const updateUser = useMutation(api.function.updateUser);
-  const [, setIsdarkCom] = useState<boolean | null>(null);
   const [formData, setFormData] = useState({
     userYearLevel: '13',
     userLicense: 'Learners',
@@ -67,8 +64,7 @@ export default function Login() {
 
   if (user === undefined || user?.carPlate) {
     return (
-      <div className="w-screen min-h-screen flex items-center justify-center bg-base-100">
-        <Background />
+      <div className="w-full h-full flex items-center justify-center">
         <span className="loading loading-spinner loading-lg"></span>
       </div>
     );
@@ -80,9 +76,7 @@ export default function Login() {
     : [];
 
   return (
-    <div className='w-screen min-h-screen bg-base-100'>
-      <Background />
-      <Header setIsDarkCom={setIsdarkCom} />
+    <>
       <main className='absolute top-0 h-screen w-screen gap-8 flex items-center justify-center px-2'>
         <div className="w-sm flex flex-col gap-4 text-base-content">
           <p className="font-bold text-4xl tracking-tighter">Register your vehicle</p>
@@ -216,6 +210,6 @@ export default function Login() {
           </form>
         </div>
       </main>
-    </div>
+    </>
   );
 }

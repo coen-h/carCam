@@ -4,9 +4,7 @@ import { useState, useMemo } from 'react';
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { CarFront, Search, Calendar, ChevronRight, User } from "lucide-react";
-import Background from "@/app/components/Background";
 import OverlayModal from "@/app/components/OverlayModal";
-import Header from "@/app/components/Header";
 
 interface VehicleSelectedProps {
   carPlate: string;
@@ -35,7 +33,6 @@ export default function SearchPage() {
   const [selectedLicense, setSelectedLicense] = useState('');
   const [userSelected, setUserSelected] = useState(null as UserSelectedProps | null);
   const [vehicleSelected, setVehicleSelected] = useState(null as VehicleSelectedProps | null);
-  const [isdark, setIsdarkCom] = useState<boolean | null>(null);
 
   const matchedUser = useQuery(
     api.function.getUserForPlate, 
@@ -97,13 +94,11 @@ export default function SearchPage() {
   const isLoadingUsers = users === undefined;
 
   return (
-    <div className='w-full h-dvh flex flex-col bg-base-100 overflow-hidden'>
-      <Background />
-      <Header setIsDarkCom={setIsdarkCom} />
+    <>
       <main className="container mx-auto max-w-2xl max-md:max-w-3xl w-full p-2 flex-1 max-md:flex max-md:flex-col min-h-0">
         <div className='list max-md:mb-14 backdrop-blur-md flex-1 min-h-0 text-base-content gap-0.5 bg-base-200 shadow-2xl border border-base-200 rounded-box p-4 max-md:p-2'>
           <div className='flex items-center gap-3'>
-            <div className={`${isdark? 'bg-primary/20' : 'bg-primary/10'} p-2 rounded-lg text-primary max-sm:hidden`}>
+            <div className={`bg-primary/10 p-2 rounded-lg text-primary max-sm:hidden`}>
               {type ? (
                 <CarFront className="size-8" />
               ) : (
@@ -253,6 +248,6 @@ export default function SearchPage() {
       ) : (
         <OverlayModal mainText={userSelected?.name} primaryText={matchedVehicle?.carPlate} secondaryText={matchedVehicle?.carModel} creationTime={userSelected?._creationTime} matched={matchedVehicle} image='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWNhci1mcm9udC1pY29uIGx1Y2lkZS1jYXItZnJvbnQiPjxwYXRoIGQ9Im0yMSA4LTIgMi0xLjUtMy43QTIgMiAwIDAgMCAxNS42NDYgNUg4LjRhMiAyIDAgMCAwLTEuOTAzIDEuMjU3TDUgMTAgMyA4Ii8+PHBhdGggZD0iTTcgMTRoLjAxIi8+PHBhdGggZD0iTTE3IDE0aC4wMSIvPjxyZWN0IHdpZHRoPSIxOCIgaGVpZ2h0PSI4IiB4PSIzIiBbyPSIxMCIgcng9IjIiLz48cGF0aCBkPSJNNSAxOHYyIi8+PHBhdGggZD0iTTE5IDE4djIiLz48L3N2Zz4='  />
       )}
-    </div>
+    </>
   );
 }

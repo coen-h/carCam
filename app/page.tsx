@@ -1,17 +1,15 @@
 'use client';
 
-import Header from "@/app/components/Header";
 import Link from 'next/link'
 import Image from "next/image";
-import { useState } from "react";
+import { useTheme } from "./components/ThemeContext";
 
 export default function Home() {
-  const [isdark, setIsdarkCom] = useState<boolean | null>(null);
+  const { isdark } = useTheme();
 
   return (
-    <div className={`w-screen h-screen ${!isdark ? 'codioful-dark' : 'codioful-light'} overflow-hidden`}>
-      <Header setIsDarkCom={setIsdarkCom} />
-      <main className="w-screen h-screen overflow-hidden max-lg:justify-center flex flex-col items-center gap-2 text-center">
+    <div className={`fixed inset-0 ${!isdark ? 'codioful-dark' : 'codioful-light'}`}>
+      <main className="flex-1 min-h-0 w-full overflow-hidden max-lg:justify-center flex flex-col items-center gap-2 text-center">
         <div className={`flex mt-16 max-lg:mt-0 max-lg:mb-0 mb-4 items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium border transition-colors duration-300 ${!isdark ? 'border-success/30 bg-success/10 text-success' : 'border-emerald-800/30 bg-emerald-800/10 text-emerald-600'}`}>
           <span className="relative flex h-2 w-2">
             <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${!isdark ? 'bg-success' : 'bg-emerald-500'}`}></span>

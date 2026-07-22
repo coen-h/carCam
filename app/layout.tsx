@@ -3,6 +3,9 @@ import type { Viewport } from 'next'
 import { Rubik } from "next/font/google";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 import { ConvexClientProvider } from "./ConvexClientProvider";
+import { ThemeProvider } from '@/app/components/ThemeContext';
+import Background from '@/app/components/Background';
+import Header from '@/app/components/Header';
 import "./globals.css";
 
 const geistSans = Rubik({
@@ -36,8 +39,15 @@ export default function RootLayout({
         lang="en"
         className={`${geistSans.variable} h-full antialiased`}
       >
-        <body className="min-h-full flex flex-col">
-          <ConvexClientProvider>{children}</ConvexClientProvider>
+        <body className="w-full h-dvh flex flex-col bg-base-100 overflow-hidden text-base-content">
+          <ConvexClientProvider>
+            <ThemeProvider>
+              <Background />
+              <Header />
+            
+              {children}
+            </ThemeProvider>
+          </ConvexClientProvider>
         </body>
       </html>
     </ConvexAuthNextjsServerProvider>

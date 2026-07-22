@@ -3,18 +3,13 @@
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useState } from 'react';
 import { ArrowRight, CircleCheck, ShieldCheck, LockKeyhole } from "lucide-react";
-import Background from "@/app/components/Background";
-import Header from "@/app/components/Header";
 import Link from 'next/link'
 
 export default function Login() {
   const { signIn } = useAuthActions();
-  const [, setIsdarkCom] = useState<boolean | null>(null);
 
   return (
-    <div className="w-screen min-h-screen bg-base-100">
-      <Background />
-      <Header setIsDarkCom={setIsdarkCom} />
+    <>
       <main className='absolute top-0 h-screen w-screen p-2 flex items-center justify-center gap-8'>
         <div className="w-xl flex flex-col items-center gap-4 text-base-content">
           <p className="font-bold text-5xl tracking-tighter">Welcome back to a clearer parking day.</p>
@@ -59,6 +54,6 @@ export default function Login() {
           </div>
         </div>
       </main>
-    </div>
+    </>
   );
 }

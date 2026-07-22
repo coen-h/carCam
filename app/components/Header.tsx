@@ -8,25 +8,14 @@ import { api } from "@/convex/_generated/api";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTheme } from "./ThemeContext";
 
-export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<React.SetStateAction<boolean | null>>}) {
+export default function Header() {
   const { signOut } = useAuthActions();
   const user = useQuery(api.function.getUser);
   const pathname = usePathname();
   const [activePath, setActivePath] = useState(pathname);
-  const [isdark, setIsdark] = useState<boolean>(() => {
-    if (typeof window === "undefined") {
-      return false;
-    }
-
-    const storedTheme = localStorage.getItem('isdark');
-    return storedTheme ? JSON.parse(storedTheme) : false;
-  });
-
-  useEffect(() => {
-    localStorage.setItem('isdark', JSON.stringify(isdark));
-    setIsDarkCom?.(isdark);
-  }, [isdark, setIsDarkCom]);
+  const { isdark, toggleTheme } = useTheme();
 
   return (
     <>
@@ -37,7 +26,7 @@ export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<Rea
           <button data-tip="Logout" className='tooltip tooltip-bottom font-normal btn btn-square btn-soft' onClick={() => (document.getElementById('header_modal') as HTMLDialogElement).showModal() }><LogOut /></button>
         )}
         <label className="swap swap-rotate btn btn-soft btn-square">
-          <input aria-label="Theme Toggle" type="checkbox" className="theme-controller" value="emerald" checked={isdark} onChange={() => setIsdark(!isdark)} />
+          <input aria-label="Theme Toggle" type="checkbox" className="theme-controller" value="emerald" checked={isdark || false} onChange={toggleTheme} />
           <Sun className="swap-on" width={24} />
           <Moon className="swap-off" width={24} />
         </label>
@@ -97,7 +86,7 @@ export default function Header({setIsDarkCom}: {setIsDarkCom: React.Dispatch<Rea
         )}
 
         <label className="swap swap-rotate">
-          <input aria-label="Theme Toggle" type="checkbox" className="theme-controller" value="emerald" checked={isdark} onChange={() => setIsdark(!isdark)} />
+          <input aria-label="Theme Toggle" type="checkbox" className="theme-controller" value="emerald" checked={isdark || false} onChange={toggleTheme} />
           <Sun className="swap-on" width={24} />
           <Moon className="swap-off" width={24} />
         </label>

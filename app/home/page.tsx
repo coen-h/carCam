@@ -1,7 +1,5 @@
 'use client';
 
-import Header from "@/app/components/Header";
-import Background from "@/app/components/Background";
 import Image from "next/image";
 import { useState } from "react";
 import { useQuery } from "convex/react";
@@ -9,7 +7,6 @@ import { api } from "@/convex/_generated/api";
 
 export default function Dashboard() {
   const user = useQuery(api.function.getUser);
-  const [, setIsdarkCom] = useState<boolean | null>(null);
   
   const matchedUser = useQuery(
     api.function.getVehicleFromPlate,
@@ -22,9 +19,7 @@ export default function Dashboard() {
   );
 
   return (
-    <div className='w-full h-dvh flex flex-col bg-base-100 overflow-hidden'>
-      <Background />
-      <Header setIsDarkCom={setIsdarkCom} />
+    <>
       <main className="flex max-md:flex-col w-full max-md:flex-1 justify-center gap-2 max-w-450 md:h-full min-h-0 mx-auto p-2">
         <div className="card backdrop-blur bg-base-200 flex-1 w-full h-full shadow-md">
           <figure className="skeleton w-full h-full rounded-t-box rounded-b-none">
@@ -86,6 +81,6 @@ export default function Dashboard() {
           </div>
         </div>
       </main>
-    </div>
+    </>
   );
 }
