@@ -1,7 +1,6 @@
 'use client';
 
 import { useAuthActions } from "@convex-dev/auth/react";
-import { useState } from 'react';
 import { ArrowRight, CircleCheck, ShieldCheck, LockKeyhole } from "lucide-react";
 import Link from 'next/link'
 
@@ -11,9 +10,9 @@ export default function Login() {
   return (
     <>
       <main className='absolute top-0 h-screen w-screen p-2 flex items-center justify-center gap-8'>
-        <div className="w-xl flex flex-col items-center gap-4 text-base-content">
-          <p className="font-bold text-5xl tracking-tighter">Welcome back to a clearer parking day.</p>
-          <p className="text-base-content/60 text-lg">Use your school Google account to open the right carCam workspace for your role.</p>
+        <div className="w-md max-lg:hidden flex flex-col items-center gap-4 text-base-content">
+          <p className="font-bold text-4xl tracking-tighter">Welcome back to a clearer parking day.</p>
+          <p className="text-base-content/60">Use your school Google account to open the right carCam workspace for your role.</p>
           <div className="flex gap-2 mt-2">
             <div className="bg-info/10 size-10 p-2 rounded-box">
               <ShieldCheck className="text-info"/>
@@ -50,7 +49,7 @@ export default function Login() {
           </button>
           <div className='flex gap-2'>
             <CircleCheck className="size-4 text-success" />
-            <p className={`text-xs text-base-content/60`}>By continuing, you agree to carCam's <Link href="/privacy" className="underline text-base-content hover:text-base-content/60 transition-colors">privacy and data-use policy</Link>.</p>
+            <p className={`text-xs text-base-content/60`}>By continuing, you agree to carCam&apos;s <Link href="/privacy" className="underline text-base-content hover:text-base-content/60 transition-colors">privacy and data-use policy</Link>.</p>
           </div>
         </div>
       </main>

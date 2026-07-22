@@ -1,7 +1,6 @@
 'use client';
 
 import Image from "next/image";
-import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 

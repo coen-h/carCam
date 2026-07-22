@@ -394,7 +394,7 @@ export default function Logs() {
                           <p className="text-lg font-bold text-base-content">{item.carPlate}</p>
                           {item.isAlert ? (
                             <span className={`badge badge-sm bg-error/20 text-error uppercase font-semibold tracking-wide`}>
-                              Alert: {item.type}
+                              {item.type}
                             </span>
                           ) : (
                             <span className={item.user ? 'badge badge-sm bg-success/20 text-success uppercase font-semibold tracking-wide' : 'badge badge-sm bg-warning/20 text-warning uppercase font-semibold tracking-wide'}>
@@ -408,7 +408,7 @@ export default function Logs() {
                             {new Date(item._creationTime).toLocaleString()}
                           </span>
                           {!item.isAlert && (
-                            <span className="flex min-w-0 items-center gap-1">
+                            <span className="flex min-w-0 items-center gap-1 max-sm:hidden">
                               <User className="size-3" />
                               <span className="truncate">{item.user?.name ?? 'No matched user'}</span>
                             </span>

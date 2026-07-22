@@ -78,7 +78,7 @@ export default function Login() {
   return (
     <>
       <main className='absolute top-0 h-screen w-screen gap-8 flex items-center justify-center px-2'>
-        <div className="w-sm flex flex-col gap-4 text-base-content">
+        <div className="w-sm max-lg:hidden flex flex-col gap-4 text-base-content">
           <p className="font-bold text-4xl tracking-tighter">Register your vehicle</p>
           <p className="text-base-content/60">This lets the school recognise your car and gives you access to your own parking history.</p>
           <div className="flex flex-col gap-4 mt-2">
@@ -200,7 +200,7 @@ export default function Login() {
                 <input name='carYear' type="text" maxLength={4} required className="input focus:outline-primary" placeholder="2021" value={formData.carYear} onChange={handleChange} />
               </div>
             </div>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
                 <Check className="size-4 text-success"/>
                 <p className="text-base-content/60 text-sm">You can update these details later.</p>

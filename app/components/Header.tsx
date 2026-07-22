@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "./ThemeContext";
@@ -20,7 +20,7 @@ export default function Header() {
   return (
     <>
     <nav className="navbar min-h-0 flex justify-between z-50 max-md:p-0">
-      <Link aria-label="Home" href='/'><Image src='carCam.svg' width={40} height={40} unoptimized alt="carCam" className={`max-md:hidden ${isdark? '' : 'invert'} opacity-75 hover:opacity-50 transition`} /></Link>
+      <Link aria-label="Home" href='/'><Image src='carCam.svg' loading="eager" width={40} height={40} unoptimized alt="carCam" className={`max-md:hidden ${isdark? '' : 'invert'} opacity-75 hover:opacity-50 transition`} /></Link>
       <div className="flex items-center gap-2 max-md:hidden">
         {user && (
           <button data-tip="Logout" className='tooltip tooltip-bottom font-normal btn btn-square btn-soft' onClick={() => (document.getElementById('header_modal') as HTMLDialogElement).showModal() }><LogOut /></button>
