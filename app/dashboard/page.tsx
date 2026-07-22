@@ -7,6 +7,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import Image from "next/image";
 import OverlayModal from "@/app/components/OverlayModal";
+import { CarFront, User, TriangleAlert } from "lucide-react";
 
 interface SelectedProps {
   carPlate: string;
@@ -29,7 +30,37 @@ export default function Dashboard() {
     <div className='w-full h-dvh flex flex-col bg-base-100 overflow-hidden'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
-      <main className="flex max-md:flex-col w-full max-md:flex-1 justify-center gap-2 max-w-450 md:h-full min-h-0 mx-auto p-2">
+      <main className="min-h-0 h-full w-full p-2 flex flex-col gap-2">
+        <div className="flex gap-2 w-full justify-between max-md:hidden text-base-content">
+          <div className="w-full px-3.5 bg-neutral/5 backdrop-blur flex border items-center gap-4 border-base-content/10 p-2 rounded-box">
+            <div className="p-2 bg-info/10 rounded-box h-min">
+              <User className="size-6 text-info"/>
+            </div>
+            <div className="flex flex-col">
+              <p className="text-base-content/60 text-sm font-semibold">Total Capacity</p>
+              <p className="font-bold text-2xl">0</p>
+            </div>
+          </div>
+          <div className="w-full px-3.5 bg-neutral/5 backdrop-blur flex border items-center gap-4 border-base-content/10 p-2 rounded-box">
+            <div className="p-2 bg-success/10 rounded-box h-min">
+              <CarFront className="size-6 text-success"/>
+            </div>
+            <div className="flex flex-col">
+              <p className="text-base-content/60 text-sm font-semibold">Entries today</p>
+              <p className="font-bold text-2xl">0</p>
+            </div>
+          </div>
+          <div className="w-full px-3.5 bg-neutral/5 backdrop-blur flex border items-center gap-4 border-base-content/10 p-2 rounded-box">
+            <div className="p-2 bg-warning/10 rounded-box h-min">
+              <TriangleAlert className="size-6 text-warning"/>
+            </div>
+            <div className="flex flex-col">
+              <p className="text-base-content/60 text-sm font-semibold">Open Alerts</p>
+              <p className="font-bold text-2xl">0</p>
+            </div>
+          </div>
+        </div>
+        <div className="flex max-md:flex-col w-full max-md:flex-1 justify-center gap-2 max-w-450 md:h-full min-h-0 mx-auto">
           <div className='skeleton max-md:aspect-video w-full relative shadow-md'>
             {/* <img className='rounded w-full h-full' src="http://192.168.0.137:5000/video_feed" /> */}
             {/* <img className='rounded w-full h-full object-cover' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" /> */}
@@ -45,7 +76,7 @@ export default function Dashboard() {
                 <div key={log.carPlate} className="bg-base-100 rounded-box">
                   <div className="skeleton w-full h-full rounded-t-box rounded-b-none">
                     {/* <img src={`http://192.168.0.137:3923/images/${log.fileTitle}`} className="w-full h-full object-cover rounded-t"/> */}
-                    <Image width={1920} height={1080} unoptimized alt='Live View' className='object-cover aspect-video rounded-t-box w-full h-full opacity-0' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" />
+                    <Image width={1920} height={1080} unoptimized alt='Live View' className='object-cover aspect-video rounded-t-box w-full h-full opacity-0' src="https://www.denverpost.com/wp-content/uploads/2018/10/security-camera-footage.jpg" />
                   </div>
                   <div className="flex justify-between text-base-content items-center p-2">
                     <div>
@@ -85,7 +116,7 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-        
+        </div>
       </main>
       <OverlayModal mainText={selected?.carPlate} primaryText={matchedUser?.name} secondaryText={matchedUser?.userLicense} creationTime={selected?._creationTime} matched={matchedUser} image={matchedUser?.image} />
     </div>

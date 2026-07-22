@@ -115,10 +115,10 @@ export default function SearchPage() {
               <p className='text-sm text-base-content/60 line-clamp-1'>{type ? 'Manage and track identified vehicles.' : 'Manage and track student profiles and linked vehicles.'}</p>
             </div>
             <div className='join p-1 bg-base-100 rounded-lg h-min ml-auto'>
-              <button className={`join-item btn btn-sm border-none ${type ? 'bg-primary/80 shadow-sm hover:bg-primary/60 text-primary-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setType(true)}>
+              <button className={`join-item btn btn-sm border-none ${type ? 'bg-base/80 shadow-sm hover:bg-base/60 text-base-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setType(true)}>
                 Vehicles
               </button>
-              <button className={`join-item btn btn-sm border-none ${!type ? 'bg-primary/80 shadow-sm hover:bg-primary/60 text-primary-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setType(false)}>
+              <button className={`join-item btn btn-sm border-none ${!type ? 'bg-base/80 shadow-sm hover:bg-base/60 text-base-content' : 'bg-transparent hover:bg-base-300 text-base-content/60'}`} onClick={() => setType(false)}>
                 Students
               </button>
             </div>
@@ -222,7 +222,7 @@ export default function SearchPage() {
                   {(user.userYearLevel || user.userLicense) && (
                     <div className="absolute flex gap-1 max-sm:bottom-1.5 sm:bottom-2">
                       {user.userYearLevel && (
-                        <span className="badge badge-sm bg-neutral-content/80 text-primary-content badge-ghost text-[10px] uppercase">
+                        <span className="badge badge-sm bg-base/80 text-base badge-ghost text-[10px] uppercase">
                           Year {user.userYearLevel}
                         </span>
                       )}

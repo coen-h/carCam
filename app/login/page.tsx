@@ -38,7 +38,7 @@ export default function Login() {
             </div>
           </div>
         </div>
-        <div className="card gap-2 shadow-2xl border-base-content/10 border max-w-sm w-full bg-base-300 p-6">
+        <div className="card gap-2 shadow-2xl border-base-content/10 border max-w-sm w-full bg-base-200 p-6">
           <p className="text-3xl font-bold text-base-content">Continue to carCam</p>
           <p className="text-base-content/60 text-sm">Sign in with the Google account provided by your school.</p>
           <button className="btn btn-primary btn-soft justify-between my-2" onClick={() => void signIn("google", { redirectTo: "/signup", })}>

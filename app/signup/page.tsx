@@ -2,6 +2,7 @@
 
 import Header from "@/app/components/Header";
 import Background from "@/app/components/Background";
+import { GraduationCap, CarFront, Check, ShieldCheck } from "lucide-react";
 import { useState, useEffect } from 'react';
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
@@ -82,9 +83,40 @@ export default function Login() {
     <div className='w-screen min-h-screen bg-base-100'>
       <Background />
       <Header setIsDarkCom={setIsdarkCom} />
-      <main className='absolute top-0 h-screen w-screen flex items-center justify-center px-2'>
+      <main className='absolute top-0 h-screen w-screen gap-8 flex items-center justify-center px-2'>
+        <div className="w-sm flex flex-col gap-4 text-base-content">
+          <p className="font-bold text-4xl tracking-tighter">Register your vehicle</p>
+          <p className="text-base-content/60">This lets the school recognise your car and gives you access to your own parking history.</p>
+          <div className="flex flex-col gap-4 mt-2">
+            <div className="flex items-center gap-3 font-bold">
+              <p className="bg-info size-8 text-neutral flex items-center justify-center rounded-full font-bold">1</p>
+              <p>Driver Details</p>
+            </div>
+            <div className="flex items-center gap-3 font-bold">
+              <p className="bg-info/10 size-8 text-info flex items-center justify-center rounded-full font-bold">2</p>
+              <p>Vehicle Details</p>
+            </div>
+            <div className="flex items-center gap-3 font-bold text-base-content/60">
+              <p className="bg-transparent border-base-content/20 border size-8 flex items-center justify-center rounded-full font-bold">3</p>
+              <p>Ready to use</p>
+            </div>
+          </div>
+          <div className="w-full flex gap-2 bg-success/10 p-2 rounded-box mt-4">
+            <ShieldCheck className="text-success size-5"/>
+            <p className="text-sm text-base-content/80">Your registration is only visible to you and authorised school staff.</p>
+          </div>
+        </div>
         <div className="card bg-base-200 border-base-300 w-full max-w-lg border shadow-2xl p-4 rounded-box text-base-content">
           <form onSubmit={handleSubmit} className="card-body p-0 gap-4">
+            <div className="flex gap-2">
+              <div className="bg-info/10 size-10 p-2 rounded-box">
+                <GraduationCap className="text-info"/>
+              </div>
+              <div>
+                <p className="font-semibold text-xl">About you</p>
+                <p className="text-base-content/60 text-sm">Your current school year and driver license stage.</p>
+              </div>
+            </div>
             <div className="grid grid-cols-2 gap-2">
               <div>
                 <label className="label font-semibold">Student Year Level</label>
@@ -101,6 +133,15 @@ export default function Login() {
                   <option value="Restricted">Restricted</option>
                   <option value="Full">Full</option>
                 </select>
+              </div>
+            </div>
+            <div className="flex gap-2 mt-6">
+              <div className="bg-success/10 size-10 p-2 rounded-box">
+                <CarFront className="text-success"/>
+              </div>
+              <div>
+                <p className="font-semibold text-xl">Your vehicle</p>
+                <p className="text-base-content/60 text-sm">Enter the details shown on your vehicle registration.</p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-2">
@@ -165,8 +206,13 @@ export default function Login() {
                 <input name='carYear' type="text" maxLength={4} required className="input focus:outline-primary" placeholder="2021" value={formData.carYear} onChange={handleChange} />
               </div>
             </div>
-            
-            <button className="btn btn-primary mt-2" type="submit">Login</button>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Check className="size-4 text-success"/>
+                <p className="text-base-content/60 text-sm">You can update these details later.</p>
+              </div>
+              <button className="btn btn-primary mt-2 px-12" type="submit">Login</button>
+            </div>
           </form>
         </div>
       </main>
