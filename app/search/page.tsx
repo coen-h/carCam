@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { CarFront, Search, Calendar, ChevronRight, User } from "lucide-react";
+import Alert from "@/app/components/Alert";
 import OverlayModal from "@/app/components/OverlayModal";
 
 interface VehicleSelectedProps {
@@ -243,6 +244,7 @@ export default function SearchPage() {
           )}
         </div>
       </main>
+      <Alert />
       {type ? (
         <OverlayModal mainText={vehicleSelected?.carPlate} primaryText={matchedUser?.name} secondaryText={matchedUser?.userLicense} creationTime={vehicleSelected?._creationTime} matched={matchedUser} image={matchedUser?.image}  />
       ) : (

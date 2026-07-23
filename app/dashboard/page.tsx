@@ -5,6 +5,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import Image from "next/image";
 import OverlayModal from "@/app/components/OverlayModal";
+import Alert from "@/app/components/Alert";
 import { CarFront, User, TriangleAlert } from "lucide-react";
 
 interface SelectedProps {
@@ -115,6 +116,7 @@ export default function Dashboard() {
           </div>
         </div>
       </main>
+      <Alert />
       <OverlayModal mainText={selected?.carPlate} primaryText={matchedUser?.name} secondaryText={matchedUser?.userLicense} creationTime={selected?._creationTime} matched={matchedUser} image={matchedUser?.image} />
     </>
   );

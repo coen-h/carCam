@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import OverlayModal from '@/app/components/OverlayModal';
+import Alert from "@/app/components/Alert";
 import { CalendarDays, ChevronLeft, ChevronRight, Clock, ScrollText, Search, User, X, CarFront, AlertTriangle } from 'lucide-react';
 
 type CalendarDateElement = HTMLElement & { value: string };
@@ -427,7 +428,7 @@ export default function Logs() {
           </div>
         </section>
       </main>
-
+      <Alert />
       <OverlayModal
         mainText={selected?.carPlate}
         primaryText={selected?.isAlert ? `System Alert: ${selected.type}` : selectedUser?.name}
