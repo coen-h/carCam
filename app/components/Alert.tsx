@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { TriangleAlert } from "lucide-react";
+import { TriangleAlert, X } from "lucide-react";
+import Link from 'next/link'
 
 interface ActiveAlert {
   _id: string;
@@ -36,11 +37,11 @@ export default function Alert() {
           setActiveAlerts((prev) => 
             prev.map((a) => (a._id === alertId ? { ...a, isLeaving: true } : a))
           );
-        }, 9500);
+        }, 54500);
 
         setTimeout(() => {
           setActiveAlerts((prev) => prev.filter((a) => a._id !== alertId));
-        }, 10000);
+        }, 55000);
       });
     }
 
@@ -48,15 +49,30 @@ export default function Alert() {
 
   }, [alerts, prevAlertCount]);
 
+  const onAlertClick = (alertId: string) => {
+    setActiveAlerts((prev) => 
+      prev.map((a) => (a._id === alertId ? { ...a, isLeaving: true } : a))
+    )
+
+    setTimeout(() => {
+      setActiveAlerts((prev) => prev.filter((a) => a._id !== alertId));
+    }, 1000);
+  }
+
   if (activeAlerts.length === 0) return null;
 
   return (
     <div className="toast z-50">
       {activeAlerts.map((alert) => (
-        <div key={alert._id} className={`alert alert-warning transition-all duration-500 ease-in-out transform ${alert.isLeaving ? "opacity-0 translate-x-full" : "opacity-100 translate-x-0 animate-in slide-in-from-bottom-5 fade-in"}`}>
-          <TriangleAlert />
-          <span>{alert.type || "New alert arrived!"}</span>
-        </div>
+        <Link key={alert._id} href='/logs'>
+          <div className={`alert alert-warning transition-all duration-500 ease-in-out transform hover:opacity-60 ${alert.isLeaving ? "opacity-0 translate-x-full" : "opacity-100 translate-x-0 animate-in slide-in-from-bottom-5 fade-in"}`}>
+            <TriangleAlert />
+            <span>{alert.type || "New alert arrived!"}</span>
+            <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); onAlertClick(alert._id); }} className="btn btn-ghost hover:bg-transparent hover:opacity-50 hover:border-0 btn-circle btn-sm">
+              <X />
+            </button>
+          </div>
+        </Link>
       ))}
     </div>
   )
