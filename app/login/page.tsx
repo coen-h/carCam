@@ -11,15 +11,15 @@ export default function Login() {
     <>
       <main className='absolute top-0 h-screen w-screen p-2 flex items-center justify-center gap-8'>
         <div className="w-md max-lg:hidden flex flex-col items-center gap-4 text-base-content">
-          <p className="font-bold text-4xl tracking-tighter">Welcome back to a clearer parking day.</p>
+          <p className="font-bold text-4xl tracking-tighter">Welcome back to a hassle-free parking experience.</p>
           <p className="text-base-content/60">Use your school Google account to open the right carCam workspace for your role.</p>
           <div className="flex gap-2 mt-2">
             <div className="bg-info/10 size-10 p-2 rounded-box">
               <ShieldCheck className="text-info"/>
             </div>
             <div>
-              <p className="font-semibold">Role-aware access</p>
-              <p className="text-base-content/60 text-sm">Staff get operational tools; students see their own registered vehicle and activity.</p>
+              <p className="font-semibold">Automated Security & Alerts</p>
+              <p className="text-base-content/60 text-sm">AI license plate recognition deters property damage and logs unregistered vehicles in real time.</p>
             </div>
           </div>
           <div className="flex gap-2 mt-2">
@@ -27,8 +27,8 @@ export default function Login() {
               <LockKeyhole className="text-success"/>
             </div>
             <div>
-              <p className="font-semibold">Your school identity</p>
-              <p className="text-base-content/60 text-sm">Staff get operational tools; students see their own registered vehicle and activity.</p>
+              <p className="font-semibold">Tailored Dashboard</p>
+              <p className="text-base-content/60 text-sm">Students manage their parking access with ease, while staff access live camera feeds and security logs.</p>
             </div>
           </div>
         </div>

@@ -79,8 +79,10 @@ export default function Login() {
     <>
       <main className='absolute top-0 h-screen w-screen gap-8 flex items-center justify-center px-2'>
         <div className="w-sm max-lg:hidden flex flex-col gap-4 text-base-content">
-          <p className="font-bold text-4xl tracking-tighter">Register your vehicle</p>
-          <p className="text-base-content/60">This lets the school recognise your car and gives you access to your own parking history.</p>
+          <div className="flex flex-col gap-1">
+            <p className="font-bold text-4xl tracking-tighter">Register your vehicle</p>
+            <p className="text-base-content/60">This lets the school recognise your car and gives you access to your own parking history.</p>
+          </div>
           <div className="flex flex-col gap-4 mt-2">
             <div className="flex items-center gap-3 font-bold">
               <p className="bg-info size-8 text-neutral flex items-center justify-center rounded-full font-bold">1</p>

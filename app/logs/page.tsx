@@ -372,14 +372,15 @@ export default function Logs() {
                       type="button"
                       key={item._id}
                       onClick={() => {
+                        if (item.isAlert) return;
                         setSelected(item);
                         (document.getElementById('my_modal_1') as HTMLDialogElement).showModal();
                       }}
-                      className={`cursor-pointer group grid w-full grid-cols-[auto_1fr_auto] items-center gap-3 rounded-box border bg-base-100 p-2 text-left transition max-sm:grid-cols-[auto_1fr]
+                      className={`group grid w-full grid-cols-[auto_1fr_auto] items-center gap-3 rounded-box border bg-base-100 p-2 text-left transition max-sm:grid-cols-[auto_1fr]
                         ${item.isAlert 
-                          ? 'border-error/10 bg-error/5 hover:border-error/40' 
-                          : item.user ? 'border-success/10 bg-base-100 hover:border-success/40'
-                          : 'border-warning/10 bg-base-100 hover:border-warning/40'}
+                          ? ' cursor-default border-error/10 bg-error/5 hover:border-error/40' 
+                          : item.user ? 'cursor-pointer border-success/10 bg-base-100 hover:border-success/40'
+                          : 'cursor-pointer border-warning/10 bg-base-100 hover:border-warning/40'}
                         `}
                     >
                       <div className={`rounded-lg p-3 transition 
@@ -431,8 +432,8 @@ export default function Logs() {
       <Alert />
       <OverlayModal
         mainText={selected?.carPlate}
-        primaryText={selected?.isAlert ? `System Alert: ${selected.type}` : selectedUser?.name}
-        secondaryText={selected?.isAlert ? `Severity Tier: ${selected.severity}` : selectedUser?.userLicense}
+        primaryText={selectedUser?.name}
+        secondaryText={selectedUser?.userLicense}
         creationTime={selected?._creationTime}
         matched={selectedUser}
         image={selectedUser?.image}

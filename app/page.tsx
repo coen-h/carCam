@@ -15,13 +15,13 @@ export default function Home() {
             <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${!isdark ? 'bg-success' : 'bg-emerald-500'}`}></span>
             <span className={`relative inline-flex rounded-full h-2 w-2 ${!isdark ? 'bg-success' : 'bg-emerald-500'}`}></span>
           </span>
-          Smart Parking Surveillance for Education
+          Smart Parking Monitoring for Education
         </div>
         <div className="max-w-4xl">
           <h1 className="text-6xl max-lg:text-5xl max-[40rem]:text-4xl max-[30rem]:text-3xl max-[26rem]:text-[27px] font-extrabold tracking-tight">
             <span className={`bg-clip-text text-transparent bg-linear-to-r ${!isdark ? 'from-white to-gray-400' : 'from-gray-900 to-gray-600'}`}>carCam - The solution for</span>
             <br />
-            <span className={`bg-clip-text text-transparent bg-linear-to-r ${!isdark ? 'from-emerald-100 to-emerald-400' : 'from-emerald-800 to-teal-500'}`}>parking surveillance.</span>
+            <span className={`bg-clip-text text-transparent bg-linear-to-r ${!isdark ? 'from-emerald-100 to-emerald-400' : 'from-emerald-800 to-teal-500'}`}>parking monitoring.</span>
           </h1>
         </div>
         <p className={`max-w-2xl text-xl max-lg:text-lg max-md:text-base max-md:max-w-xl max-[32rem]:text-sm max-[32rem]:max-w-sm ${isdark ? 'text-base-content' : 'text-base-content/70'} mt-2 mx-2`}>Monitor, manage, and secure parking spaces with a platform designed specifically for schools, students, and faculty.</p>
