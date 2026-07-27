@@ -6,7 +6,9 @@ import { v } from "convex/values";
 export default defineSchema({
   ...authTables,
   unknownCars: defineTable({ 
+    carModel: v.optional(v.string()),
     carPlate: v.string(),
+    isParked: v.optional(v.boolean()),
     totalEntries: v.optional(v.string()),
   }).index("by_carPlate", ["carPlate"]),
 
@@ -14,19 +16,19 @@ export default defineSchema({
     carModel: v.string(),
     carPlate: v.string(),
     carYear: v.string(),
+    isParked: v.optional(v.boolean()),
     totalEntries: v.string(),
   }).index("by_carPlate", ["carPlate"]),
 
   logs: defineTable({
     carPlate: v.string(),
     fileTitle: v.string(),
+    direction: v.optional(v.string()),
   }).index("by_carPlate", ["carPlate"]),
 
   summary: defineTable({
     location: v.string(),
-    mostEntries: v.object({}),
-    parkingCapacity: v.string(),
-    parkingFill: v.string(),
+    parkingCapacity: v.number(),
   }),
 
   users: defineTable({
@@ -50,5 +52,7 @@ export default defineSchema({
     carPlate: v.string(),
     type: v.string(),
     severity: v.string(),
+    resolvedStaff: v.optional(v.string()),
+    resolvedMsg: v.optional(v.string()),
   })
 });
