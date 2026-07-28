@@ -17,6 +17,7 @@ http.route({
       await ctx.runMutation(api.function.addLog, {
         carPlate: data.carPlate,
         fileTitle: data.fileTitle,
+        direction: data.direction
       });
 
       return new Response("OK", { status: 200 });
