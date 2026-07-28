@@ -18,6 +18,9 @@ interface SelectedProps {
 
 export default function Dashboard() {
   const logs = useQuery(api.function.getAllLogs);
+  const capacityData = useQuery(api.function.getCurrentCapacity);
+  const startOfDay = new Date().setHours(0, 0, 0, 0);
+  const logsDay = useQuery(api.function.getLogsForToday, { startOfDay });
   const [selected, setSelected] = useState(null as SelectedProps | null);
   const matchedUser = useQuery(
     api.function.getUserForPlate, 
@@ -35,7 +38,7 @@ export default function Dashboard() {
               </div>
               <div className="flex flex-col">
                 <p className="text-base-content/60 text-sm font-semibold">Total Capacity</p>
-                <p className="font-bold text-2xl">0</p>
+                <p className="font-bold text-2xl">{capacityData?.available ?? 0}/{capacityData?.capacity ?? ''}</p>
               </div>
             </div>
             <div className="w-full px-3.5 bg-neutral/5 backdrop-blur flex border items-center gap-4 border-base-content/10 p-2 rounded-box">
@@ -44,7 +47,7 @@ export default function Dashboard() {
               </div>
               <div className="flex flex-col">
                 <p className="text-base-content/60 text-sm font-semibold">Entries today</p>
-                <p className="font-bold text-2xl">0</p>
+                <p className="font-bold text-2xl">{logsDay?.length ?? 0}</p>
               </div>
             </div>
             <div className="w-full px-3.5 bg-neutral/5 backdrop-blur flex border items-center gap-4 border-base-content/10 p-2 rounded-box">
