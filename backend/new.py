@@ -41,7 +41,7 @@ VEHICLE_LABELS = SCRIPT_DIR / "vehicle_model_labels.txt"
 VEHICLE_ONNX = Path("/home/hero/vehicle_recognition/vmmr_nz50.onnx")
 
 ZED_RTSP_URL = "rtsp://192.168.0.137:8554/zed_stream"
-CONVEX_URL = "https://lovable-cat-739.convex.site/uplink"
+CONVEX_URL = "https://cheery-grasshopper-930.convex.site/uplink"
 
 OCR_THROTTLE_INTERVAL = 0.15
 PLATE_CONFIRM_COUNT = 3

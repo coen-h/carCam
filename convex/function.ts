@@ -263,7 +263,7 @@ export const getCurrentCapacity = query({
     const currentFill = parkedKnown.length + parkedUnknown.length;
     
     const summaryData = await ctx.db.query("summary").first();
-    const maxCapacity = summaryData?.parkingCapacity ?? 100;
+    const maxCapacity = summaryData?.parkingCapacity ?? 0;
 
     return {
       fill: currentFill,

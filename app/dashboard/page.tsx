@@ -6,6 +6,7 @@ import { api } from "@/convex/_generated/api";
 import Image from "next/image";
 import OverlayModal from "@/app/components/OverlayModal";
 import Alert from "@/app/components/Alert";
+import LiveVideo from "@/app/components/LiveVideo";
 import { CarFront, User, TriangleAlert } from "lucide-react";
 
 interface SelectedProps {
@@ -37,8 +38,8 @@ export default function Dashboard() {
                 <User className="size-6 text-info"/>
               </div>
               <div className="flex flex-col">
-                <p className="text-base-content/60 text-sm font-semibold">Total Capacity</p>
-                <p className="font-bold text-2xl">{capacityData?.available ?? 0}/{capacityData?.capacity ?? ''}</p>
+                <p className="text-base-content/60 text-sm font-semibold">Total Parked</p>
+                <p className="font-bold text-2xl">{capacityData?.fill ?? 0}/{capacityData?.capacity ?? ''}</p>
               </div>
             </div>
             <div className="w-full px-3.5 bg-neutral/5 backdrop-blur flex border items-center gap-4 border-base-content/10 p-2 rounded-box">
@@ -62,6 +63,7 @@ export default function Dashboard() {
           </div>
           <div className="flex h-full w-full gap-2 max-md:flex-col max-md:flex-1">
             <div className='skeleton max-md:aspect-video w-full relative shadow-md'>
+              <LiveVideo streamUrl="https://video.coen.ovh/mystream/index.m3u8" />
               {/* <img className='rounded w-full h-full' src="http://192.168.0.137:5000/video_feed" /> */}
               {/* <img className='rounded w-full h-full object-cover' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" /> */}
               <div className="absolute top-2 right-2 rounded-box flex items-center gap-1 bg-base-100 px-2 py-1">
@@ -71,12 +73,12 @@ export default function Dashboard() {
               <div className="bottom-2 left-2 absolute bg-base-100 text-base-content text-sm rounded-box px-2 py-1 font-medium">Student Parking Entrance</div>
             </div>
             <div className='flex flex-col gap-2 w-160 max-xl:w-100 max-md:w-full max-md:flex-1 min-h-0 items-stretch'>
-              <div className='w-full bg-base-300 backdrop-blur rounded-box max-md:hidden aspect-video flex items-center justify-center shadow-md border border-base-200'>
+              <div className='w-full bg-base-300 backdrop-blur rounded-box max-md:hidden min-h-40 flex items-center justify-center shadow-md border border-base-200'>
                 {logs ? logs?.slice(-1).map((log) =>
-                  <div key={log.carPlate} className="bg-base-100 rounded-box">
+                  <div key={log.carPlate} className="bg-base-100 rounded-box w-full">
                     <div className="skeleton w-full h-full rounded-t-box rounded-b-none">
-                      {/* <img src={`http://192.168.0.137:3923/images/${log.fileTitle}`} className="w-full h-full object-cover rounded-t"/> */}
-                      <Image width={1920} height={1080} unoptimized alt='Live View' className='object-cover aspect-video rounded-t-box w-full h-full opacity-0' src="https://www.denverpost.com/wp-content/uploads/2018/10/security-camera-footage.jpg" />
+                      <Image width={1920} height={1080} unoptimized alt='Live View' src={`https://picopy.coen.ovh/${log.fileTitle}`} className="object-cover rounded-t-box w-full h-full"/>
+                      {/* <Image width={1920} height={1080} unoptimized alt='Live View' className='object-cover aspect-video rounded-t-box w-full h-full opacity-0' src="https://www.denverpost.com/wp-content/uploads/2018/10/security-camera-footage.jpg" /> */}
                     </div>
                     <div className="flex justify-between text-base-content items-center p-2">
                       <div>
