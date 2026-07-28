@@ -2,6 +2,8 @@ Project Overview: DeepStream License Plate Recognition Pipeline
 1. System & Environment Specifications
 Hardware / Edge Device: NVIDIA Jetson Xavier (inferred via ~/xavier_received_images path).
 
+JetPack 5.1.6, DeepStream 6.3, TensorRT 8.5.2, Python 3.8, and a 16 GB AGX Xavier in MAXN.
+
 Core Frameworks: NVIDIA DeepStream SDK, GStreamer, TensorRT, ONNX Runtime.
 
 Language & Bindings: Python 3 utilizing DeepStream Python Bindings (pyds).

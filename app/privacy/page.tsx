@@ -34,7 +34,7 @@ export default function PrivacyPolicy() {
               <ul className="list-disc list-inside text-sm text-base-content/70 space-y-2 ml-1">
                 <li><strong className="text-base-content">Account Information:</strong> Name and school email address (via Google login).</li>
                 <li><strong className="text-base-content">Vehicle Details:</strong> License plate number, make, and model.</li>
-                <li><strong className="text-base-content">Surveillance Data:</strong> Images/video clips of your vehicle, 3D depth maps, AI-extracted data (License Plate OCR), and timestamped logs.</li>
+                <li><strong className="text-base-content">Monitoring Data:</strong> Images/video clips of your vehicle, 3D depth maps, AI-extracted data (License Plate OCR), and timestamped logs.</li>
               </ul>
             </div>
 
@@ -70,7 +70,7 @@ export default function PrivacyPolicy() {
                 4. Data Retention (The 2-Week Rule)
               </h2>
               <p className="text-sm text-base-content/70 leading-relaxed relative z-10">
-                We only keep your surveillance data for as long as it is absolutely necessary. <strong className="text-base-content">All captured images, videos, and specific entry/exit logs are automatically and permanently deleted from our database after two (2) weeks.</strong> Your basic profile and vehicle registration details remain active for the school year to grant continuous access.
+                We only keep your monitoring data for as long as it is absolutely necessary. <strong className="text-base-content">All captured images, videos, and specific entry/exit logs are automatically and permanently deleted from our database after two (2) weeks.</strong> Your basic profile and vehicle registration details remain active for the school year to grant continuous access.
               </p>
             </div>
 

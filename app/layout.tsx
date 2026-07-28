@@ -19,9 +19,9 @@ const geistSans = Rubik({
 // });
 
 export const metadata: Metadata = {
-  title: "carCam - Parking Surveillance",
+  title: "carCam - Parking Monitoring",
   manifest: "/manifest.json",
-  description: "carCam is the solution for parking surveillance",
+  description: "carCam is the solution for parking monitoring",
 };
 
 export const viewport: Viewport = {
