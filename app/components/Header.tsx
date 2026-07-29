@@ -33,17 +33,17 @@ export default function Header() {
         {user?.role === "teacher" || user?.role === "admin" ? (
           <div className="menu menu-xs p-1 menu-horizontal btn btn-soft font-normal">
             <li>
-              <Link href='/dashboard' className="tooltip tooltip-bottom text-base-content" data-tip="Dashboard">
+              <Link href='/dashboard' className="tooltip tooltip-bottom" data-tip="Dashboard">
                 <LayoutDashboard width={24} />
               </Link>
             </li>
             <li>
-              <Link href='/search' className="tooltip tooltip-bottom text-base-content" data-tip="Search">
+              <Link href='/search' className="tooltip tooltip-bottom" data-tip="Search">
                 <UserSearch width={24} />
               </Link>
             </li>
             <li>
-              <Link href='/logs' className="tooltip tooltip-bottom text-base-content" data-tip="Logs">
+              <Link href='/logs' className="tooltip tooltip-bottom" data-tip="Logs">
                 <ScrollText width={24} />
               </Link>
             </li>
