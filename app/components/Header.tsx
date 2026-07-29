@@ -18,6 +18,18 @@ export default function Header() {
   const [activePath, setActivePath] = useState(pathname);
   const { isdark, toggleTheme } = useTheme();
 
+  const handleSignOut = async () => {
+    setIsLoading(true);
+    try {
+      await signOut();
+      (document.getElementById('header_modal') as HTMLDialogElement).close();
+    } catch (error) {
+      console.error("Failed to sign out:", error);
+    } finally {
+      setIsLoading(false); 
+    }
+  };
+
   return (
     <>
     <nav className="navbar min-h-0 flex justify-between z-50 max-md:p-0">
@@ -106,7 +118,7 @@ export default function Header() {
           <form method="dialog">
             <button className="btn w-32">Cancel</button>
           </form>
-          <button disabled={isLoading} className='btn w-32 btn-primary' onClick={() => {void signOut(); setIsLoading(true)}}>
+          <button disabled={isLoading} className='btn w-32 btn-primary' onClick={handleSignOut}>
             {isLoading ? (
               <span className="loading loading-spinner loading-sm"></span>
             ) : (
