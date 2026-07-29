@@ -85,11 +85,11 @@ export default function OverlayAlert({alertId, mainText, primaryText, secondaryT
               </>
             ) : (
               <>
-                <h4 className="font-semibold mb-2">Registered User Info:</h4>
+                <h4 className="font-semibold">Registered User Info:</h4>
                 {matched === undefined ? (
                   <p className="loading loading-dots loading-sm"></p>
                 ) : matched ? (
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 mt-2">
                     <div className="avatar avatar-placeholder">
                       <div className="bg-neutral text-neutral-content size-10 rounded-box">
                         <span className="text-lg">{primaryText?.split(" ")[0]?.charAt(0) || "?"}</span>
@@ -101,7 +101,7 @@ export default function OverlayAlert({alertId, mainText, primaryText, secondaryT
                     </div>
                   </div>
                 ) : (
-                  <p className="text-error">Unknown driver / Unregistered plate</p>
+                  <p className="text-error mt-1">Unknown driver / Unregistered plate</p>
                 )}
               </>
             )}

@@ -380,16 +380,22 @@ export default function Logs() {
                       }}
                       className={`group grid w-full grid-cols-[auto_1fr_auto] items-center gap-3 cursor-pointer rounded-box border bg-base-100 p-2 text-left transition max-sm:grid-cols-[auto_1fr]
                         ${item.isAlert 
-                          ? 'border-error/10 bg-error/5 hover:border-error/40' 
-                          : item.user ? 'border-success/10 bg-base-100 hover:border-success/40'
-                          : 'border-warning/10 bg-base-100 hover:border-warning/40'}
+                          ? item.resolvedStaff
+                            ? 'border-error/5 bg-base-100 hover:border-error/20 opacity-60'
+                            : 'border-error/10 bg-error/5 hover:border-error/40' 
+                          : item.user 
+                            ? 'border-success/10 bg-base-100 hover:border-success/40'
+                            : 'border-warning/10 bg-base-100 hover:border-warning/40'}
                         `}
                     >
                       <div className={`rounded-lg p-3 transition 
                         ${item.isAlert 
-                          ? 'bg-error/20 text-error group-hover:bg-error group-hover:text-error-content' 
-                          : item.user ? 'bg-success/20 text-success group-hover:bg-success group-hover:text-success-content'
-                          : 'bg-warning/20 text-warning group-hover:bg-warning group-hover:text-warning-content'}`}
+                          ? item.resolvedStaff
+                            ? 'bg-error/10 text-error/70 group-hover:bg-error/20 group-hover:text-error'
+                            : 'bg-error/20 text-error group-hover:bg-error group-hover:text-error-content' 
+                          : item.user 
+                            ? 'bg-success/20 text-success group-hover:bg-success group-hover:text-success-content'
+                            : 'bg-warning/20 text-warning group-hover:bg-warning group-hover:text-warning-content'}`}
                       >
                         {item.isAlert ? <AlertTriangle className="size-6" /> : <CarFront className="size-6" />}
                       </div>
@@ -397,7 +403,9 @@ export default function Logs() {
                         <div className="flex flex-wrap items-center gap-2">
                           <p className="text-lg font-bold text-base-content">{item.carPlate}</p>
                           {item.isAlert ? (
-                            <span className={`badge badge-sm bg-error/20 text-error uppercase font-semibold tracking-wide`}>
+                            <span className={`badge badge-sm bg-error/20 text-error uppercase font-semibold tracking-wide ${
+                              item.resolvedStaff ? 'bg-error/10 text-error/70 border-error/10' : 'bg-error/20 text-error'
+                            }`}>
                               {item.type}
                             </span>
                           ) : (

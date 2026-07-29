@@ -16,11 +16,11 @@ export default function OverlayModal({mainText, primaryText, secondaryText, crea
           <h3 className="font-bold text-xl text-primary">{mainText}</h3>
           <p className="pb-2 text-sm text-base-content/60">{creationTime ? new Date(creationTime).toLocaleString() : 0}</p>
           <div className="p-4 bg-base-200 rounded">
-            <h4 className="font-semibold mb-2">Registered User Info:</h4>
+            <h4 className="font-semibold">Registered User Info:</h4>
             {matched === undefined ? (
               <p className="loading loading-dots loading-sm"></p>
             ) : matched ? (
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 mt-2">
                 {/* <img src={image} className="rounded size-10" /> */}
                 {/* <img src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png" className="rounded size-10" /> */}
                 <div className="avatar avatar-placeholder">
@@ -34,7 +34,7 @@ export default function OverlayModal({mainText, primaryText, secondaryText, crea
                 </div>
               </div>
             ) : (
-              <p className="text-error">Unknown driver / Unregistered plate</p>
+              <p className="text-error mt-1">Unknown driver / Unregistered plate</p>
             )}
           </div>
           <div className="modal-action">
