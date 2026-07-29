@@ -23,6 +23,8 @@ export default function Dashboard() {
   const startOfDay = new Date().setHours(0, 0, 0, 0);
   const logsDay = useQuery(api.function.getLogsForToday, { startOfDay });
   const [selected, setSelected] = useState(null as SelectedProps | null);
+  const alerts = useQuery(api.function.getAllAlerts);
+  const openAlertsCount = alerts?.filter((alert: any) => !alert.resolvedStaff).length ?? 0;
   const matchedUser = useQuery(
     api.function.getUserForPlate, 
     selected?.carPlate ? { carPlate: selected.carPlate } : "skip"
@@ -39,7 +41,13 @@ export default function Dashboard() {
               </div>
               <div className="flex flex-col">
                 <p className="text-base-content/60 text-sm font-semibold">Total Parked</p>
-                <p className="font-bold text-2xl">{capacityData?.fill ?? 0}/{capacityData?.capacity ?? ''}</p>
+                <p className="font-bold text-2xl">
+                  {capacityData === undefined ? (
+                    <p className="skeleton w-24 h-8"></p>
+                  ) : (
+                    capacityData?.fill + '/' + capacityData?.capacity
+                  )}
+                </p>
               </div>
             </div>
             <div className="w-full px-3.5 bg-neutral/5 backdrop-blur flex border items-center gap-4 border-base-content/10 p-2 rounded-box">
@@ -48,7 +56,13 @@ export default function Dashboard() {
               </div>
               <div className="flex flex-col">
                 <p className="text-base-content/60 text-sm font-semibold">Entries today</p>
-                <p className="font-bold text-2xl">{logsDay?.length ?? 0}</p>
+                <p className="font-bold text-2xl">
+                  {logsDay === undefined ? (
+                    <p className="skeleton w-12 h-8"></p>
+                  ) : (
+                    logsDay?.length
+                  )}
+                </p>
               </div>
             </div>
             <div className="w-full px-3.5 bg-neutral/5 backdrop-blur flex border items-center gap-4 border-base-content/10 p-2 rounded-box">
@@ -57,7 +71,13 @@ export default function Dashboard() {
               </div>
               <div className="flex flex-col">
                 <p className="text-base-content/60 text-sm font-semibold">Open Alerts</p>
-                <p className="font-bold text-2xl">0</p>
+                <p className="font-bold text-2xl">
+                  {alerts === undefined ? (
+                    <p className="skeleton w-12 h-8"></p>
+                  ) : (
+                    openAlertsCount
+                  )}
+                </p>
               </div>
             </div>
           </div>
