@@ -12,6 +12,7 @@ import { useTheme } from "./ThemeContext";
 
 export default function Header() {
   const { signOut } = useAuthActions();
+  const [isLoading, setIsLoading] = useState(false);
   const user = useQuery(api.function.getUser);
   const pathname = usePathname();
   const [activePath, setActivePath] = useState(pathname);
@@ -105,7 +106,13 @@ export default function Header() {
           <form method="dialog">
             <button className="btn w-32">Cancel</button>
           </form>
-          <button className='btn w-32 btn-primary' onClick={() => void signOut()}>Sign out</button>
+          <button disabled={isLoading} className='btn w-32 btn-primary' onClick={() => {void signOut(); setIsLoading(true)}}>
+            {isLoading ? (
+              <span className="loading loading-spinner loading-sm"></span>
+            ) : (
+              <p>Sign out</p>
+            )}
+          </button>
         </div>
       </div>
       <form method="dialog" className="modal-backdrop">
