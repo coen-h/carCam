@@ -429,7 +429,7 @@ export default function Logs() {
                       </div>
                       <div className="flex gap-2 text-right text-xs text-base-content/50 max-sm:col-span-2 max-sm:text-left max-sm:hidden">
                         <p>{item.isAlert ? `Severity: ${item.severity}` : (item.user?.email ?? '')}</p>
-                        <ChevronRight className={`max-sm:hidden size-4 opacity-0 ${item.isAlert ? 'text-error' : 'text-primary'} group-hover:opacity-100 group-hover:-translate-x-1 transition-all`} />
+                        <ChevronRight className={`max-sm:hidden size-4 opacity-0 ${item.isAlert ? 'text-error' : item.user ? 'text-success' : 'text-warning'} group-hover:opacity-100 group-hover:-translate-x-1 transition-all`} />
                       </div>
                     </button>
                   ))}

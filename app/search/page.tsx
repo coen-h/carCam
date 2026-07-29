@@ -187,7 +187,7 @@ export default function SearchPage() {
                     <p className='text-xs'>{new Date(vehicle._creationTime).toLocaleString()}</p>
                   </div>
                 </div>
-                <ChevronRight className='size-4 opacity-0 text-primary group-hover:opacity-100 group-hover:-translate-x-1 transition-all' />
+                <ChevronRight className={`size-4 opacity-0 text-primary group-hover:opacity-100 group-hover:-translate-x-1 transition-all ${vehicle.type === 'known' ? 'text-success' : 'text-warning'}`} />
               </li>
             ))}
           </div>
