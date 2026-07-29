@@ -24,8 +24,8 @@ export default function OverlayModal({mainText, primaryText, secondaryText, crea
                 {/* <img src={image} className="rounded size-10" /> */}
                 {/* <img src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png" className="rounded size-10" /> */}
                 <div className="avatar avatar-placeholder">
-                  <div className="bg-neutral text-neutral-content size-10 rounded-box">
-                    <span className="text-xl">{primaryText?.split(" ")[0]?.charAt(0)}</span>
+                  <div className="bg-base-content/80 size-10 rounded-box">
+                    <span className="text-lg text-base-100">{primaryText?.split(" ")[0]?.charAt(0) || "?"}</span>
                   </div>
                 </div>
                 <div className="leading-tight">

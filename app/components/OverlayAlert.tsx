@@ -62,10 +62,8 @@ export default function OverlayAlert({alertId, mainText, primaryText, secondaryT
                   <div className="flex flex-col gap-3">
                     <div className="flex items-center gap-3">
                       <div className="avatar avatar-placeholder">
-                        <div className="bg-neutral text-neutral-content size-10 rounded-box">
-                          <span className="text-lg">
-                            {(staffUser.name || staffUser.email || "?").charAt(0).toUpperCase()}
-                          </span>
+                        <div className="bg-base-content/80 size-10 rounded-box">
+                          <span className="text-lg text-base-100">{staffUser.name?.split(" ")[0]?.charAt(0) || "?"}</span>
                         </div>
                       </div>
                       <div className="leading-tight">
@@ -91,8 +89,8 @@ export default function OverlayAlert({alertId, mainText, primaryText, secondaryT
                 ) : matched ? (
                   <div className="flex items-center gap-3 mt-2">
                     <div className="avatar avatar-placeholder">
-                      <div className="bg-neutral text-neutral-content size-10 rounded-box">
-                        <span className="text-lg">{primaryText?.split(" ")[0]?.charAt(0) || "?"}</span>
+                      <div className="bg-base-content/80 size-10 rounded-box">
+                        <span className="text-lg text-base-100">{primaryText?.split(" ")[0]?.charAt(0) || "?"}</span>
                       </div>
                     </div>
                     <div className="leading-tight">
