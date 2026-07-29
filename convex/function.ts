@@ -272,3 +272,27 @@ export const getCurrentCapacity = query({
     };
   }
 });
+
+export const clearAlert = mutation({
+  args: {
+    alertId: v.id("alerts"),
+    resolvedMsg: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+
+    if (userId === null) {
+      throw new Error("Not authenticated");
+    }
+
+    const staffUser = await ctx.db.get(userId);
+    const staffIdentifier = staffUser?.name || staffUser?.email || "Unknown Staff";
+
+    await ctx.db.patch(args.alertId, {
+      resolvedStaff: staffIdentifier,
+      resolvedMsg: args.resolvedMsg ?? "Alert cleared.",
+    });
+
+    return { success: true };
+  },
+});

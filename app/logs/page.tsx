@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import OverlayModal from '@/app/components/OverlayModal';
+import OverlayAlert from "@/app/components/OverlayAlert";
 import Alert from "@/app/components/Alert";
 import { CalendarDays, ChevronLeft, ChevronRight, Clock, ScrollText, Search, User, X, CarFront, AlertTriangle } from 'lucide-react';
 
@@ -372,15 +373,14 @@ export default function Logs() {
                       type="button"
                       key={item._id}
                       onClick={() => {
-                        if (item.isAlert) return;
                         setSelected(item);
-                        (document.getElementById('my_modal_1') as HTMLDialogElement).showModal();
+                        (document.getElementById(item.isAlert ? 'my_modal_2' : 'my_modal_1') as HTMLDialogElement).showModal();
                       }}
-                      className={`group grid w-full grid-cols-[auto_1fr_auto] items-center gap-3 rounded-box border bg-base-100 p-2 text-left transition max-sm:grid-cols-[auto_1fr]
+                      className={`group grid w-full grid-cols-[auto_1fr_auto] items-center gap-3 cursor-pointer rounded-box border bg-base-100 p-2 text-left transition max-sm:grid-cols-[auto_1fr]
                         ${item.isAlert 
-                          ? ' cursor-default border-error/10 bg-error/5 hover:border-error/40' 
-                          : item.user ? 'cursor-pointer border-success/10 bg-base-100 hover:border-success/40'
-                          : 'cursor-pointer border-warning/10 bg-base-100 hover:border-warning/40'}
+                          ? 'border-error/10 bg-error/5 hover:border-error/40' 
+                          : item.user ? 'border-success/10 bg-base-100 hover:border-success/40'
+                          : 'border-warning/10 bg-base-100 hover:border-warning/40'}
                         `}
                     >
                       <div className={`rounded-lg p-3 transition 
@@ -431,6 +431,15 @@ export default function Logs() {
       </main>
       <Alert />
       <OverlayModal
+        mainText={selected?.carPlate}
+        primaryText={selectedUser?.name}
+        secondaryText={selectedUser?.userLicense}
+        creationTime={selected?._creationTime}
+        matched={selectedUser}
+        image={selectedUser?.image}
+      />
+      <OverlayAlert
+        alertId={selected?._id as any}
         mainText={selected?.carPlate}
         primaryText={selectedUser?.name}
         secondaryText={selectedUser?.userLicense}
