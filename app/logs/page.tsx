@@ -27,6 +27,8 @@ interface CombinedRecord {
   severity?: string;
   isAlert: boolean;
   user?: UserRecord | null;
+  resolvedStaff?: string;
+  resolvedMsg?: string;
 }
 
 function toDateInputValue(date: Date) {
@@ -439,13 +441,15 @@ export default function Logs() {
         image={selectedUser?.image}
       />
       <OverlayAlert
-        alertId={selected?._id as any}
+        alertId={selected?.isAlert ? (selected._id as any) : undefined}
         mainText={selected?.carPlate}
         primaryText={selectedUser?.name}
         secondaryText={selectedUser?.userLicense}
         creationTime={selected?._creationTime}
         matched={selectedUser}
         image={selectedUser?.image}
+        resolvedStaff={selected?.resolvedStaff as any}
+        resolvedMsg={selected?.resolvedMsg}
       />
     </>
   );

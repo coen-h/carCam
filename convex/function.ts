@@ -55,6 +55,15 @@ export const getUser = query({
   },
 });
 
+export const getUserById = query({
+  args: {
+    userId: v.id("users"),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.get(args.userId);
+  },
+});
+
 export const getUserForPlate = query({
   args: {
     carPlate: v.string(),
@@ -286,7 +295,7 @@ export const clearAlert = mutation({
     }
 
     const staffUser = await ctx.db.get(userId);
-    const staffIdentifier = staffUser?.name || staffUser?.email || "Unknown Staff";
+    const staffIdentifier = staffUser?._id || "Unknown Staff";
 
     await ctx.db.patch(args.alertId, {
       resolvedStaff: staffIdentifier,
