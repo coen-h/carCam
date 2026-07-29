@@ -41,13 +41,11 @@ export default function Dashboard() {
               </div>
               <div className="flex flex-col">
                 <p className="text-base-content/60 text-sm font-semibold">Total Parked</p>
-                <p className="font-bold text-2xl">
                   {capacityData === undefined ? (
                     <p className="skeleton w-24 h-8"></p>
                   ) : (
-                    capacityData?.fill + '/' + capacityData?.capacity
+                    <p className="font-bold text-2xl">capacityData?.fill + '/' + capacityData?.capacity</p>
                   )}
-                </p>
               </div>
             </div>
             <div className="w-full px-3.5 bg-neutral/5 backdrop-blur flex border items-center gap-4 border-base-content/10 p-2 rounded-box">
@@ -56,13 +54,11 @@ export default function Dashboard() {
               </div>
               <div className="flex flex-col">
                 <p className="text-base-content/60 text-sm font-semibold">Entries today</p>
-                <p className="font-bold text-2xl">
                   {logsDay === undefined ? (
                     <p className="skeleton w-12 h-8"></p>
                   ) : (
-                    logsDay?.length
+                    <p className="font-bold text-2xl">logsDay?.length</p>
                   )}
-                </p>
               </div>
             </div>
             <div className="w-full px-3.5 bg-neutral/5 backdrop-blur flex border items-center gap-4 border-base-content/10 p-2 rounded-box">
@@ -71,13 +67,11 @@ export default function Dashboard() {
               </div>
               <div className="flex flex-col">
                 <p className="text-base-content/60 text-sm font-semibold">Open Alerts</p>
-                <p className="font-bold text-2xl">
                   {alerts === undefined ? (
                     <p className="skeleton w-12 h-8"></p>
                   ) : (
-                    openAlertsCount
+                    <p className="font-bold text-2xl">openAlertsCount</p>
                   )}
-                </p>
               </div>
             </div>
           </div>
