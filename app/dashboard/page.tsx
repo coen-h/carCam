@@ -44,7 +44,7 @@ export default function Dashboard() {
                   {capacityData === undefined ? (
                     <p className="skeleton w-24 h-8"></p>
                   ) : (
-                    <p className="font-bold text-2xl">capacityData?.fill + '/' + capacityData?.capacity</p>
+                    <p className="font-bold text-2xl">{capacityData?.fill + '/' + capacityData?.capacity}</p>
                   )}
               </div>
             </div>
@@ -57,7 +57,7 @@ export default function Dashboard() {
                   {logsDay === undefined ? (
                     <p className="skeleton w-12 h-8"></p>
                   ) : (
-                    <p className="font-bold text-2xl">logsDay?.length</p>
+                    <p className="font-bold text-2xl">{logsDay?.length}</p>
                   )}
               </div>
             </div>
@@ -70,7 +70,7 @@ export default function Dashboard() {
                   {alerts === undefined ? (
                     <p className="skeleton w-12 h-8"></p>
                   ) : (
-                    <p className="font-bold text-2xl">openAlertsCount</p>
+                    <p className="font-bold text-2xl">{openAlertsCount}</p>
                   )}
               </div>
             </div>
