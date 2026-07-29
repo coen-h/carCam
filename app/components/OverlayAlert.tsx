@@ -120,7 +120,7 @@ export default function OverlayAlert({alertId, mainText, primaryText, secondaryT
               </button>
             )}
             <form method="dialog">
-              <button className="btn">Close</button>
+              <button className="btn" autoFocus>Close</button>
             </form>
           </div>
         </div>
