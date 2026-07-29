@@ -40,7 +40,7 @@ VEHICLE_MANIFEST = SCRIPT_DIR / "vehicle_model_manifest.json"
 VEHICLE_LABELS = SCRIPT_DIR / "vehicle_model_labels.txt"
 VEHICLE_ONNX = Path("/home/hero/vehicle_recognition/vmmr_nz50.onnx")
 
-ZED_RTSP_URL = "rtsp://192.168.0.137:8554/zed_stream"
+ZED_RTSP_URL = "rtsp://10.42.0.2:8555/zed_stream"
 CONVEX_URL = "https://cheery-grasshopper-930.convex.site/uplink"
 
 OCR_THROTTLE_INTERVAL = 0.15
@@ -99,19 +99,23 @@ print("[INFO] Initializing RapidOCR...")
 plate_reader = RapidOCR()
 
 
-def log_plate_to_convex(plate: str, filename: str) -> None:
+def log_plate_to_convex(plate: str, filename: str, direction: str = "in") -> None:
     try:
         response = requests.post(
             CONVEX_URL,
-            json={"carPlate": plate, "fileTitle": filename},
+            json={
+                "carPlate": plate,
+                "fileTitle": filename,
+                "direction": direction
+            },
             timeout=4,
         )
         if response.status_code == 200:
-            print(f"   [CONVEX] Logged plate: {plate}")
+            print(f"   [CONVEX] Logged plate: {plate} (Dir: {direction})")
         else:
             print(
                 f"   [CONVEX] Unexpected status {response.status_code} "
-                f"for plate: {plate}"
+                f"for plate: {plate} | Response: {response.text}"
             )
     except Exception as exc:
         print(f"   [CONVEX ERROR] {exc}")
@@ -335,16 +339,19 @@ def _log_plate_async(crop_bgr, text: str, now: float) -> None:
     filename = f"plate_{text}_{timestamp}.jpg"
     filepath = SAVE_DIR / filename
 
-    def _worker(img, plate, file_name, file_path):
+    direction = "in" 
+
+    def _worker(img, plate, file_name, file_path, dir_str):
         try:
             cv2.imwrite(str(file_path), img)
         except Exception as exc:
             print(f"   [SAVE ERROR] {exc}")
-        log_plate_to_convex(plate, file_name)
+            
+        log_plate_to_convex(plate, file_name, dir_str)
 
     threading.Thread(
         target=_worker,
-        args=(crop_bgr, text, filename, filepath),
+        args=(crop_bgr, text, filename, filepath, direction),
         daemon=True,
     ).start()
 
