@@ -163,7 +163,20 @@ export const addLog = mutation({
     direction: v.string(),
   },
   handler: async (ctx, args) => {
-    const isParking = args.direction === "in";
+    const checkKnown = await ctx.db
+      .query("knownCars")
+      .withIndex("by_carPlate", (q) => q.eq("carPlate", args.carPlate))
+      .first();
+
+    const existingUnknown = !checkKnown ? await ctx.db
+      .query("unknownCars")
+      .withIndex("by_carPlate", (q) => q.eq("carPlate", args.carPlate))
+      .first() : null;
+
+    const isCurrentlyParked = checkKnown?.isParked ?? existingUnknown?.isParked ?? false;
+    
+    const isParking = !isCurrentlyParked;
+    const computedDirection = isParking ? "in" : "out";
 
     const now = new Date();
     const nzDateStr = now.toLocaleString("en-US", { timeZone: "Pacific/Auckland" });
@@ -186,11 +199,6 @@ export const addLog = mutation({
         });
       }
     }
-    
-    const checkKnown = await ctx.db
-      .query("knownCars")
-      .withIndex("by_carPlate", (q) => q.eq("carPlate", args.carPlate))
-      .first();
 
     const isKnown = checkKnown !== null;
 
@@ -241,7 +249,7 @@ export const addLog = mutation({
     const logId = await ctx.db.insert("logs", {
       carPlate: args.carPlate,
       fileTitle: args.fileTitle,
-      direction: args.direction,
+      direction: computedDirection,
     });
 
     return { logId, isKnown };
