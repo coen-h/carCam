@@ -6,12 +6,15 @@ import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
 import { useRouter } from "next/navigation";
 import { useQuery } from "convex/react";
+import { useAuthActions } from "@convex-dev/auth/react";
 import carList from "@/public/carData.json";
 
 export default function Login() {
   const user = useQuery(api.function.getUser);
   const router = useRouter();
   const updateUser = useMutation(api.function.updateUser);
+  const { signOut } = useAuthActions();
+  
   const [formData, setFormData] = useState({
     userYearLevel: '13',
     userLicense: 'Learners',
@@ -65,7 +68,15 @@ export default function Login() {
     }
 
     if (user?.email) {
-      const isStudent = user.email.toLowerCase().startsWith('stu');
+      const email = user.email.toLowerCase();
+
+      if (!email.endsWith('@ashs.school.nz')) {
+        void signOut();
+        router.push('/');
+        return;
+      }
+
+      const isStudent = email.startsWith('stu');
       
       if (!isStudent) {
         if (user.role !== 'teacher') {
@@ -80,15 +91,16 @@ export default function Login() {
             router.push('/dashboard');
           });
         } else {
-          router.push('/dashboard');
+          router.push('/home');
         }
       }
     }
-  }, [user, router, updateUser]);
+  }, [user, router, updateUser, signOut]);
 
-  const isTeacher = user?.email && !user.email.toLowerCase().startsWith('stu');
+  const isInvalidDomain = user?.email && !user.email.toLowerCase().endsWith('@ashs.school.nz');
+  const isTeacher = user?.email && !user.email.toLowerCase().startsWith('stu') && !isInvalidDomain;
   
-  if (user === undefined || user?.carPlate || isTeacher) {
+  if (user === undefined || user?.carPlate || isTeacher || isInvalidDomain) {
     return (
       <div className="w-full h-full flex items-center justify-center">
         <span className="loading loading-spinner loading-lg"></span>
