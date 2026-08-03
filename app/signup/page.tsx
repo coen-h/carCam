@@ -50,19 +50,45 @@ export default function Login() {
       carPlate: formData.carPlate.toUpperCase(),
       carModel: combinedCarModel,
       carYear: formData.carYear,
-      role: formData.role,
+      role: 'student',
     });
 
-    router.push("/dashboard");
+    router.push("/home");
   };
 
   useEffect(() => {
+    if (user === undefined) return;
+
     if (user?.carPlate) {
       router.push('/dashboard');
+      return;
     }
-  }, [user, router]);
 
-  if (user === undefined || user?.carPlate) {
+    if (user?.email) {
+      const isStudent = user.email.toLowerCase().startsWith('stu');
+      
+      if (!isStudent) {
+        if (user.role !== 'teacher') {
+          updateUser({ 
+            role: 'teacher',
+            userLicense: '',
+            userYearLevel: '',
+            carPlate: '',
+            carModel: '',
+            carYear: ''
+          }).then(() => {
+            router.push('/dashboard');
+          });
+        } else {
+          router.push('/dashboard');
+        }
+      }
+    }
+  }, [user, router, updateUser]);
+
+  const isTeacher = user?.email && !user.email.toLowerCase().startsWith('stu');
+  
+  if (user === undefined || user?.carPlate || isTeacher) {
     return (
       <div className="w-full h-full flex items-center justify-center">
         <span className="loading loading-spinner loading-lg"></span>
