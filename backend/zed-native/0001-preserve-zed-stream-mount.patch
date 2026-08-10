@@ -1,0 +1,10 @@
+diff --git a/gst-zed-rtsp-server/zed-rtsp-launch.cpp b/gst-zed-rtsp-server/zed-rtsp-launch.cpp
+index 5b464fd..8366a17 100644
+--- a/gst-zed-rtsp-server/zed-rtsp-launch.cpp
++++ b/gst-zed-rtsp-server/zed-rtsp-launch.cpp
+@@ -145 +145 @@ int main(int argc, char *argv[]) {
+-    gst_rtsp_mount_points_add_factory(mounts, "/zed-stream", factory);
++    gst_rtsp_mount_points_add_factory(mounts, "/zed_stream", factory);
+@@ -158 +158 @@ int main(int argc, char *argv[]) {
+-    g_print(" * Stream ready at rtsp://%s:%s/zed-stream\n", host, port);
++    g_print(" * Stream ready at rtsp://%s:%s/zed_stream\n", host, port);

@@ -7,6 +7,8 @@ labelfile-path=/home/hero/coco_labels.txt
 batch-size=1
 network-mode=2
 num-detected-classes=80
+# Run YOLO on every source frame. The Nano stream is independently expected to
+# supply 30 FPS; this does not reduce the 640x640 detector input.
 interval=0
 gie-unique-id=1
 maintain-aspect-ratio=1

@@ -1,0 +1,16 @@
+[Unit]
+Description=Native ZED RTSP Camera Stream
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=coen
+WorkingDirectory=/home/coen/zed-native-rtsp
+ExecStart=/home/coen/zed-native-rtsp/run-zed-native-rtsp.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+

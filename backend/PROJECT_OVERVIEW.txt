@@ -1,12 +1,18 @@
-Project Overview: DeepStream License Plate and NZ Vehicle Recognition Pipeline
+Project Overview: DeepStream License Plate Recognition Pipeline
 
 1. System and Environment
 
 Camera / RTSP device:
-- Jetson Nano at 192.168.0.137.
-- ZED camera is captured by /home/coen/stream.py.
+- Jetson Nano with a ZED camera.
 - 1920x1080, 30 FPS H.264 RTSP/TCP stream.
-- Stream URL: rtsp://192.168.0.137:8554/zed_stream.
+- Current consumer URL: rtsp://192.168.0.126:8554/mystream.
+- The native ZED service publishes its single upstream session at
+  rtsp://127.0.0.1:8555/zed_stream. The existing MediaMTX service redistributes
+  it on port 8554 so DeepStream and other clients can reconnect independently.
+- The Nano uses the pinned Stereolabs ZED GStreamer plugin and a native RTSP
+  service. It captures the left image with depth disabled, converts through
+  the VIC, and encodes with NVENC without a Python/NumPy frame-copy loop.
+- `/home/coen/stream.py` remains installed as the rollback implementation.
 
 Inference device:
 - NVIDIA Jetson AGX Xavier 16 GB.
@@ -16,109 +22,81 @@ Inference device:
 
 Cloud logging:
 - Confirmed plates are posted to the existing Convex uplink.
-- Vehicle-family recognition is intentionally local-only for this release.
+- The payload includes carPlate, fileTitle and direction.
 
 2. AI Pipeline
 
 Pipeline:
 RTSP -> H.264 decode -> nvstreammux -> YOLO -> NvDCF tracker ->
-LPDNet -> NZ-50 vehicle classifier -> RGBA convert -> OSD -> nv3dsink
+LPDNet -> RGBA converter -> OSD -> nv3dsink
 
 A. YOLO primary detector
 - DeepStream component ID: 1.
-- Detects the 80 COCO classes.
-- Car class ID 2 is the input to the NZ-50 classifier.
-- Uses the existing custom YOLO DeepStream parser and FP16 engine.
+- Uses the existing YOLO 640x640 FP16 TensorRT engine and custom parser.
+- Runs on every input frame (`interval=0`). No detector input resolution or
+  confidence threshold is reduced.
 
 B. NvDCF tracker
-- Assigns stable object IDs before either secondary inference stage.
-- The vehicle recognizer keeps temporal state by this tracker ID.
+- Runs at 640x384 using the existing performance configuration.
+- Assigns stable vehicle IDs before LPDNet.
+- Secondary plate detections use their tracked parent vehicle ID for OCR state.
 
 C. LPDNet secondary detector
 - DeepStream component ID: 2.
-- Locates plates within COCO car and truck objects.
-- Uses the existing INT8 TensorRT engine.
+- Locates plates inside COCO car (class 2) and truck (class 7) objects.
+- Uses the existing INT8 TensorRT engine at 3x480x640.
 
-D. NZ-50 vehicle-family classifier
-- DeepStream component ID: 3.
-- EfficientNet-B4 trained on the public VMMRdb make/model/year dataset.
-- The 8,949 source outputs are grouped into 50 common NZ model families.
-- Regional aliases such as Mazda3/Axela and Fit/Jazz share one output.
-- Input: RGB 3x380x380.
-- Output: 50 grouped probabilities named family_probabilities.
-- Runs asynchronously on tracked COCO car objects.
-- Re-infers each vehicle every 30 frames.
-- Requires three matching, above-threshold inference windows.
-- Uses per-family application thresholds; uncertain vehicles remain Unknown.
+D. RapidOCR
+- Recognition only; LPDNet already supplies the plate crop.
+- Runs on one bounded background worker so OCR cannot stall the GStreamer pad
+  probe or accumulate an unbounded backlog.
+- ONNX Runtime uses four intra-op threads and one inter-op thread. On a saved
+  plate crop this was faster than the default while leaving CPU capacity for
+  GStreamer and DeepStream.
+- GPU video memory is mapped only when an unconfirmed plate is actually due for
+  OCR, rather than once on every frame.
+- At most one OCR job can be pending for a tracked plate.
+- OCR stops for a track as soon as its plate is confirmed.
+- A plate requires three identical reads at confidence >= 0.85.
+- The 0.15 second per-track throttle is unchanged.
 
-E. RapidOCR
-- Runs from the Python pad probe on plate crops produced by LPDNet.
-- OCR is throttled per tracked plate.
-- A plate requires three matching reads at confidence >= 0.85.
-
-3. Runtime Files
+3. Important Runtime Files
 
 new.py:
-- Builds and runs the complete pipeline.
-- Reads DeepStream classifier metadata.
-- Preserves plate OCR and Convex logging.
-- Updates primary vehicle OSD labels with stable model-family results.
+- Builds and runs the complete plate-only pipeline.
+- Reads DeepStream object metadata and queues plate crops for RapidOCR.
+- Saves confirmed plate crops and posts the existing Convex payload outside the
+  streaming thread.
+- Preloads libgomp before OpenCV/RapidOCR so NvDCF can initialize reliably.
 
-vehicle_recognition.py:
-- Pure-Python recognition state machine.
-- Applies thresholds, temporal consensus, relabel hysteresis and expiry.
-- Writes rotating JSONL confirmation events.
+config_infer_yolo26.txt:
+- YOLO PGIE configuration and custom parser settings.
+- `interval=0` runs the primary detector on every source frame.
 
-vehicle_model_manifest.json:
-- Defines the 50 families, source-class selectors, thresholds and model version.
-- Is the source of truth for the runtime and export tool.
+lpd_DetectNet2_us.txt:
+- Existing LPDNet SGIE and INT8 engine configuration.
 
-vehicle_model_labels.txt:
-- DeepStream label file in the exact manifest output order.
-
-config_infer_vehicle_model.txt:
-- DeepStream secondary classifier configuration.
-- Points to /home/hero/vehicle_recognition/vmmr_nz50.onnx.
-- The FP16 TensorRT engine is built on the AGX, never copied from a PC.
-
-tools/export_vmmr_family_onnx.py:
-- Verifies the pinned source checkpoint checksum.
-- Rejects missing/overlapping family mappings.
-- Exports a self-contained opset-13 ONNX model.
-
-tools/validate_vehicle_family_model.py:
-- Checks ONNX structure, shape and probability output.
-- Optionally calibrates thresholds from a path,label CSV dataset.
+config_tracker_NvDCF_perf.yml:
+- Existing NvDCF performance tracker configuration.
 
 ~/xavier_received_images/:
 - Confirmed license plate crops.
-- vehicle_recognition.jsonl and up to three 5 MB rotated backups.
 
-4. Vehicle Recognition Events
+4. Runtime Behavior
 
-One JSON object is written for the first confirmed result on a track:
-- schemaVersion
-- event
-- UTC timestamp
-- trackerId
-- make
-- model
-- label
-- confidence
-- modelVersion
-- bounding box
+- Start command: DISPLAY=:0 python3 new.py
+- Start the Nano RTSP stream before starting new.py on the AGX.
+- Configuration paths resolve relative to new.py.
+- The no-frame watchdog stops the pipeline after 15 seconds without input.
+- Plate and object state expires 30 seconds after a track disappears.
+- Image writes and Convex requests run outside the streaming thread.
+- Ctrl+C transitions the pipeline to NULL and stops the OCR worker cleanly.
 
-Unknown results are not written as confirmed recognition events.
+5. Scope
 
-5. Operational Notes
-
-- Start the Nano stream before starting new.py on the AGX.
-- AGX start command: DISPLAY=:0 python3 new.py
-- The script resolves configuration files relative to new.py.
-- Required runtime assets are checked before the GStreamer pipeline starts.
-- The existing 15-second no-frame watchdog remains active.
-- HTTP requests and plate image writes remain off the GStreamer thread.
-- The existing NVIDIA VehicleMakeNet files are retained as backups but are not
-  loaded, because NZ-50 supplies make and model from one consistent classifier.
-- Do not commit checkpoints, ONNX models, TensorRT engines, datasets or JSONL
-  runtime logs.
+- Vehicle make/model recognition is not part of this pipeline.
+- The NZ-50 classifier, manifest, training/export tools and runtime event log
+  interface have been removed.
+- No frontend or database changes are required.
+- Do not commit ONNX files, TensorRT engines, model checkpoints or runtime
+  plate images.

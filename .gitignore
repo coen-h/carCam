@@ -43,13 +43,13 @@ next-env.d.ts
 public/sw*
 public/swe-worker*
 
-# vehicle recognition training/runtime artifacts
-/.venv-vmmr/
+# Python and generated backend model/runtime artifacts
+/.venv/
+/.venv-*/
 __pycache__/
 *.py[cod]
 /backend/data/
-/backend/models/*
-!/backend/models/README.md
+/backend/models/
 /backend/validation/
 /backend/**/*.engine
 /backend/**/*.onnx
