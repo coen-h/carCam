@@ -53,6 +53,7 @@ COCO_CLASSES = {
     62: "TV",
     67: "Cell Phone",
 }
+VEHICLE_CLASS_IDS = {2, 7}
 UNTRACKED = 18446744073709551615
 
 
@@ -72,6 +73,9 @@ def _require_runtime_files() -> None:
 tracked_plates = {}
 logged_plates = {}
 seen_objects = {}
+display_track_ids = {}
+next_display_track_id = 0
+last_unassociated_plate_log = 0.0
 plate_state_lock = threading.Lock()
 ocr_queue = queue.Queue(maxsize=OCR_QUEUE_SIZE)
 
@@ -122,24 +126,35 @@ def on_buffer(_pad, info, _user_data):
             break
 
         frame_num = int(frame_meta.frame_num)
+        objects = []
         l_obj = frame_meta.obj_meta_list
         while l_obj is not None:
             try:
                 obj = pyds.NvDsObjectMeta.cast(l_obj.data)
             except StopIteration:
                 break
-
-            _process_object(
-                obj,
-                gst_buffer,
-                int(frame_meta.batch_id),
-                now,
-            )
+            objects.append(obj)
 
             try:
                 l_obj = l_obj.next
             except StopIteration:
                 break
+
+        tracked_vehicles = [
+            obj
+            for obj in objects
+            if int(obj.unique_component_id) == 1
+            and int(obj.class_id) in VEHICLE_CLASS_IDS
+            and int(obj.object_id) != UNTRACKED
+        ]
+        for obj in objects:
+            _process_object(
+                obj,
+                gst_buffer,
+                int(frame_meta.batch_id),
+                tracked_vehicles,
+                now,
+            )
 
         if frame_num % 150 == 0:
             _prune_plate_state(now)
@@ -152,15 +167,32 @@ def on_buffer(_pad, info, _user_data):
     return Gst.PadProbeReturn.OK
 
 
-def _process_object(obj, gst_buffer, batch_id: int, now: float) -> None:
+def _process_object(
+    obj,
+    gst_buffer,
+    batch_id: int,
+    tracked_vehicles,
+    now: float,
+) -> None:
     component_id = int(obj.unique_component_id)
 
     if component_id == 2 and obj.class_id == 0:
+        slot_id = _plate_track_id(obj, tracked_vehicles)
+        if slot_id is None:
+            global last_unassociated_plate_log
+            obj.text_params.display_text = "Plate (tracking)"
+            if now - last_unassociated_plate_log >= 5.0:
+                print(
+                    "[PLATE] Detection waiting for tracked vehicle "
+                    "association"
+                )
+                last_unassociated_plate_log = now
+            return
         _handle_plate(
             obj,
             gst_buffer,
             batch_id,
-            _plate_track_id(obj),
+            slot_id,
             now,
         )
         return
@@ -169,8 +201,22 @@ def _process_object(obj, gst_buffer, batch_id: int, now: float) -> None:
         _handle_primary(obj, int(obj.object_id), now)
 
 
-def _plate_track_id(obj) -> int:
-    """Use the tracked parent vehicle ID for secondary plate detections."""
+def _object_bbox(obj):
+    """Return an object's absolute frame-space (left, top, width, height)."""
+    # rect_params is the final frame-space rectangle from the last component
+    # that updated the object. SGIE detector_bbox_info can be crop-relative.
+    rect = obj.rect_params
+    width = float(rect.width)
+    height = float(rect.height)
+    if width <= 0 or height <= 0:
+        rect = obj.detector_bbox_info.org_bbox_coords
+        width = float(rect.width)
+        height = float(rect.height)
+    return float(rect.left), float(rect.top), width, height
+
+
+def _plate_track_id(obj, tracked_vehicles):
+    """Resolve a plate to its tracked parent or containing vehicle box."""
     try:
         if obj.parent is not None:
             parent_id = int(obj.parent.object_id)
@@ -178,7 +224,50 @@ def _plate_track_id(obj) -> int:
                 return parent_id
     except (AttributeError, StopIteration):
         pass
-    return int(obj.object_id)
+
+    px, py, pw, ph = _object_bbox(obj)
+    if pw <= 0 or ph <= 0:
+        return None
+    plate_area = pw * ph
+    plate_cx = px + pw / 2.0
+    plate_cy = py + ph / 2.0
+    best_match = None
+    best_score = None
+
+    for vehicle in tracked_vehicles:
+        vehicle_id = int(vehicle.object_id)
+        if vehicle_id == UNTRACKED:
+            continue
+        vx, vy, vw, vh = _object_bbox(vehicle)
+        if vw <= 0 or vh <= 0:
+            continue
+
+        intersection_width = max(
+            0.0,
+            min(px + pw, vx + vw) - max(px, vx),
+        )
+        intersection_height = max(
+            0.0,
+            min(py + ph, vy + vh) - max(py, vy),
+        )
+        containment = (
+            intersection_width * intersection_height / plate_area
+        )
+        center_inside = (
+            vx <= plate_cx <= vx + vw
+            and vy <= plate_cy <= vy + vh
+        )
+        if not center_inside and containment < 0.5:
+            continue
+
+        # Prefer a center-containing box, then greater plate containment,
+        # then the smaller vehicle when boxes overlap.
+        score = (int(center_inside), containment, -(vw * vh))
+        if best_score is None or score > best_score:
+            best_score = score
+            best_match = vehicle_id
+
+    return best_match
 
 
 def _handle_primary(obj, slot_id: int, now: float) -> None:
@@ -186,17 +275,28 @@ def _handle_primary(obj, slot_id: int, now: float) -> None:
         obj.class_id, f"Class_{obj.class_id}"
     )
     rect = obj.detector_bbox_info.org_bbox_coords
+    display_id = _display_track_id(slot_id)
 
     if slot_id not in seen_objects:
-        id_text = str(slot_id) if slot_id != UNTRACKED else "?"
         print(
-            f"[DETECT] {base_label} (class={obj.class_id}, id={id_text}) | "
+            f"[DETECT] {base_label} (class={obj.class_id}, id={display_id}) | "
             f"{int(rect.width)}x{int(rect.height)}"
         )
     seen_objects[slot_id] = now
 
-    suffix = f" #{slot_id}" if slot_id != UNTRACKED else ""
+    suffix = f" #{display_id}" if slot_id != UNTRACKED else ""
     obj.text_params.display_text = f"{base_label}{suffix}"
+
+
+def _display_track_id(slot_id: int) -> str:
+    """Return a short per-run label while state uses the unique 64-bit ID."""
+    global next_display_track_id
+    if slot_id == UNTRACKED:
+        return "?"
+    if slot_id not in display_track_ids:
+        display_track_ids[slot_id] = next_display_track_id
+        next_display_track_id += 1
+    return str(display_track_ids[slot_id])
 
 
 def _handle_plate(
@@ -207,9 +307,11 @@ def _handle_plate(
     now: float,
 ) -> None:
     with plate_state_lock:
+        is_new_track = slot_id not in tracked_plates
         slot = tracked_plates.setdefault(
             slot_id,
             {
+                "display_id": _display_track_id(slot_id),
                 "candidate": "",
                 "count": 0,
                 "confirmed": "",
@@ -230,15 +332,19 @@ def _handle_plate(
             slot["pending"] = True
             slot["last_ocr"] = now
 
+    if is_new_track:
+        print(
+            f"[PLATE] Detection associated with vehicle "
+            f"#{slot['display_id']}"
+        )
+
     if confirmed:
         obj.text_params.display_text = confirmed
         return
     if candidate:
         obj.text_params.display_text = candidate
     else:
-        obj.text_params.display_text = (
-            "Plate" if slot_id == UNTRACKED else f"Plate #{slot_id}"
-        )
+        obj.text_params.display_text = f"Plate #{_display_track_id(slot_id)}"
 
     if not should_queue:
         return
@@ -251,11 +357,11 @@ def _handle_plate(
         return
 
     try:
-        rect = obj.detector_bbox_info.org_bbox_coords
-        x1 = max(0, int(rect.left))
-        y1 = max(0, int(rect.top))
-        x2 = min(surface.shape[1], int(rect.left + rect.width))
-        y2 = min(surface.shape[0], int(rect.top + rect.height))
+        left, top, width, height = _object_bbox(obj)
+        x1 = max(0, int(left))
+        y1 = max(0, int(top))
+        x2 = min(surface.shape[1], int(left + width))
+        y2 = min(surface.shape[0], int(top + height))
         if x2 <= x1 or y2 <= y1:
             _clear_ocr_pending(slot_id)
             return
@@ -306,6 +412,7 @@ def _ocr_worker() -> None:
             print(f"   [OCR ERROR] {exc}")
 
         newly_confirmed = False
+        accepted_candidate = None
         with plate_state_lock:
             slot = tracked_plates.get(slot_id)
             if slot is not None:
@@ -319,6 +426,10 @@ def _ocr_worker() -> None:
                     else:
                         slot["candidate"] = text
                         slot["count"] = 1
+                    accepted_candidate = (
+                        slot["display_id"],
+                        slot["count"],
+                    )
                     if (
                         slot["count"] >= PLATE_CONFIRM_COUNT
                         and slot["confirmed"] != text
@@ -326,8 +437,18 @@ def _ocr_worker() -> None:
                         slot["confirmed"] = text
                         newly_confirmed = True
 
+        if accepted_candidate is not None:
+            display_id, candidate_count = accepted_candidate
+            print(
+                f"[OCR] Vehicle #{display_id}: {text} "
+                f"({confidence:.2f}, {candidate_count}/"
+                f"{PLATE_CONFIRM_COUNT})"
+            )
         if newly_confirmed:
-            print(f"[PLATE] Confirmed ID {slot_id}: {text} ({confidence:.2f})")
+            print(
+                f"[PLATE] Confirmed vehicle #{display_id}: "
+                f"{text} ({confidence:.2f})"
+            )
             _log_plate_async(crop_bgr, text, captured_at)
         ocr_queue.task_done()
 
@@ -358,6 +479,7 @@ def _prune_plate_state(now: float) -> None:
     ]
     for slot_id in expired_objects:
         seen_objects.pop(slot_id, None)
+        display_track_ids.pop(slot_id, None)
 
 
 def _log_plate_async(crop_bgr, text: str, now: float) -> None:

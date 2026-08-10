@@ -14,7 +14,9 @@ TargetManagement:
   earlyTerminationAge: 1
 
 TrajectoryManagement:
-  useUniqueID: 0
+  # Never recycle a tracker ID. Plate OCR state is keyed by the parent vehicle
+  # ID, so reusing IDs can make a new vehicle inherit an earlier plate.
+  useUniqueID: 1
   enableReAssoc: 0
 
 DataAssociator:

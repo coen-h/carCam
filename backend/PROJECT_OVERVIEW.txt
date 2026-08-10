@@ -39,7 +39,15 @@ A. YOLO primary detector
 B. NvDCF tracker
 - Runs at 640x384 using the existing performance configuration.
 - Assigns stable vehicle IDs before LPDNet.
+- Uses globally unique tracker IDs so a new vehicle cannot inherit cached plate
+  OCR state from a departed vehicle whose numeric ID was recycled.
+- Keeps those 64-bit IDs internal and displays short per-run track numbers on
+  the GUI and in detection logs.
 - Secondary plate detections use their tracked parent vehicle ID for OCR state.
+- On DeepStream builds that omit the secondary object's parent pointer, the
+  plate is spatially matched to the tracked car/truck box containing it.
+- A plate that cannot yet be matched is shown as `Plate (tracking)` and is not
+  added to persistent OCR state under the shared untracked-object ID.
 
 C. LPDNet secondary detector
 - DeepStream component ID: 2.
@@ -58,6 +66,8 @@ D. RapidOCR
 - At most one OCR job can be pending for a tracked plate.
 - OCR stops for a track as soon as its plate is confirmed.
 - A plate requires three identical reads at confidence >= 0.85.
+- Terminal output reports the associated vehicle, each accepted OCR candidate,
+  its confirmation count, and the final confirmed plate.
 - The 0.15 second per-track throttle is unchanged.
 
 3. Important Runtime Files
@@ -100,3 +110,18 @@ config_tracker_NvDCF_perf.yml:
 - No frontend or database changes are required.
 - Do not commit ONNX files, TensorRT engines, model checkpoints or runtime
   plate images.
+
+6. Systemd Services and Logs
+
+Nano services:
+- `zed-rtsp.service`: native ZED capture, VIC conversion and NVENC RTSP source.
+- `mediamtx.service`: reconnect-safe RTSP redistribution and dashboard HLS.
+
+Useful commands on the Nano:
+- `systemctl status zed-rtsp.service mediamtx.service`
+- `journalctl -u zed-rtsp.service -f`
+- `journalctl -u mediamtx.service -f`
+- `journalctl -u zed-rtsp.service -u mediamtx.service --since today`
+
+No systemd service was added for the AGX application. Start it manually with
+`DISPLAY=:0 python3 new.py`; its logs remain in that terminal.
