@@ -110,11 +110,30 @@ export const updateUser = mutation({
     carYear: v.string(),
     role: v.string(),
   },
+
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
 
     if (userId === null) {
       throw new Error("Not authenticated");
+    }
+
+    const currentUser = await ctx.db.get(userId);
+
+    if (!currentUser) {
+      throw new Error("User not found");
+    }
+
+    const oldCarPlate = currentUser.carPlate;
+
+    const existingUserWithPlate = await ctx.db
+      .query("users")
+      .withIndex("carPlate", (q) => q.eq("carPlate", args.carPlate))
+      .filter((q) => q.neq(q.field("_id"), userId))
+      .first();
+
+    if (existingUserWithPlate) {
+      throw new Error("This vehicle is already registered to another user");
     }
 
     await ctx.db.patch(userId, {
@@ -124,17 +143,65 @@ export const updateUser = mutation({
       role: args.role,
     });
 
-    await ctx.db.insert("knownCars", {
-      carPlate: args.carPlate,
-      carModel: args.carModel,
-      carYear: args.carYear,
-      isParked: false,
-      totalEntries: '0'
-    });
+    const existingKnown = await ctx.db
+      .query("knownCars")
+      .withIndex("by_carPlate", (q) =>
+        q.eq("carPlate", args.carPlate)
+      )
+      .first();
+
+    if (existingKnown) {
+      await ctx.db.patch(existingKnown._id, {
+        carModel: args.carModel,
+        carYear: args.carYear,
+      });
+
+      const existingUnknown = await ctx.db
+        .query("unknownCars")
+        .withIndex("by_carPlate", (q) =>
+          q.eq("carPlate", args.carPlate)
+        )
+        .first();
+
+      if (existingUnknown) {
+        await ctx.db.delete(existingUnknown._id);
+      }
+    }
+
+    else {
+      const existingUnknown = await ctx.db
+        .query("unknownCars")
+        .withIndex("by_carPlate", (q) =>
+          q.eq("carPlate", args.carPlate)
+        )
+        .first();
+
+      if (existingUnknown) {
+        await ctx.db.insert("knownCars", {
+          carPlate: args.carPlate,
+          carModel: args.carModel,
+          carYear: args.carYear,
+          isParked: existingUnknown.isParked ?? false,
+          totalEntries: existingUnknown.totalEntries ?? "0",
+        });
+
+        await ctx.db.delete(existingUnknown._id);
+      }
+
+      else {
+        await ctx.db.insert("knownCars", {
+          carPlate: args.carPlate,
+          carModel: args.carModel,
+          carYear: args.carYear,
+          isParked: false,
+          totalEntries: "0",
+        });
+      }
+    }
 
     return await ctx.db.get(userId);
-  }
-})
+  },
+});
 
 export const getAllLogs = query({
   handler: async (ctx) => {
@@ -236,7 +303,7 @@ export const addLog = mutation({
 
         const entryCountThisWeek = weeklyLogs.filter(log => log.direction === "in").length;
 
-        if (entryCountThisWeek === 2) {
+        if (entryCountThisWeek >= 2) {
           await ctx.db.insert("alerts", {
             carPlate: args.carPlate,
             type: "Frequent Unknown Vehicle",
@@ -260,10 +327,49 @@ export const addUnknown = mutation({
   args: {
     carPlate: v.string(),
   },
+
   handler: async (ctx, args) => {
-    await ctx.db.insert("unknownCars", { carPlate: args.carPlate, carModel: 'Unknown', isParked: false });
+    const existingKnown = await ctx.db
+      .query("knownCars")
+      .withIndex("by_carPlate", (q) =>
+        q.eq("carPlate", args.carPlate)
+      )
+      .first();
+
+    if (existingKnown) {
+      return {
+        success: true,
+        alreadyKnown: true,
+      };
+    }
+
+    const existingUnknown = await ctx.db
+      .query("unknownCars")
+      .withIndex("by_carPlate", (q) =>
+        q.eq("carPlate", args.carPlate)
+      )
+      .first();
+
+    if (existingUnknown) {
+      return {
+        success: true,
+        alreadyUnknown: true,
+      };
+    }
+
+    await ctx.db.insert("unknownCars", {
+      carPlate: args.carPlate,
+      carModel: "Unknown",
+      isParked: false,
+      totalEntries: "0",
+    });
+
+    return {
+      success: true,
+    };
   },
 });
+
 
 export const getCurrentCapacity = query({
   handler: async (ctx) => {
