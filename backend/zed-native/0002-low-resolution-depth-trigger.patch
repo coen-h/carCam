@@ -1,0 +1,97 @@
+diff --git a/gst-zed-src/CMakeLists.txt b/gst-zed-src/CMakeLists.txt
+index 586438a..2e6b4a1 100644
+--- a/gst-zed-src/CMakeLists.txt
++++ b/gst-zed-src/CMakeLists.txt
+@@ -18,10 +18,12 @@ endif()
+ 
+ set(SOURCES
+     gstzedsrc.cpp
++    zed-depth-trigger.cpp
+     )
+     
+ set(HEADERS
+     gstzedsrc.h
++    zed-depth-trigger.h
+     )
+ 
+ include_directories(${CUDA_INCLUDE_DIRS})
+diff --git a/gst-zed-src/gstzedsrc.cpp b/gst-zed-src/gstzedsrc.cpp
+index f1dc874..e8424f5 100644
+--- a/gst-zed-src/gstzedsrc.cpp
++++ b/gst-zed-src/gstzedsrc.cpp
+@@ -27,4 +27,5 @@
+ #include "gst-zed-meta/gstzedmeta.h"
+ #include "gstzedsrc.h"
++#include "zed-depth-trigger.h"
+ 
+ // AI Module
+@@ -1414,6 +1415,10 @@ static void gst_zedsrc_class_init(GstZedSrcClass *klass) {
+ }
+ 
+ static void gst_zedsrc_reset(GstZedSrc *src) {
++    if (src->depth_trigger != nullptr) {
++        zed_depth_trigger_destroy(src->depth_trigger);
++        src->depth_trigger = nullptr;
++    }
+     if (src->zed.isOpened()) {
+         src->zed.close();
+     }
+@@ -1434,5 +1439,6 @@ static void gst_zedsrc_init(GstZedSrc *src) {
+     /* set source as live (no preroll) */
+     gst_base_src_set_live(GST_BASE_SRC(src), TRUE);
++    src->depth_trigger = nullptr;
+ 
+     /* override default of BYTES to operate in time mode */
+     gst_base_src_set_format(GST_BASE_SRC(src), GST_FORMAT_TIME);
+@@ -2347,6 +2353,8 @@ static gboolean gst_zedsrc_start(GstBaseSrc *bsrc) {
+     }
+     // <---- Open camera
+ 
++    src->depth_trigger = zed_depth_trigger_create_from_environment(GST_ELEMENT(src));
++
+     // ----> Camera Controls
+     GST_INFO("CAMERA CONTROLS");
+     src->zed.setCameraSettings((sl::VIDEO_SETTINGS::BRIGHTNESS), (src->brightness));
+@@ -2719,9 +2727,18 @@ static GstFlowReturn gst_zedsrc_fill(GstPushSrc *psrc, GstBuffer *buf) {
+     // ----> Set runtime parameters
+     sl::RuntimeParameters zedRtParams;   // runtime parameters
++    const gboolean depth_sample_due =
++        src->depth_mode != static_cast<gint>(sl::DEPTH_MODE::NONE) &&
++        zed_depth_trigger_should_sample(src->depth_trigger);
+ 
+     GST_TRACE_OBJECT(src, "CAMERA RUNTIME PARAMETERS");
+-    if (src->depth_mode == static_cast<gint>(sl::DEPTH_MODE::NONE) && !src->pos_tracking) {
++    if (src->depth_trigger != nullptr && !src->pos_tracking && !src->object_detection &&
++        !src->body_tracking && src->stream_type != GST_ZEDSRC_DEPTH_16 &&
++        src->stream_type != GST_ZEDSRC_LEFT_DEPTH) {
++        // The occupancy observer needs depth only for scheduled samples.
++        zedRtParams.enable_depth = depth_sample_due == TRUE;
++    } else if (src->depth_mode == static_cast<gint>(sl::DEPTH_MODE::NONE) &&
++               !src->pos_tracking) {
+         zedRtParams.enable_depth = false;
+     } else {
+         zedRtParams.enable_depth = true;
+     }
+@@ -2773,6 +2790,10 @@ static GstFlowReturn gst_zedsrc_fill(GstPushSrc *psrc, GstBuffer *buf) {
+     }
+     // <---- ZED grab
+ 
++    if (depth_sample_due) {
++        zed_depth_trigger_sample(src->depth_trigger, src->zed);
++    }
++
+     // ----> Clock update
+     clock = gst_element_get_clock(GST_ELEMENT(src));
+     clock_time = gst_clock_get_time(clock);
+diff --git a/gst-zed-src/gstzedsrc.h b/gst-zed-src/gstzedsrc.h
+index 842bf24..0317600 100644
+--- a/gst-zed-src/gstzedsrc.h
++++ b/gst-zed-src/gstzedsrc.h
+@@ -38,6 +38,7 @@ struct _GstZedSrc {
+     sl::Camera zed;
+ 
+     gboolean is_started;   // grab started flag
++    gpointer depth_trigger;
+ 
+     // ----> Properties
+     gint camera_resolution;   // Camera resolution [enum]

@@ -1,0 +1,48 @@
+logLevel: info
+logDestinations: [stdout]
+readTimeout: 30s
+writeTimeout: 30s
+writeQueueSize: 1024
+
+api: true
+apiAddress: 127.0.0.1:9997
+metrics: true
+metricsAddress: 127.0.0.1:9998
+
+rtsp: true
+rtspTransports: [tcp]
+rtspAddress: 100.64.0.6:8554
+rtmp: false
+srt: false
+webrtc: false
+moq: false
+
+hls: true
+hlsAddress: 127.0.0.1:8888
+hlsAllowOrigins: ["*"]
+hlsAlwaysRemux: false
+hlsVariant: lowLatency
+hlsSegmentCount: 7
+hlsSegmentDuration: 1s
+hlsPartDuration: 200ms
+
+playback: true
+playbackAddress: 127.0.0.1:9996
+playbackAllowOrigins: ["*"]
+
+paths:
+  camera-h265:
+    source: publisher
+    overridePublisher: false
+    alwaysAvailable: true
+    alwaysAvailableTracks:
+      - codec: H265
+    runOnOnline: /home/hero/parkinglot-streaming/agx-online-session.sh
+    runOnOnlineRestart: true
+
+  public-h264:
+    source: publisher
+    overridePublisher: true
+    alwaysAvailable: true
+    alwaysAvailableTracks:
+      - codec: H264

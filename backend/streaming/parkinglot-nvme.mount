@@ -1,0 +1,12 @@
+[Unit]
+Description=Existing Xavier NVMe mounted for parking lot event clips
+
+[Mount]
+What=/dev/disk/by-uuid/3aba11b3-e17d-469e-95d0-29cd82389246
+Where=/mnt/parkinglot-nvme
+Type=btrfs
+Options=noatime,subvolid=5
+TimeoutSec=15
+
+[Install]
+WantedBy=multi-user.target

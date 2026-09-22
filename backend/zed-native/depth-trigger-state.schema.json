@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://parkinglot-cam.local/schemas/depth-trigger-state.schema.json",
+  "title": "ZED depth occupancy state",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "updated_at",
+    "mode",
+    "state",
+    "occupied",
+    "actionable",
+    "baseline_loaded",
+    "baseline_id",
+    "calibration_progress",
+    "settle_remaining_seconds",
+    "hold_remaining_seconds",
+    "changed_pixels",
+    "farther_pixels",
+    "movement_pixels",
+    "comparable_pixels",
+    "changed_fraction",
+    "farther_fraction",
+    "movement_fraction",
+    "valid_fraction",
+    "peak_changed_pixels",
+    "peak_changed_fraction",
+    "masked_pixels",
+    "baseline_valid_pixels",
+    "samples",
+    "sample_interval_ms",
+    "sample_size",
+    "roi_polygon",
+    "excluded_polygon_count",
+    "last_error"
+  ],
+  "properties": {
+    "schema_version": { "const": 2 },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "mode": { "enum": ["shadow", "active"] },
+    "state": {
+      "enum": [
+        "needs_calibration",
+        "calibrating",
+        "warming_up",
+        "clear",
+        "possible",
+        "occupied",
+        "hold",
+        "depth_unreliable",
+        "camera_moved"
+      ]
+    },
+    "occupied": { "type": "boolean" },
+    "actionable": { "type": "boolean" },
+    "baseline_loaded": { "type": "boolean" },
+    "baseline_id": { "type": "string", "pattern": "^[0-9a-f]{8}$" },
+    "calibration_progress": { "type": "number", "minimum": 0, "maximum": 1 },
+    "settle_remaining_seconds": { "type": "number", "minimum": 0 },
+    "hold_remaining_seconds": { "type": "number", "minimum": 0 },
+    "changed_pixels": { "type": "integer", "minimum": 0 },
+    "farther_pixels": { "type": "integer", "minimum": 0 },
+    "movement_pixels": { "type": "integer", "minimum": 0 },
+    "comparable_pixels": { "type": "integer", "minimum": 0 },
+    "changed_fraction": { "type": "number", "minimum": 0, "maximum": 1 },
+    "farther_fraction": { "type": "number", "minimum": 0, "maximum": 1 },
+    "movement_fraction": { "type": "number", "minimum": 0, "maximum": 1 },
+    "valid_fraction": { "type": "number", "minimum": 0, "maximum": 1 },
+    "peak_changed_pixels": { "type": "integer", "minimum": 0 },
+    "peak_changed_fraction": { "type": "number", "minimum": 0, "maximum": 1 },
+    "masked_pixels": { "type": "integer", "minimum": 1 },
+    "baseline_valid_pixels": { "type": "integer", "minimum": 0 },
+    "samples": { "type": "integer", "minimum": 0 },
+    "sample_interval_ms": { "type": "integer", "minimum": 100 },
+    "sample_size": {
+      "type": "array",
+      "prefixItems": [
+        { "type": "integer", "minimum": 16 },
+        { "type": "integer", "minimum": 16 }
+      ],
+      "items": false
+    },
+    "roi_polygon": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          { "type": "integer", "minimum": 0 },
+          { "type": "integer", "minimum": 0 }
+        ],
+        "items": false
+      }
+    },
+    "excluded_polygon_count": { "type": "integer", "minimum": 0 },
+    "last_error": { "type": "string" }
+  }
+}

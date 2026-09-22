@@ -1,0 +1,16 @@
+[Unit]
+Description=Event-controlled Nano to AGX H.265 uplink
+After=network-online.target tailscaled.service mediamtx.service zed-rtsp.service
+Wants=network-online.target tailscaled.service
+Requires=mediamtx.service zed-rtsp.service
+
+[Service]
+Type=simple
+User=coen
+WorkingDirectory=/home/coen/parkinglot-streaming
+ExecStart=/usr/bin/python3 /home/coen/parkinglot-streaming/event_uplink.py
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

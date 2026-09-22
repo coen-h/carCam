@@ -30,7 +30,15 @@ YOLO_CONFIG = SCRIPT_DIR / "config_infer_yolo26.txt"
 TRACKER_CONFIG = SCRIPT_DIR / "config_tracker_NvDCF_perf.yml"
 LPD_CONFIG = SCRIPT_DIR / "lpd_DetectNet2_us.txt"
 
-ZED_RTSP_URL = "rtsp://192.168.0.126:8554/mystream"
+ZED_RTSP_URL = os.environ.get(
+    "PARKINGLOT_RTSP_URL", "rtsp://100.64.0.6:8554/public-h264"
+)
+ZED_VIDEO_CODEC = os.environ.get("PARKINGLOT_VIDEO_CODEC", "h264").lower()
+if ZED_VIDEO_CODEC not in {"h264", "h265"}:
+    raise RuntimeError(
+        "PARKINGLOT_VIDEO_CODEC must be either 'h264' or 'h265', got "
+        f"{ZED_VIDEO_CODEC!r}"
+    )
 CONVEX_URL = "https://cheery-grasshopper-930.convex.site/uplink"
 
 OCR_THROTTLE_INTERVAL = 0.15
@@ -524,8 +532,8 @@ def build_pipeline():
         return element
 
     src = make("rtspsrc", "src")
-    depay = make("rtph264depay", "depay")
-    h264parse = make("h264parse", "h264parse")
+    depay = make(f"rtp{ZED_VIDEO_CODEC}depay", "depay")
+    parser = make(f"{ZED_VIDEO_CODEC}parse", "video-parser")
     decoder = make("nvv4l2decoder", "decoder")
     mux = make("nvstreammux", "mux")
     yolo = make("nvinfer", "nvinfer0")
@@ -571,7 +579,7 @@ def build_pipeline():
 
     src.connect("pad-added", on_pad_added)
 
-    for upstream, downstream in [(depay, h264parse), (h264parse, decoder)]:
+    for upstream, downstream in [(depay, parser), (parser, decoder)]:
         if not upstream.link(downstream):
             raise RuntimeError(
                 f"Link failed: {upstream.get_name()} -> {downstream.get_name()}"

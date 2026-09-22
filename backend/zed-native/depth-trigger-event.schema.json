@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://parkinglot-cam.local/schemas/depth-trigger-event.schema.json",
+  "title": "ZED depth occupancy event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "timestamp",
+    "event",
+    "state",
+    "changed_pixels",
+    "changed_fraction",
+    "peak_changed_pixels",
+    "peak_changed_fraction",
+    "duration_seconds",
+    "shadow_mode"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "event": {
+      "enum": [
+        "calibration_started",
+        "calibration_completed",
+        "calibration_failed",
+        "occupied_start",
+        "occupied_end",
+        "camera_moved",
+        "depth_unreliable",
+        "depth_recovered"
+      ]
+    },
+    "state": { "type": "string" },
+    "changed_pixels": { "type": "integer", "minimum": 0 },
+    "changed_fraction": { "type": "number", "minimum": 0, "maximum": 1 },
+    "peak_changed_pixels": { "type": "integer", "minimum": 0 },
+    "peak_changed_fraction": { "type": "number", "minimum": 0, "maximum": 1 },
+    "duration_seconds": { "type": "number", "minimum": 0 },
+    "shadow_mode": { "type": "boolean" }
+  }
+}

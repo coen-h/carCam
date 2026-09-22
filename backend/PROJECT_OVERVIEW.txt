@@ -5,7 +5,10 @@ Project Overview: DeepStream License Plate Recognition Pipeline
 Camera / RTSP device:
 - Jetson Nano with a ZED camera.
 - 1920x1080, 30 FPS H.264 RTSP/TCP stream.
-- Current consumer URL: rtsp://192.168.0.126:8554/mystream.
+- Current Nano LAN consumer URL depends on the phone hotspot address.
+- Stable private address: rtsp://100.64.0.7:8554/mystream (Tailscale).
+- Current dashboard HLS URL remains
+  https://video.coen.ovh/mystream/index.m3u8 through the Nano Cloudflare tunnel.
 - The native ZED service publishes its single upstream session at
   rtsp://127.0.0.1:8555/zed_stream. The existing MediaMTX service redistributes
   it on port 8554 so DeepStream and other clients can reconnect independently.
@@ -116,12 +119,212 @@ config_tracker_NvDCF_perf.yml:
 Nano services:
 - `zed-rtsp.service`: native ZED capture, VIC conversion and NVENC RTSP source.
 - `mediamtx.service`: reconnect-safe RTSP redistribution and dashboard HLS.
+- `cloudflared.service`: public Cloudflare tunnel for the dashboard stream.
+- `tailscaled.service`: stable private addressing between the Nano and AGX.
+- `zed-event-uplink.service`: installed event-uplink controller. It is currently
+  disabled and inactive pending the final H.265/manual camera acceptance test.
+
+AGX services/units:
+- `tailscaled.service`: stable private addressing between the AGX and Nano.
+- `parkinglot-mediamtx.service`: staged private H.265 receiver, offline H.264
+  slate, HLS endpoint and event transcode hook. It is enabled and consumes no
+  Nano video while its input is offline.
+- `parkinglot-srt-lease.service`: authenticated event control on the AGX
+  Tailscale address. It enables the SRT pull only under one-second Nano
+  heartbeats and disconnects after a five-second missed-heartbeat lease.
+- `mnt-parkinglot\\x2dnvme.mount`: mounts the existing 512 GB Btrfs NVMe at
+  `/mnt/parkinglot-nvme` without formatting it. Event clips use
+  `/mnt/parkinglot-nvme/parkinglot-data/clips`.
 
 Useful commands on the Nano:
-- `systemctl status zed-rtsp.service mediamtx.service`
+- `systemctl status zed-rtsp.service mediamtx.service cloudflared.service`
+- `systemctl status tailscaled.service zed-event-uplink.service`
 - `journalctl -u zed-rtsp.service -f`
 - `journalctl -u mediamtx.service -f`
+- `journalctl -u cloudflared.service -f`
 - `journalctl -u zed-rtsp.service -u mediamtx.service --since today`
+
+No persistent trigger service was added. Benchmark runs used transient units
+whose historical logs can still be queried with `journalctl -u <name>`:
+`zed-trigger-shadow-test.service`, `zed-trigger-shadow-test2.service`,
+`zed-depth-baseline-test.service`, `zed-depth-unstabilized-test.service`,
+`zed-depth-roi-test.service`, and `zed-depth-occupancy-test.service`.
+The final saved-baseline startup check used the transient
+`zed-depth-warmup-test.service` unit; it is not enabled and does not survive a
+reboot or systemd manager reload.
 
 No systemd service was added for the AGX application. Start it manually with
 `DISPLAY=:0 python3 new.py`; its logs remain in that terminal.
+
+Useful commands on the AGX:
+- `systemctl status parkinglot-mediamtx.service parkinglot-srt-lease.service 'mnt-parkinglot\\x2dnvme.mount'`
+- `journalctl -u parkinglot-mediamtx.service -u parkinglot-srt-lease.service -f`
+- `findmnt /mnt/parkinglot-nvme`
+
+7. Cellular Event-Trigger Investigation
+
+Phase 1 baseline, measured 2026-08-19:
+- Nano output: stable 30.0 FPS at approximately 12.5 Mbps with no observed RTP
+  packet loss.
+- Nano temperature: approximately 60 C during the existing stream, without
+  thermal throttling.
+- The Nano, MediaMTX, Cloudflare tunnel, Xavier application files and relevant
+  systemd units were backed up before testing.
+- Nano backup:
+  `/home/coen/deployment-backups/20260819T070500Z-cellular-trigger-phase1`
+- Xavier backup:
+  `/home/hero/deployment-backups/20260819T070500Z-cellular-trigger-phase1`
+
+ZED neural trigger proof of concept:
+- A configurable shadow observer was built against the pinned ZED GStreamer
+  v4.2.5 source. It reads `GstZedSrcMeta`, evaluates vehicle 3D boxes and writes
+  a non-actionable JSON state file without copying video pixels.
+- ZED PERFORMANCE depth plus the FAST vehicle detector reduced delivered video
+  to approximately 7.3 FPS, despite reduced precision and disabled tracking.
+- This failed the 25 FPS acceptance threshold. The observer and neural settings
+  were not deployed to `zed-rtsp.service`.
+- The original service was restored and re-verified at approximately 30.1 FPS.
+- The downloaded/optimized ZED FAST detector assets occupy approximately 75 MB
+  under `/usr/local/zed/resources`; installed packages were not changed.
+- Proof-of-concept source remains under `backend/zed-native/` for reproducible
+  diagnostics only.
+
+Decision gate:
+- Do not enable ZED neural object detection in the production Nano pipeline.
+- False triggers from infrequent people or other large foreground objects were
+  accepted for the non-neural fallback.
+
+Low-resolution depth occupancy observer:
+- PERFORMANCE depth with default stabilization delivered approximately 23.5
+  FPS and failed the 25 FPS floor.
+- Disabling depth stabilization raised the depth-only result to approximately
+  25.44 FPS. Restricting the ZED depth-processing ROI to 75% width and height
+  made no meaningful difference (approximately 25.48 FPS).
+- The implemented shadow sampler retrieves only a 160x90 depth map at 4 Hz,
+  uses a persistent 30-second per-pixel median empty-scene baseline, and looks
+  for pixels at least 500 mm closer than that baseline. It does not classify
+  objects, so vehicles, people, and other large foreground objects can trigger.
+- With the sampler active, delivered video measured 25.42 FPS over a 19.12
+  second RTP timestamp span. This passes the floor and shows no measurable
+  sampling overhead beyond enabling depth.
+- More than 700 empty-scene samples produced 0-13 changed pixels against the
+  150-pixel trigger floor and caused no false occupancy.
+- The 2026-08-20 revision requests depth only on the scheduled sample
+  frames and disables depth computation on intervening RGB frames. The short
+  RTP timestamp benchmark measured 30.89 FPS, effectively restoring the
+  camera's nominal 30 FPS output without changing 1920x1080 image quality or
+  the 12.5 Mbps encoder target.
+- A restarted fixed-camera photo test passed the complete state cycle:
+  clear at 49/5,945 changed pixels (0.82%), occupied at 996/5,340 (18.65%),
+  then clear at 92/6,017 (1.53%) after removal. The configured changed-fraction
+  threshold is 4% and confirmation/clear timing operated as intended.
+- An earlier clear attempt correctly remained occupied because the camera had
+  been physically moved after calibration. This proves the baseline must be
+  discarded and rebuilt whenever the camera is repositioned.
+- The hardened observer supports a polygonal ROI and exclusions, explicit
+  calibration, persistent baseline validation, depth-reliability and camera-
+  movement faults, 10-second hold timing, rotating JSONL transition events,
+  and a 15-second `warming_up` guard when a saved baseline is reloaded.
+- The final production photo test entered occupied at 629 pixels (11.92%),
+  peaked at 2,634 pixels (36.70%), and returned clear at 45 pixels (0.53%).
+  The production RTP measurement was 31.3 FPS over 20.7 seconds, representing
+  the camera's nominal 30 FPS. Separate 2, 3, 4, and 5 Hz trials all retained
+  nominal 30 FPS; 4 Hz was selected for latency with thermal headroom.
+- It is installed inside `zed-rtsp.service` but remains `shadow-mode=true`, so
+  `actionable=false` and it cannot alter bitrate, frame rate, resolution, HLS,
+  or public output. No new persistent systemd service was added.
+- State is `/dev/shm/parkinglot-depth-trigger-state.json`; the persistent
+  baseline and rotating events are under `/home/coen/zed-native-rtsp/state/`.
+  Use `/home/coen/zed-native-rtsp/depth-triggerctl` with `status`, `calibrate`,
+  or `events`.
+- Deployment backups are
+  `/home/coen/deployment-backups/20260820T083202Z-depth-shadow-v2` and
+  `/home/coen/deployment-backups/20260820T084700Z-depth-startup-settle`.
+- `zed-rtsp`, `mediamtx`, and `cloudflared` were all active after deployment.
+
+Next acceptance gate:
+- Mount the camera in its final position, select only the entrance lane in the
+  160x90 depth map, recalibrate with an empty lane, and repeat the occupied and
+  clear test with representative vehicles at expected approach angles.
+- Only after that test should the depth state drive the static/low-bandwidth to
+  live/high-quality stream transition. Quality switching is not implemented;
+  the current observer is telemetry only.
+
+8. Cellular H.265 Relay Staging (2026-09-04)
+
+Installed but not cut over:
+- Tailscale addresses are Nano `100.64.0.7` and AGX `100.64.0.6`.
+- Peer traffic established a direct UDP path at approximately 10-16 ms after
+  briefly using the Sydney DERP during hole punching.
+- The Nano launcher supports `stream.env` codec/bitrate selection. Production
+  was restored to H.264 at 12.5 Mbps after testing.
+- The event uplink remuxes H.265 without decoding or re-encoding and includes a
+  60-second cap plus five-minute cooldown for depth-fault fail-open states.
+- The AGX MediaMTX v1.19.3 receiver binds RTSP only to its Tailscale address;
+  its HLS, API, metrics and playback listeners bind to localhost.
+- Its always-available H.264 offline slate tested at approximately 146 kbps,
+  supplied entirely by the wired AGX rather than the cellular Nano.
+- The existing Kingston 512 GB NVMe was mounted without formatting. It has
+  approximately 471 GB free; the older Arch files remain intact.
+- AGX hardware H.265 decode to H.264 encode and five-second MP4 splitting passed
+  using generated local video. Test clips were removed afterward.
+
+Acceptance failure and safe state:
+- Nano H.265 capture itself passed locally at 1920x1080, 30 FPS and about
+  6.16 Mbps. A local RTSP publish test also passed after forcing byte-stream,
+  access-unit-aligned H.265 caps.
+- Over the cellular Tailscale path, the old GStreamer 1.14 RTSP RECORD client
+  took roughly 24 seconds between opening the RTSP connection and creating the
+  publishing session. This is too slow for short entrance events.
+- The H.264 DeepStream fallback connected and created a read session, but no
+  frame reached `new.py` before its 15-second watchdog expired.
+- Therefore `zed-event-uplink.service` is disabled/inactive, the Nano is back
+  on the known H.264 configuration, the public Cloudflare hostname still points
+  to the Nano, and no automatic cellular video switching is active.
+- `new.py` now supports both H.264 and H.265 through `PARKINGLOT_VIDEO_CODEC`
+  and reads its URL from `PARKINGLOT_RTSP_URL`. Its default is the Nano's stable
+  Tailscale H.264 URL.
+
+SRT replacement status (2026-09-05):
+- MediaMTX-to-MediaMTX SRT pull works over Tailscale without installing new
+  Nano packages. A short end-to-end H.264 control test confirmed authenticated
+  one-second heartbeats, an online 1920x1080 source, and clean release back to
+  an offline placeholder.
+- The AGX owns the cellular session: an authenticated controller bound only to
+  `100.64.0.6:9010` changes the MediaMTX source, while its local Control API
+  remains on localhost. A five-second lease prevents an orphaned upload from
+  consuming the monthly allowance if the Nano, phone or controller fails.
+- `parkinglot-srt-lease.service` is enabled and currently inactive at the
+  stream level. The Nano controller is deliberately disabled, so the website
+  and production H.264 camera feed have not yet been cut over.
+- `new.py` defaults to the stable AGX `public-h264` path. During an event, the
+  AGX hardware converts the cellular H.265 stream to that path; while idle, the
+  same URL serves the AGX-generated offline image.
+
+Remaining acceptance gate:
+- Temporarily switch the Nano to its already validated 1080p30 H.265 profile,
+  manually force one short event, and verify first-frame latency, AGX hardware
+  transcode, DeepStream FPS, NVMe clips, clean expiry, and browser transition.
+- Only after that passes should the Nano controller be enabled and the public
+  Cloudflare hostname move from the Nano to the AGX.
+
+9. Direct AGX H.264 Relay Acceptance (2026-09-07)
+
+- The initial local MPEG-TS/UDP branch intermittently stopped feeding
+  `public-h264`, even though H.265 SRT reception and NVMe recording continued.
+- It was replaced with direct local RTSP publishing from the existing Xavier
+  hardware H.264 encoder into MediaMTX. The only package added was Ubuntu's
+  `gstreamer1.0-rtsp` (about 121 KB installed); no runtime package was removed
+  or upgraded.
+- The full path passed: Nano H.265 over SRT, Xavier hardware decode/encode,
+  direct H.264 RTSP publication, five-second NVMe MP4 recording and DeepStream
+  consumption. `new.py` received its first frame 5.18 seconds after entering
+  PLAYING and stabilized at approximately 28.7 FPS.
+- A sampled clip was valid H.264 at 4.995 seconds. The event lease released
+  cleanly, the AGX returned to its offline H.264 placeholder, and the Nano was
+  restored to its normal H.264 12.5 Mbps website configuration afterward.
+- Rollback copies for the AGX relay change are under
+  `/home/hero/deployment-backups/20260907-184653-direct-rtsp`.
+- Automatic triggering remains disabled until the fixed installation has an
+  empty-lane baseline and representative vehicle calibration. The current
+  depth state is `camera_moved`, as expected after repositioning.

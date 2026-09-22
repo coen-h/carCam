@@ -1,0 +1,17 @@
+[Unit]
+Description=Parking lot authenticated SRT pull lease
+After=network-online.target tailscaled.service parkinglot-mediamtx.service
+Wants=network-online.target tailscaled.service
+Requires=parkinglot-mediamtx.service
+
+[Service]
+Type=simple
+User=hero
+Group=hero
+Environment=PARKINGLOT_LEASE_CONFIG=/home/hero/parkinglot-streaming/srt-lease.ini
+ExecStart=/usr/bin/python3 /home/hero/parkinglot-streaming/srt_lease_server.py
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

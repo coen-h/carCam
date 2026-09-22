@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://parkinglot-cam.local/schemas/trigger-state-v1.json",
+  "title": "ZED vehicle trigger shadow state",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "timestampUnixMs",
+    "shadowMode",
+    "zoneEnabled",
+    "state",
+    "actionable",
+    "frameId",
+    "confirmationCount",
+    "vehicleCount",
+    "statistics",
+    "vehicles"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "timestampUnixMs": { "type": "integer", "minimum": 0 },
+    "shadowMode": { "type": "boolean" },
+    "zoneEnabled": { "type": "boolean" },
+    "state": { "enum": ["idle", "active"] },
+    "actionable": { "type": "boolean" },
+    "frameId": { "type": "integer", "minimum": 0 },
+    "confirmationCount": { "type": "integer", "minimum": 0 },
+    "vehicleCount": { "type": "integer", "minimum": 0 },
+    "statistics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["framesSeen", "candidateObservations", "activations"],
+      "properties": {
+        "framesSeen": { "type": "integer", "minimum": 0 },
+        "candidateObservations": { "type": "integer", "minimum": 0 },
+        "activations": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "vehicles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "subclass",
+          "confidence",
+          "positionMm",
+          "dimensionsMm",
+          "bboxMinMm",
+          "bboxMaxMm",
+          "intersectsZone"
+        ],
+        "properties": {
+          "id": { "type": "integer" },
+          "subclass": { "enum": ["car", "truck", "bus", "motorbike", "bicycle", "other"] },
+          "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+          "positionMm": { "$ref": "#/$defs/vector3" },
+          "dimensionsMm": { "$ref": "#/$defs/vector3" },
+          "bboxMinMm": { "$ref": "#/$defs/vector3" },
+          "bboxMaxMm": { "$ref": "#/$defs/vector3" },
+          "intersectsZone": { "type": "boolean" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "vector3": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": { "type": ["number", "null"] }
+    }
+  }
+}

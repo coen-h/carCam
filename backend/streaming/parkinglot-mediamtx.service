@@ -1,0 +1,16 @@
+[Unit]
+Description=Parking lot AGX MediaMTX relay and HLS server
+After=network-online.target tailscaled.service
+Wants=network-online.target tailscaled.service
+
+[Service]
+Type=simple
+User=hero
+WorkingDirectory=/home/hero/mediamtx-agx
+ExecStart=/home/hero/mediamtx-agx/mediamtx /home/hero/parkinglot-streaming/mediamtx.yml
+Restart=always
+RestartSec=3
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
