@@ -142,3 +142,29 @@ and verify transferred source and binary hashes. Depth deployment backups are
 `/home/coen/deployment-backups/20260820T084700Z-depth-startup-settle`.
 Restoring the relevant plugin/config and restarting `zed-rtsp.service` rolls
 back the observer; MediaMTX and Cloudflare do not need configuration changes.
+
+## Graceful camera shutdown (deployed 2026-10-13)
+
+The native launcher catches SIGTERM/SIGINT on the GLib main loop, closes RTSP
+clients and calls `gst_rtsp_media_unprepare()` on live media before exiting.
+This lets the ZED source stop and close its SDK camera instead of terminating
+while USB capture is active. Weak references track media without retaining
+disconnected clients' camera pipelines. Shutdown logs use the `[SHUTDOWN]`
+prefix and include `Media unprepared: yes` on successful cleanup.
+
+The Nano binary was built using its existing GStreamer 1.14.5 libraries and
+installed atomically. Its predecessor and stream.env are preserved in
+`/home/coen/deployment-backups/20261013-graceful-camera-shutdown`.
+
+`test-camera-restarts.sh` runs through sudo on the Nano, exercises three H.264
+restarts, three H.265 restarts and one return to H.264 while MediaMTX remains
+connected, and restores the previous stream.env on exit. It checks actual
+decoded frames and a 25 FPS floor. Reports are written to the separate build
+directory, not the production runtime directory. The deployed diagnostic
+`/home/coen/parkinglot-streaming/check_video_stream.py` is required.
+
+All seven tests passed at 29.34–30.55 FPS without USB reconnect, with final
+restored H.264 at 29.96 FPS. The reports are in
+`/home/coen/camera-shutdown-fix-20261013/restart-test-20261013T071748Z`.
+This verifies normal process shutdown; SIGKILL, power loss and hardware USB
+disconnects still need separate recovery testing after installation.

@@ -31,7 +31,7 @@ TRACKER_CONFIG = SCRIPT_DIR / "config_tracker_NvDCF_perf.yml"
 LPD_CONFIG = SCRIPT_DIR / "lpd_DetectNet2_us.txt"
 
 ZED_RTSP_URL = os.environ.get(
-    "PARKINGLOT_RTSP_URL", "rtsp://100.64.0.6:8554/public-h264"
+    "PARKINGLOT_RTSP_URL", "rtsp://127.0.0.1:8554/public-h264"
 )
 ZED_VIDEO_CODEC = os.environ.get("PARKINGLOT_VIDEO_CODEC", "h264").lower()
 if ZED_VIDEO_CODEC not in {"h264", "h265"}:

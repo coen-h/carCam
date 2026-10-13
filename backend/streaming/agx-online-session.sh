@@ -38,7 +38,7 @@ trap stop_pipeline INT TERM
 # splitmuxsink makes independently playable five-second MP4 clips without
 # another encode.
 gst-launch-1.0 -q -e \
-    rtspsrc location=rtsp://100.64.0.6:8554/camera-h265 \
+    rtspsrc location=rtsp://127.0.0.1:8554/camera-h265 \
         protocols=tcp latency=200 drop-on-latency=true \
     '!' rtph265depay \
     '!' h265parse config-interval=-1 \
@@ -58,7 +58,7 @@ gst-launch-1.0 -q -e \
     '!' tee name=encoded \
     encoded. '!' queue \
         '!' h264parse config-interval=-1 \
-        '!' rtspclientsink location=rtsp://100.64.0.6:8554/public-h264 \
+        '!' rtspclientsink location=rtsp://127.0.0.1:8554/public-h264 \
             protocols=tcp latency=100 \
     encoded. '!' queue \
         '!' h264parse \

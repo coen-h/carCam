@@ -8,6 +8,10 @@
 #include <gst/rtsp-server/rtsp-server.h>
 #include <gst/rtsp/gstrtspconnection.h>
 #include <glib/gstdio.h>
+#ifdef G_OS_UNIX
+#include <glib-unix.h>
+#include <signal.h>
+#endif
 
 #include <algorithm>
 #include <cmath>
@@ -87,6 +91,78 @@ struct TriggerRuntime {
 static TriggerConfig trigger_config;
 static TriggerRuntime trigger_runtime;
 static volatile gint publish_pending = 0;
+
+// Weak references let shutdown find every live media pipeline without keeping
+// disconnected clients' pipelines (and the camera) alive indefinitely.
+static GMutex media_mutex;
+static std::vector<GWeakRef *> media_refs;
+static gboolean shutdown_started = FALSE;
+
+struct ShutdownContext {
+    GMainLoop *loop;
+    GstRTSPServer *server;
+    guint listener_id;
+};
+
+static void track_media(GstRTSPMedia *media) {
+    g_mutex_lock(&media_mutex);
+    for (auto it = media_refs.begin(); it != media_refs.end();) {
+        gpointer existing = g_weak_ref_get(*it);
+        if (existing) {
+            g_object_unref(existing);
+            ++it;
+        } else {
+            g_weak_ref_clear(*it);
+            g_free(*it);
+            it = media_refs.erase(it);
+        }
+    }
+    GWeakRef *ref = g_new0(GWeakRef, 1);
+    g_weak_ref_init(ref, G_OBJECT(media));
+    media_refs.push_back(ref);
+    g_mutex_unlock(&media_mutex);
+}
+
+static GstRTSPFilterResult close_client(GstRTSPServer *, GstRTSPClient *client,
+                                      gpointer) {
+    gst_rtsp_client_close(client);
+    return GST_RTSP_FILTER_REMOVE;
+}
+
+static gboolean shutdown_server(gpointer data) {
+    if (shutdown_started) {
+        return G_SOURCE_CONTINUE;
+    }
+    shutdown_started = TRUE;
+    ShutdownContext *context = static_cast<ShutdownContext *>(data);
+    g_print("[SHUTDOWN] Closing RTSP clients and camera pipelines\n");
+    if (context->listener_id) {
+        g_source_remove(context->listener_id);
+        context->listener_id = 0;
+    }
+
+    std::vector<GstRTSPMedia *> media;
+    g_mutex_lock(&media_mutex);
+    for (GWeakRef *ref : media_refs) {
+        gpointer existing = g_weak_ref_get(ref);
+        if (existing) {
+            media.push_back(GST_RTSP_MEDIA(existing));
+        }
+    }
+    g_mutex_unlock(&media_mutex);
+
+    gst_rtsp_server_client_filter(context->server, close_client, NULL);
+    for (GstRTSPMedia *item : media) {
+        // Unprepare transitions the full pipeline to NULL, invoking the ZED
+        // source's stop()/Camera::close() before the process can exit.
+        gboolean stopped = gst_rtsp_media_unprepare(item);
+        g_print("[SHUTDOWN] Media unprepared: %s\n", stopped ? "yes" : "no");
+        g_object_unref(item);
+    }
+    g_print("[SHUTDOWN] Camera pipeline cleanup complete\n");
+    g_main_loop_quit(context->loop);
+    return G_SOURCE_CONTINUE;
+}
 
 static GOptionEntry entries[] = {
     {"port", 'p', 0, G_OPTION_ARG_STRING, &port,
@@ -503,6 +579,7 @@ static GstElement *find_zed_source(GstElement *root) {
 }
 
 static void media_configure(GstRTSPMediaFactory *, GstRTSPMedia *media, gpointer) {
+    track_media(media);
     if (!trigger_config.enabled) {
         return;
     }
@@ -595,8 +672,20 @@ int main(int argc, char *argv[]) {
     g_signal_connect(factory, "media-configure", G_CALLBACK(media_configure), NULL);
     gst_rtsp_mount_points_add_factory(mounts, "/zed_stream", factory);
     g_object_unref(mounts);
-    gst_rtsp_server_attach(server, NULL);
+    guint listener_id = gst_rtsp_server_attach(server, NULL);
+    if (!listener_id) {
+        g_printerr("ERROR - could not attach RTSP listener\n");
+        g_object_unref(server);
+        g_main_loop_unref(loop);
+        return EXIT_FAILURE;
+    }
     g_signal_connect(server, "client-connected", G_CALLBACK(client_connected), NULL);
+
+    ShutdownContext shutdown_context = {loop, server, listener_id};
+#ifdef G_OS_UNIX
+    guint term_id = g_unix_signal_add(SIGTERM, shutdown_server, &shutdown_context);
+    guint int_id = g_unix_signal_add(SIGINT, shutdown_server, &shutdown_context);
+#endif
 
     g_print(" ZED RTSP Server\n-----------------\n");
     g_print(" * Stream ready at rtsp://%s:%s/zed_stream\n", host, port);
@@ -605,5 +694,16 @@ int main(int argc, char *argv[]) {
                 trigger_config.shadow_mode ? "SHADOW" : "ACTIVE");
     }
     g_main_loop_run(loop);
+#ifdef G_OS_UNIX
+    g_source_remove(term_id);
+    g_source_remove(int_id);
+#endif
+    g_object_unref(server);
+    g_main_loop_unref(loop);
+    for (GWeakRef *ref : media_refs) {
+        g_weak_ref_clear(ref);
+        g_free(ref);
+    }
+    media_refs.clear();
     return EXIT_SUCCESS;
 }

@@ -77,7 +77,7 @@ export default function Dashboard() {
           </div>
           <div className="flex h-full w-full gap-2 max-md:flex-col max-md:flex-1">
             <div className='skeleton max-md:aspect-video w-full relative shadow-md'>
-              <LiveVideo streamUrl="https://video.coen.ovh/mystream/index.m3u8" />
+              <LiveVideo streamUrl="https://video.coen.ovh/public-h264/index.m3u8" />
               {/* <img className='rounded w-full h-full' src="http://192.168.0.137:5000/video_feed" /> */}
               {/* <img className='rounded w-full h-full object-cover' src="https://tkhsecurity.com/wp-content/uploads/2025/04/box-5-1920x1080.png" /> */}
               <div className="absolute top-2 right-2 rounded-box flex items-center gap-1 bg-base-100 px-2 py-1">

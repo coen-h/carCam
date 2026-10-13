@@ -6,7 +6,7 @@ Camera / RTSP device:
 - Jetson Nano with a ZED camera.
 - 1920x1080, 30 FPS H.264 RTSP/TCP stream.
 - Current Nano LAN consumer URL depends on the phone hotspot address.
-- Stable private address: rtsp://100.64.0.7:8554/mystream (Tailscale).
+- Private camera address: rtsp://nonano.tail77ff0.ts.net:8554/mystream (Tailscale).
 - Current dashboard HLS URL remains
   https://video.coen.ovh/mystream/index.m3u8 through the Nano Cloudflare tunnel.
 - The native ZED service publishes its single upstream session at
@@ -328,3 +328,60 @@ Remaining acceptance gate:
 - Automatic triggering remains disabled until the fixed installation has an
   empty-lane baseline and representative vehicle calibration. The current
   depth state is `camera_moved`, as expected after repositioning.
+
+10. Current Network and Acceptance Check (2026-10-13)
+
+- Execution plan for the installation agent: backend/INSTALLATION_HANDOFF.md.
+- Nano: nonano.tail77ff0.ts.net / 100.110.69.92, SSH user coen.
+- AGX: noagx.tail77ff0.ts.net / 100.99.118.56, SSH user hero.
+- Peer URLs use MagicDNS; AGX RTSP and new.py use 127.0.0.1:8554. The lease
+  listener remains bound to 100.99.118.56:9010. Old 100.64.0.6/7 addresses in
+  previous dated sections and historical backups are obsolete.
+- Both Tailscale SSH connections pass. Corrected Cloudflare ingress is Nano
+  nano.coen.ovh SSH + picopy HTTP, and AGX agx.coen.ovh SSH + video HTTP.
+  Nano Access CLI SSH passes; AGX Access CLI SSH still times out before banner.
+- Camera H.264 and H.265 capture measured about 30 FPS. Verified live SRT relay
+  delivered 30.44 FPS, full DeepStream reached 28.8 FPS with first frame 3.42s
+  after PLAYING, and new NVMe clips were valid five-second H.264 files.
+- Authenticated one-heartbeat test expired in about five seconds; AGX status
+  confirmed reason=expired. Requests without bearer authentication return 401.
+- RapidOCR read one saved crop at confidence 0.9669; no test database POST.
+  Live new-plate recognition accuracy awaits site testing.
+- Camera restart caused a USB URB error and SDK CAMERA NOT DETECTED. Physical
+  unplug/replug recovered capture once; the return to H.264 also failed to
+  reopen. Camera restart/recovery must be addressed before unattended acceptance.
+  Following a second replug, final native and redistributed H.264 checks passed
+  at 29.81 and 29.93 FPS. Capture was left running without another restart.
+- video.coen.ovh NOW routes to AGX, not Nano. Local public-h264 HLS playlist
+  works. Frontend still requests mystream and that path fails at the AGX. Public
+  video access redirects to Cloudflare Access login; browser delivery needs
+  authenticated validation. Offline output is a generated slate, not the last
+  saved empty-lane image. Earlier claims that the website remained operational
+  after restoring Nano H.264 do not apply to this current Cloudflare routing.
+- Nano stays H.264 12.5 Mbps and shadow mode, event uplink disabled, no force
+  marker; AGX lease and relay services enabled and source offline. Final site
+  calibration, real vehicle/plate tests, website integration, boot-time plate
+  service, clip retention and frontend clip access remain installation work.
+
+11. Camera Shutdown Fix and SSH Recovery (2026-10-13)
+
+- AGX Cloudflare SSH timeout was caused by an old empty Access authentication
+  lock on the workstation, not the tunnel's origin SSH server. The lock was
+  preserved as .stale-20261013, authentication retried, and both Cloudflare
+  hostnames now connect to the correct Jetsons. Browser SSH is not yet tested.
+- The camera RTSP launcher now handles SIGTERM and SIGINT using GLib's main
+  loop. It removes the listener, closes RTSP clients, explicitly unprepares
+  live media, then exits after the ZED plugin's camera-close cleanup.
+- Built with the Nano's existing GStreamer 1.14.5 headers/libraries. No runtime
+  package, camera plugin, inference model or codec quality settings changed.
+- Seven consecutive loaded restart tests passed without USB reconnect:
+  H.264 29.34, 29.97, 30.55 FPS; H.265 29.95, 29.84, 29.85 FPS;
+  return to H.264 29.83 FPS. Final original-config restoration passed at 29.96.
+  Eight normal stops logged Media unprepared: yes. Sudden power removal and
+  USB unplug recovery are separate final-site acceptance tests.
+- Binary/config rollback copies:
+  /home/coen/deployment-backups/20261013-graceful-camera-shutdown
+- Build and reports:
+  /home/coen/camera-shutdown-fix-20261013/restart-test-20261013T071748Z
+- Nano is left on its original H.264 12.5 Mbps config, capture running,
+  depth shadow mode, and event uploader disabled. No force marker remains.

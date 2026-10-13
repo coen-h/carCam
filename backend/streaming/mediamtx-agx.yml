@@ -11,7 +11,7 @@ metricsAddress: 127.0.0.1:9998
 
 rtsp: true
 rtspTransports: [tcp]
-rtspAddress: 100.64.0.6:8554
+rtspAddress: 127.0.0.1:8554
 rtmp: false
 srt: false
 webrtc: false
